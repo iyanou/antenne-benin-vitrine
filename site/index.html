@@ -340,7 +340,7 @@
   .map-tooltip {
     position: absolute; pointer-events: none; z-index: 5;
     background: var(--brand); color: var(--brand-ink); font-size: 11.5px; font-weight: 600;
-    padding: 10px 13px; border-radius: 10px; box-shadow: var(--shadow); max-width: 270px;
+    padding: 10px 13px; border-radius: 10px; box-shadow: var(--shadow); max-width: 330px;
     font-family: "IBM Plex Mono", monospace; line-height: 1.5;
   }
   .map-tooltip .name { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 13px; margin-bottom: 5px; }
@@ -1675,11 +1675,15 @@
     if (opFilter !== 'all') {
       return `<div class="name">${name}</div>${singleOpRows(operateurs[opFilter])}`;
     }
-    const SHORT_TAGS = { '2g_voice': 'Voix 2G', '3g_voice': 'Voix 3G', '4g_internet': 'Débit 4G' };
+    const SHORT_TAGS = {
+      '2g_voice': 'Voix 2G', '2g_sms': 'SMS 2G', 'couverture_2g': 'Couv. 2G',
+      '3g_voice': 'Voix 3G', '3g_sms': 'SMS 3G', '3g_internet': 'Débit 3G', 'couverture_3g': 'Couv. 3G',
+      '4g_internet': 'Débit 4G', 'couverture_4g': 'Couv. 4G',
+    };
     const blocks = OP_META.map(({ key, label, color }) => {
       const rec = operateurs[key];
       const vals = rec
-        ? ['2g_voice', '3g_voice', '4g_internet'].map(f => `${SHORT_TAGS[f]} ${rec[f] !== undefined ? fmtVal(rec[f], f) : '—'}`).join(' · ')
+        ? Object.keys(SHORT_TAGS).map(f => `${SHORT_TAGS[f]} ${rec[f] !== undefined ? fmtVal(rec[f], f) : '—'}`).join(' · ')
         : 'aucune donnée';
       return `<div class="trow-op"><span class="trow-op-label"><span class="tip-dot" style="background:${color}"></span>${label}</span><span class="trow-op-vals">${vals}</span></div>`;
     }).join('');
