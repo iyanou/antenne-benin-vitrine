@@ -10,11 +10,13 @@ Poliment : delai entre chaque appel, pas de martelage (documentation Swagger
 etiquetee "pre-prod", pas de garantie de disponibilite a long terme).
 """
 import json
+import os
 import time
 import requests
 
 BASE = "https://atlas.arcep.bj/api"
-OUT  = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\qos_regional.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.normpath(os.path.join(HERE, "..", "data", "qos_regional.json"))
 DELAY = 1.2  # secondes entre chaque appel
 
 FIELDS = ['2g_voice', '2g_sms', '3g_voice', '3g_sms', '3g_internet', '4g_internet', 'qos_day']

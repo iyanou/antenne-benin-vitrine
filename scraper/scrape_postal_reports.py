@@ -20,8 +20,9 @@ INDEX_URL = "https://arcep.bj/observatoire-postal/"
 PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
 QUARTER_RE = re.compile(r'^T\d[-_]\d{4}$')
 
-OBS_DIR = r"D:\eraste\Products\Telecom Data Analysis\Benin\arcep\data\observatoire\postal"
-OUT_JSON = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\postal_data.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "postal"))
+OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "postal_data.json"))
 MIN_YEAR = 2024
 
 LABELS = {
@@ -223,7 +224,7 @@ def main():
         time.sleep(1)
 
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta']['verifie'] = False
+    store['meta'].setdefault('verifie', False)
     store['meta']['note'] = (
         "Recettes : extraction minimale (total uniquement) -- categorie basse priorite. "
         "Parts de marche par operateur (courrier express / colis, volume / valeur) ajoutees "
