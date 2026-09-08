@@ -1,0 +1,305 @@
+{
+  "recettes": {
+    "T2_2024": {
+      "courriers_ordinaires": 103140191,
+      "courriers_express": 290862153,
+      "colis_postaux": 1015800522,
+      "logistique": 12201107,
+      "autres": 6199880,
+      "total": 1428203853
+    },
+    "T3_2024": {
+      "courriers_ordinaires": 105611616,
+      "courriers_express": 289417458,
+      "colis_postaux": 1198998416,
+      "logistique": 5750822,
+      "autres": 3626598,
+      "total": 1603404910
+    },
+    "T4_2024": {
+      "courriers_ordinaires": 116541134,
+      "courriers_express": 270632131,
+      "colis_postaux": 1073916068,
+      "logistique": 4747924,
+      "autres": 918155,
+      "total": 1466755412
+    },
+    "T1_2025": {
+      "courriers_ordinaires": 183833531,
+      "courriers_express": 259156475,
+      "colis_postaux": 1057636687,
+      "logistique": 6161540,
+      "autres": 20483373,
+      "total": 1527271606
+    },
+    "T2_2025": {
+      "courriers_ordinaires": 77975454,
+      "courriers_express": 267506119,
+      "colis_postaux": 1191226436,
+      "logistique": 6515292,
+      "autres": 30123248,
+      "total": 1573346549
+    }
+  },
+  "meta": {
+    "derniere_verification": "2026-09-08",
+    "verifie": true,
+    "note": "Recettes : extraction minimale (total uniquement) -- categorie basse priorite ; confirme qu'aucun rapport anterieur a T2_2024 ne publie cette section (pas un echec d'extraction). Parts de marche par operateur (courrier express / colis, volume / valeur) ajoutees et verifiees le 2026-09-08 par relecture des tableaux sources + controle automatique (recettes par segment = total, parts de marche ~100% par trimestre). Les rapports anterieurs a mi-2024 ne listent pas encore Cars ATT SARL ni Africa Global Logistics comme operateurs distincts -- les sommes par trimestre pour T1-T2 2023 peuvent donc etre legerement inferieures a 100%."
+  },
+  "parts_marche": {
+    "courrier_express": {
+      "valeur": {
+        "T1_2023": {
+          "la_poste": 20.4,
+          "dhl": 46.8,
+          "top_chrono": 22.6,
+          "baobab_express": 3.1,
+          "autres": 2.4
+        },
+        "T2_2023": {
+          "la_poste": 14.5,
+          "dhl": 41.7,
+          "top_chrono": 30.3,
+          "baobab_express": 3.1,
+          "cars_att": 9.0,
+          "africa_global_logistics": 0.9,
+          "autres": 0.5
+        },
+        "T3_2023": {
+          "la_poste": 19.5,
+          "dhl": 52.6,
+          "top_chrono": 22.0,
+          "baobab_express": 4.4,
+          "cars_att": null,
+          "africa_global_logistics": 0.7,
+          "autres": 0.6
+        },
+        "T4_2023": {
+          "la_poste": 15.4,
+          "dhl": 63.0,
+          "top_chrono": 15.6,
+          "baobab_express": 5.7,
+          "cars_att": null,
+          "africa_global_logistics": null,
+          "autres": 0.4
+        },
+        "T1_2024": {
+          "la_poste": 13.2,
+          "dhl": 54.7,
+          "top_chrono": 18.7,
+          "baobab_express": 7.5,
+          "cars_att": 4.5,
+          "africa_global_logistics": 1.1,
+          "autres": 0.3
+        },
+        "T2_2024": {
+          "la_poste": 14.95,
+          "dhl": 53.56,
+          "top_chrono": 16.52,
+          "baobab_express": 6.49,
+          "cars_att": 7.68,
+          "autres": 0.8
+        },
+        "T3_2024": {
+          "la_poste": 25.41,
+          "dhl": 46.44,
+          "top_chrono": 15.79,
+          "baobab_express": 6.22,
+          "cars_att": 3.52,
+          "autres": 2.61
+        },
+        "T4_2024": {
+          "la_poste": 18.45,
+          "dhl": 52.4,
+          "top_chrono": 16.97,
+          "baobab_express": 8.06,
+          "cars_att": 3.95,
+          "autres": 0.17
+        },
+        "T1_2025": {
+          "la_poste": 20.0,
+          "dhl": 53.17,
+          "top_chrono": 18.24,
+          "baobab_express": 3.72,
+          "cars_att": 3.94,
+          "autres": 0.93
+        },
+        "T2_2025": {
+          "la_poste": 15.01,
+          "dhl": 57.83,
+          "top_chrono": 19.36,
+          "baobab_express": 3.72,
+          "cars_att": 3.71,
+          "autres": 0.37
+        }
+      },
+      "volume": {
+        "T2_2024": {
+          "la_poste": 11.17,
+          "dhl": 24.09,
+          "top_chrono": 30.97,
+          "baobab_express": 9.98,
+          "cars_att": 17.39,
+          "autres": 6.4
+        },
+        "T3_2024": {
+          "la_poste": 1.92,
+          "dhl": 32.74,
+          "top_chrono": 38.03,
+          "baobab_express": 13.02,
+          "cars_att": 10.77,
+          "autres": 3.53
+        },
+        "T4_2024": {
+          "la_poste": 11.77,
+          "dhl": 28.52,
+          "top_chrono": 36.06,
+          "baobab_express": 13.65,
+          "cars_att": 9.99,
+          "autres": 0.01
+        },
+        "T1_2025": {
+          "la_poste": 17.52,
+          "dhl": 27.94,
+          "top_chrono": 35.75,
+          "baobab_express": 7.78,
+          "cars_att": 9.35,
+          "autres": 1.65
+        },
+        "T2_2025": {
+          "la_poste": 31.63,
+          "dhl": 23.64,
+          "top_chrono": 29.01,
+          "baobab_express": 7.43,
+          "cars_att": 8.14,
+          "autres": 0.14
+        }
+      }
+    },
+    "colis": {
+      "valeur": {
+        "T1_2023": {
+          "la_poste": 36.8,
+          "dhl": 53.1,
+          "top_chrono": 1.6,
+          "baobab_express": 3.7,
+          "autres": 1.1
+        },
+        "T2_2023": {
+          "la_poste": 42.9,
+          "dhl": 46.9,
+          "top_chrono": 2.4,
+          "baobab_express": 4.3,
+          "cars_att": 3.0,
+          "autres": 0.5
+        },
+        "T3_2023": {
+          "la_poste": 31.9,
+          "dhl": 61.0,
+          "top_chrono": 1.6,
+          "baobab_express": 5.0,
+          "cars_att": null,
+          "autres": 0.6
+        },
+        "T4_2023": {
+          "la_poste": 24.2,
+          "dhl": 68.8,
+          "top_chrono": 1.2,
+          "baobab_express": 5.1,
+          "cars_att": null,
+          "autres": 0.7
+        },
+        "T1_2024": {
+          "la_poste": 30.6,
+          "dhl": 57.6,
+          "top_chrono": 1.2,
+          "baobab_express": 5.6,
+          "cars_att": 4.7,
+          "autres": 0.3
+        },
+        "T2_2024": {
+          "la_poste": 27.87,
+          "dhl": 56.09,
+          "top_chrono": 1.18,
+          "baobab_express": 5.57,
+          "cars_att": 9.2,
+          "autres": 0.08
+        },
+        "T3_2024": {
+          "la_poste": 39.91,
+          "dhl": 50.22,
+          "top_chrono": 0.95,
+          "baobab_express": 4.51,
+          "cars_att": 4.33,
+          "autres": 0.08
+        },
+        "T4_2024": {
+          "la_poste": 32.99,
+          "dhl": 53.98,
+          "top_chrono": 1.07,
+          "baobab_express": 6.09,
+          "cars_att": 5.87,
+          "autres": 0.0
+        },
+        "T1_2025": {
+          "la_poste": 31.57,
+          "dhl": 53.61,
+          "top_chrono": 1.12,
+          "baobab_express": 7.48,
+          "cars_att": 5.98,
+          "autres": 0.24
+        },
+        "T2_2025": {
+          "la_poste": 39.01,
+          "dhl": 48.11,
+          "top_chrono": 1.09,
+          "baobab_express": 6.33,
+          "cars_att": 5.39,
+          "autres": 0.08
+        }
+      },
+      "volume": {
+        "T2_2024": {
+          "la_poste": 4.21,
+          "dhl": 4.25,
+          "top_chrono": 1.94,
+          "baobab_express": 34.73,
+          "cars_att": 53.6,
+          "autres": 1.28
+        },
+        "T3_2024": {
+          "la_poste": 5.45,
+          "dhl": 5.2,
+          "top_chrono": 5.82,
+          "baobab_express": 41.18,
+          "cars_att": 41.79,
+          "autres": 0.56
+        },
+        "T4_2024": {
+          "la_poste": 4.69,
+          "dhl": 4.56,
+          "top_chrono": 3.21,
+          "baobab_express": 43.14,
+          "cars_att": 44.4,
+          "autres": 0.0
+        },
+        "T1_2025": {
+          "la_poste": 11.8,
+          "dhl": 3.76,
+          "top_chrono": 3.93,
+          "baobab_express": 44.1,
+          "cars_att": 34.61,
+          "autres": 1.8
+        },
+        "T2_2025": {
+          "la_poste": 18.74,
+          "dhl": 3.93,
+          "top_chrono": 4.19,
+          "baobab_express": 40.49,
+          "cars_att": 32.5,
+          "autres": 0.14
+        }
+      }
+    }
+  }
+}

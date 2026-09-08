@@ -1,0 +1,25 @@
+{
+  "par_annee": {
+    "2025": {
+      "ressources_propres": 4768581763,
+      "recouvre_pour_etat": null
+    },
+    "2024": {
+      "ressources_propres": 6520742720,
+      "recouvre_pour_etat": 66129397493
+    },
+    "2023": {
+      "ressources_propres": 5631715055,
+      "recouvre_pour_etat": 72481825834
+    },
+    "2022": {
+      "ressources_propres": 5100000000,
+      "recouvre_pour_etat": null
+    }
+  },
+  "meta": {
+    "derniere_verification": "2026-09-08",
+    "verifie": true,
+    "note": "Source : rapports annuels d'activites ARCEP Benin, section 'Ressources financieres'. 'recouvre_pour_etat' absent avant 2023 (structure du rapport ne separait pas encore ce poste) et pas encore publie pour 2025 au moment de l'extraction -- pas une erreur, l'information n'existe simplement pas dans le rapport source a ce jour."
+  }
+}

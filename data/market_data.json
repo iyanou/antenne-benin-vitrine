@@ -1,0 +1,122 @@
+{
+  "abonnements": {
+    "T1_2025": {
+      "mtn": 8587373,
+      "moov": 5938114,
+      "celtiis": 4178572,
+      "total": 18704059,
+      "parts_marche": {
+        "mtn": 45.9,
+        "moov": 31.7,
+        "celtiis": 22.3
+      }
+    },
+    "T2_2025": {
+      "mtn": 8467024,
+      "moov": 5520384,
+      "celtiis": 4649114,
+      "total": 18636522,
+      "parts_marche": {
+        "mtn": 45.4,
+        "moov": 29.6,
+        "celtiis": 24.9
+      }
+    },
+    "T3_2025": {
+      "mtn": 6897211,
+      "moov": 5417711,
+      "celtiis": 5212965,
+      "total": 17527887,
+      "parts_marche": {
+        "mtn": 39.3,
+        "moov": 30.9,
+        "celtiis": 29.7
+      }
+    },
+    "T4_2025": {
+      "mtn": 6960590,
+      "moov": 5297072,
+      "celtiis": 5921124,
+      "total": 18178786,
+      "parts_marche": {
+        "mtn": 38.3,
+        "moov": 29.1,
+        "celtiis": 32.6
+      }
+    },
+    "T1_2026": {
+      "mtn": 7337108,
+      "moov": 5296538,
+      "celtiis": 6376335,
+      "total": 19009981,
+      "parts_marche": {
+        "mtn": 38.6,
+        "moov": 27.9,
+        "celtiis": 33.5
+      }
+    },
+    "T3_2024": {
+      "mtn": 8951193,
+      "moov": 6103953,
+      "celtiis": 3191516,
+      "total": 18246662,
+      "parts_marche": {
+        "mtn": 49.1,
+        "moov": 33.5,
+        "celtiis": 17.5
+      }
+    },
+    "T4_2024": {
+      "mtn": 8860782,
+      "moov": 5705177,
+      "celtiis": 3648522,
+      "total": 18214481,
+      "parts_marche": {
+        "mtn": 48.6,
+        "moov": 31.3,
+        "celtiis": 20.0
+      }
+    }
+  },
+  "trafics": {
+    "T1_2025": {
+      "voix_min": 2719833793,
+      "sms_nb": 117962881,
+      "data_go": 121480245
+    },
+    "T2_2025": {
+      "voix_min": 2671763989,
+      "sms_nb": 205824011,
+      "data_go": 132786226
+    },
+    "T3_2025": {
+      "voix_min": 2492756284,
+      "sms_nb": 147138430,
+      "data_go": 145803604
+    },
+    "T4_2025": {
+      "voix_min": 2489679381,
+      "sms_nb": 132263463,
+      "data_go": 151512414
+    },
+    "T1_2026": {
+      "voix_min": 3339265080,
+      "sms_nb": 129114757,
+      "data_go": 175781303
+    },
+    "T3_2024": {
+      "voix_min": 1867697711,
+      "sms_nb": 120720051,
+      "data_go": 106236203
+    },
+    "T4_2024": {
+      "voix_min": 2182401336,
+      "sms_nb": 123452579,
+      "data_go": 115776855
+    }
+  },
+  "meta": {
+    "derniere_verification": "2026-09-07",
+    "verifie": false
+  }
+}
