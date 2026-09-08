@@ -1,0 +1,75 @@
+name: Scrape hebdomadaire (marche, regulation, tarifs...)
+
+on:
+  schedule:
+    - cron: '30 5 * * 1'  # lundi 05:30 UTC (06:30 a Cotonou, UTC+1)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: antenne-benin-pipeline
+  cancel-in-progress: false
+
+jobs:
+  scrape-and-build:
+    runs-on: ubuntu-latest
+    outputs:
+      site_changed: ${{ steps.commit.outputs.site_changed }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Installer les dependances
+        run: pip install -r scraper/requirements.txt
+
+      - name: Scraper (weekly)
+        run: python scraper/orchestrate.py weekly
+
+      - name: Regenerer index.html
+        run: python scraper/build_site.py
+
+      - name: Commit + push si changement
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ site/index.html
+          if git diff --staged --quiet; then
+            echo "Rien de nouveau."
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            SITE_CHANGED=false
+            git diff --staged --quiet -- site/index.html || SITE_CHANGED=true
+            git commit -m "auto(weekly): scrape marche/regulation $(date -u +%Y-%m-%d)"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+            echo "site_changed=$SITE_CHANGED" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy:
+    needs: scrape-and-build
+    if: needs.scrape-and-build.outputs.site_changed == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
