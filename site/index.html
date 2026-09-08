@@ -546,10 +546,10 @@
           <option value="moov">Moov Africa</option>
         </select></span>
         <span><label for="map-tech">Technologie</label><select id="map-tech">
-          <option value="all" selected>2G + 3G + 4G</option>
-          <option value="2g">2G (voix)</option>
-          <option value="3g">3G (voix)</option>
-          <option value="4g">4G (débit)</option>
+          <option value="all" selected>Toutes</option>
+          <option value="2g">2G</option>
+          <option value="3g">3G</option>
+          <option value="4g">4G</option>
         </select></span>
         <span><label for="map-fraicheur">Fraîcheur</label><select id="map-fraicheur">
           <option value="0">Toutes les mesures</option>
@@ -1685,28 +1685,37 @@
     requestAnimationFrame(step);
   }
 
-  function singleOpRows(rec) {
+  const TECH_DISPLAY_FIELDS = {
+    all: Object.keys(FIELD_LABELS),
+    '2g': ['2g_voice', '2g_sms', 'couverture_2g'],
+    '3g': ['3g_voice', '3g_sms', '3g_internet', 'couverture_3g'],
+    '4g': ['4g_internet', 'couverture_4g'],
+  };
+
+  function singleOpRows(rec, tech) {
     if (!rec) return '<div class="trow"><span>Aucune donnée</span><span>—</span></div>';
-    const rows = Object.keys(FIELD_LABELS).map(f => {
+    const fields = TECH_DISPLAY_FIELDS[tech] || TECH_DISPLAY_FIELDS.all;
+    const rows = fields.map(f => {
       const v = rec[f];
       return `<div class="trow"><span>${FIELD_LABELS[f]}</span><span>${v !== undefined ? fmtVal(v, f) : '—'}</span></div>`;
     }).join('');
     return rows + `<div class="trow d"><span>Dernière mesure</span><span>${rec.qos_day || 'inconnue'}</span></div>`;
   }
 
-  function tooltipContent(name, operateurs, opFilter) {
+  function tooltipContent(name, operateurs, opFilter, tech) {
     if (opFilter !== 'all') {
-      return `<div class="name">${name}</div>${singleOpRows(operateurs[opFilter])}`;
+      return `<div class="name">${name}</div>${singleOpRows(operateurs[opFilter], tech)}`;
     }
     const SHORT_TAGS = {
       '2g_voice': 'Voix 2G', '2g_sms': 'SMS 2G', 'couverture_2g': 'Couv. 2G',
       '3g_voice': 'Voix 3G', '3g_sms': 'SMS 3G', '3g_internet': 'Débit 3G', 'couverture_3g': 'Couv. 3G',
       '4g_internet': 'Débit 4G', 'couverture_4g': 'Couv. 4G',
     };
+    const fields = TECH_DISPLAY_FIELDS[tech] || TECH_DISPLAY_FIELDS.all;
     const blocks = OP_META.map(({ key, label, color }) => {
       const rec = operateurs[key];
       const vals = rec
-        ? Object.keys(SHORT_TAGS).map(f => `${SHORT_TAGS[f]} ${rec[f] !== undefined ? fmtVal(rec[f], f) : '—'}`).join(' · ')
+        ? fields.map(f => `${SHORT_TAGS[f]} ${rec[f] !== undefined ? fmtVal(rec[f], f) : '—'}`).join(' · ')
         : 'aucune donnée';
       return `<div class="trow-op"><span class="trow-op-label"><span class="tip-dot" style="background:${color}"></span>${label}</span><span class="trow-op-vals">${vals}</span></div>`;
     }).join('');
@@ -1735,7 +1744,7 @@
 
       const label = z.name.charAt(0) + z.name.slice(1).toLowerCase();
       path.addEventListener('mousemove', e => {
-        mapTip.innerHTML = tooltipContent(label, operateurs, op);
+        mapTip.innerHTML = tooltipContent(label, operateurs, op, tech);
         const wrapRect = mapSvg.parentElement.getBoundingClientRect();
         mapTip.style.left = (e.clientX - wrapRect.left + 14) + 'px';
         mapTip.style.top  = (e.clientY - wrapRect.top + 10) + 'px';
