@@ -545,6 +545,12 @@
           <option value="celtiis">Celtiis</option>
           <option value="moov">Moov Africa</option>
         </select></span>
+        <span><label for="map-tech">Technologie</label><select id="map-tech">
+          <option value="all" selected>2G + 3G + 4G</option>
+          <option value="2g">2G (voix)</option>
+          <option value="3g">3G (voix)</option>
+          <option value="4g">4G (débit)</option>
+        </select></span>
         <span><label for="map-fraicheur">Fraîcheur</label><select id="map-fraicheur">
           <option value="0">Toutes les mesures</option>
           <option value="30">Moins d'1 mois</option>
@@ -1613,6 +1619,7 @@
   const mapTip    = document.getElementById('map-tooltip');
   const mapLegend = document.getElementById('map-legend');
   const selOp     = document.getElementById('map-operateur');
+  const selTech   = document.getElementById('map-tech');
   const selFraich = document.getElementById('map-fraicheur');
   const backBtn   = document.getElementById('map-back');
 
@@ -1621,6 +1628,12 @@
   let currentDept = null; // id du departement zoome, ou null
 
   const SEUILS_REGION = { '2g_voice': 99, '3g_voice': 99, '4g_internet': 5 };
+  const TECH_FIELDS = {
+    all: ['2g_voice', '3g_voice', '4g_internet'],
+    '2g': ['2g_voice'],
+    '3g': ['3g_voice'],
+    '4g': ['4g_internet'],
+  };
   const STATUS_COLORS = ['#DC2626', '#F97316', '#EAB308', '#16A34A']; // rouge, orange, jaune, vert
   const STATUS_LABELS = ['Non conforme', 'Partiellement conforme', 'Majoritairement conforme', 'Conforme'];
 
@@ -1631,15 +1644,16 @@
     return Math.round((Date.now() - d.getTime()) / 86400000);
   }
 
-  function statusForZone(operateurs, opFilter, maxAge) {
+  function statusForZone(operateurs, opFilter, maxAge, techFilter) {
     const keys = opFilter === 'all' ? ['mtn', 'celtiis', 'moov'] : [opFilter];
+    const fields = TECH_FIELDS[techFilter] || TECH_FIELDS.all;
     let ok = 0, total = 0, anyFresh = false;
     keys.forEach(k => {
       const rec = operateurs[k];
       if (!rec) return;
       if (maxAge > 0 && daysSince(rec.qos_day) > maxAge) return; // exclu du calcul, trop ancien
       anyFresh = true;
-      Object.keys(SEUILS_REGION).forEach(f => {
+      fields.forEach(f => {
         if (rec[f] !== undefined && rec[f] !== null) {
           total++;
           if (parseFloat(rec[f]) >= SEUILS_REGION[f]) ok++;
@@ -1701,12 +1715,13 @@
 
   function drawZones(zones, dataSrc, opts) {
     const op = selOp.value;
+    const tech = selTech.value;
     const maxAge = parseInt(selFraich.value, 10);
     mapSvg.innerHTML = '';
     Object.entries(zones).forEach(([id, z]) => {
       if (opts.filterIds && !opts.filterIds.has(id)) return;
       const operateurs = dataSrc[id]?.operateurs || {};
-      const score = statusForZone(operateurs, op, maxAge);
+      const score = statusForZone(operateurs, op, maxAge, tech);
       const color = statusColor(score);
 
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -1801,7 +1816,7 @@
   }
 
   backBtn.addEventListener('click', () => showDepartments(true));
-  [selOp, selFraich].forEach(el => el.addEventListener('change', () => {
+  [selOp, selTech, selFraich].forEach(el => el.addEventListener('change', () => {
     if (currentDept) showDeptCities(currentDept); else showDepartments(false);
   }));
   showDepartments(false);
