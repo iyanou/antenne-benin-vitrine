@@ -1,0 +1,421 @@
+{
+  "fixe": {
+    "T2_2022": {
+      "isp": {
+        "SBIN": 13761,
+        "ISOCEL": 3074,
+        "OTI": 997,
+        "FIRSTNET": 77,
+        "JENY": 225,
+        "SUD TELECOMS": 65,
+        "DATANEO": null,
+        "ABC CORPORATION": 20,
+        "EUPHORBIA": null
+      },
+      "total": 18219,
+      "penetration_pct": 0.14
+    },
+    "T3_2022": {
+      "isp": {
+        "SBIN": 14871,
+        "ISOCEL": 2873,
+        "OTI": 1064,
+        "FIRSTNET": 76,
+        "JENY": 239,
+        "SUD TELECOMS": 65,
+        "DATANEO": null,
+        "ABC CORPORATION": 22,
+        "EUPHORBIA": null
+      },
+      "total": 19210,
+      "penetration_pct": 0.15
+    },
+    "T4_2022": {
+      "isp": {
+        "SBIN": 15710,
+        "ISOCEL": 3716,
+        "OTI": 1162,
+        "FIRSTNET": 75,
+        "JENY": 257,
+        "SUD TELECOMS": 104,
+        "DATANEO": null,
+        "ABC CORPORATION": 38,
+        "EUPHORBIA": null
+      },
+      "total": 21062,
+      "penetration_pct": 0.16
+    },
+    "T1_2023": {
+      "isp": {
+        "SBIN": 19154,
+        "ISOCEL": 3822,
+        "OTI": 1164,
+        "FIRSTNET": 69,
+        "JENY": 259,
+        "SUD TELECOMS": 134,
+        "DATANEO": 6,
+        "ABC CORPORATION": 33,
+        "EUPHORBIA": null
+      },
+      "total": 24641,
+      "penetration_pct": 0.18
+    },
+    "T2_2023": {
+      "isp": {
+        "SBIN": 13719,
+        "ISOCEL": 4102,
+        "OTI": 1102,
+        "FIRSTNET": 69,
+        "JENY": 259,
+        "SUD TELECOMS": 135,
+        "DATANEO": 6,
+        "ABC CORPORATION": 28,
+        "EUPHORBIA": 214
+      },
+      "total": 19634,
+      "penetration_pct": 0.16
+    },
+    "T3_2023": {
+      "isp": {
+        "SBIN": 15513,
+        "ISOCEL": 4867,
+        "OTI": 1109,
+        "FIRSTNET": 64,
+        "JENY": 164,
+        "SUD TELECOMS": 93,
+        "DATANEO": 6,
+        "ABC CORPORATION": 27,
+        "EUPHORBIA": 219
+      },
+      "total": 22062,
+      "penetration_pct": 0.17
+    },
+    "T4_2023": {
+      "isp": {
+        "SBIN": 17393,
+        "ISOCEL": 5021,
+        "OTI": 1128,
+        "FIRSTNET": 71,
+        "JENY": 165,
+        "SUD TELECOMS": 77,
+        "DATANEO": 6,
+        "ABC CORPORATION": 26,
+        "EUPHORBIA": 226,
+        "AD SOLUTIONS": null
+      },
+      "total": 24113,
+      "penetration_pct": 0.19
+    },
+    "T1_2024": {
+      "isp": {
+        "SBIN": 19498,
+        "ISOCEL": 5209,
+        "OTI": 1129,
+        "FIRSTNET": 71,
+        "JENY": 165,
+        "SUD TELECOMS": 78,
+        "DATANEO": 6,
+        "ABC CORPORATION": 26,
+        "EUPHORBIA": 232,
+        "AD SOLUTIONS": null,
+        "SIPI-BENIN": null
+      },
+      "total": 26414,
+      "penetration_pct": 0.19
+    },
+    "T2_2024": {
+      "isp": {
+        "SBIN": 22093,
+        "ISOCEL": 5012,
+        "OTI": 1136,
+        "FIRSTNET": 66,
+        "JENY": 165,
+        "SUD TELECOMS": 80,
+        "DATANEO": 6,
+        "ABC CORPORATION": 26,
+        "EUPHORBIA": 232,
+        "AD SOLUTIONS": null,
+        "SIPI-BENIN": null,
+        "WURA PLUS": null,
+        "GVA BENIN": null,
+        "STARLINK": null
+      },
+      "total": 28816,
+      "penetration_pct": 0.2
+    },
+    "T3_2024": {
+      "isp": {
+        "SBIN": 25528,
+        "ISOCEL": 5296,
+        "OTI": 1085,
+        "FIRSTNET": 66,
+        "JENY": 165,
+        "SUD TELECOMS": 80,
+        "DATANEO": 6,
+        "ABC CORPORATION": 26,
+        "EUPHORBIA": 232,
+        "AD SOLUTIONS": null,
+        "SIPI-BENIN": null,
+        "WURA PLUS": null,
+        "GVA BENIN": null,
+        "STARLINK": null
+      },
+      "total": 32484,
+      "penetration_pct": 0.23
+    },
+    "T4_2024": {
+      "isp": {
+        "SBIN": 30554,
+        "GVA BENIN": null,
+        "AD SOLUTIONS": 2311,
+        "ISOCEL": 5578,
+        "STARLINK": null,
+        "SIPI-BENIN": null,
+        "OTI": 1074,
+        "EUPHORBIA": 232,
+        "JENY": 203,
+        "SUD TELECOMS": 77,
+        "FIRSTNET": 66,
+        "ABC CORPORATION": 26,
+        "WURA PLUS": null,
+        "DATANEO": 6
+      },
+      "total": 40127,
+      "penetration_pct": 0.31
+    },
+    "T1_2025": {
+      "isp": {
+        "SBIN": 36475,
+        "GVA BENIN": null,
+        "AD SOLUTIONS": 2417,
+        "ISOCEL": 5640,
+        "STARLINK": null,
+        "SIPI-BENIN": 485,
+        "OTI": 831,
+        "EUPHORBIA": 195,
+        "JENY": 63,
+        "SUD TELECOMS": 47,
+        "FIRSTNET": 67,
+        "ABC CORPORATION": 59,
+        "WURA PLUS": null,
+        "DATANEO": 6
+      },
+      "total": 46285,
+      "penetration_pct": 0.35
+    },
+    "T2_2025": {
+      "isp": {
+        "SBIN": 42383,
+        "GVA BENIN": 1646,
+        "AD SOLUTIONS": 2611,
+        "ISOCEL": 5909,
+        "STARLINK": 1013,
+        "SIPI-BENIN": 506,
+        "OTI": 601,
+        "EUPHORBIA": 187,
+        "JENY": 115,
+        "SUD TELECOMS": 47,
+        "FIRSTNET": 64,
+        "ABC CORPORATION": 63,
+        "WURA PLUS": 48,
+        "DATANEO": 6
+      },
+      "total": 55199,
+      "penetration_pct": 0.42
+    },
+    "T3_2025": {
+      "isp": {
+        "SBIN": 59553,
+        "GVA BENIN": 4104,
+        "AD SOLUTIONS": 6215,
+        "ISOCEL": 6123,
+        "STARLINK": 1593,
+        "SIPI-BENIN": 657,
+        "OTI": 596,
+        "EUPHORBIA": 187,
+        "JENY": 115,
+        "SUD TELECOMS": 48,
+        "FIRSTNET": 65,
+        "ABC CORPORATION": 63,
+        "WURA PLUS": 48,
+        "DATANEO": 6
+      },
+      "total": 79373,
+      "penetration_pct": 0.6
+    },
+    "T4_2025": {
+      "isp": {
+        "SBIN": 77852,
+        "GVA BENIN": 11935,
+        "AD SOLUTIONS": 6763,
+        "ISOCEL": 5075,
+        "STARLINK": 2215,
+        "SIPI-BENIN": 663,
+        "OTI": 568,
+        "EUPHORBIA": 198,
+        "JENY": 188,
+        "SUD TELECOMS": 78,
+        "FIRSTNET": 69,
+        "ABC CORPORATION": 57,
+        "WURA PLUS": 54,
+        "DATANEO": null
+      },
+      "total": 105715,
+      "penetration_pct": 0.8
+    },
+    "T1_2026": {
+      "isp": {
+        "SBIN": 94233,
+        "GVA BENIN": 12321,
+        "AD SOLUTIONS": 12508,
+        "ISOCEL": 4724,
+        "STARLINK": 2550,
+        "SIPI-BENIN": 663,
+        "OTI": 544,
+        "EUPHORBIA": 198,
+        "JENY": 188,
+        "SUD TELECOMS": 78,
+        "FIRSTNET": 68,
+        "ABC CORPORATION": 57,
+        "WURA PLUS": 90,
+        "DATANEO": null
+      },
+      "total": 128222,
+      "penetration_pct": 0.95
+    }
+  },
+  "mobile": {
+    "T2_2022": {
+      "operateurs": {
+        "mtn": 6003671,
+        "moov": 2890130,
+        "celtiis": null
+      },
+      "total": 8893801
+    },
+    "T3_2022": {
+      "operateurs": {
+        "mtn": 6241936,
+        "moov": 2946178,
+        "celtiis": null
+      },
+      "total": 9188114
+    },
+    "T4_2022": {
+      "operateurs": {
+        "mtn": 6485379,
+        "moov": 2877192,
+        "celtiis": 364609
+      },
+      "total": 9727180
+    },
+    "T1_2023": {
+      "operateurs": {
+        "mtn": 6819130,
+        "moov": 2906454,
+        "celtiis": 423610
+      },
+      "total": 10149194
+    },
+    "T2_2023": {
+      "operateurs": {
+        "mtn": 7246418,
+        "moov": 1737464,
+        "celtiis": 516679
+      },
+      "total": 9500561
+    },
+    "T3_2023": {
+      "operateurs": {
+        "mtn": 6852058,
+        "moov": 3012320,
+        "celtiis": 1052138
+      },
+      "total": 10916516
+    },
+    "T4_2023": {
+      "operateurs": {
+        "mtn": 6567085,
+        "moov": 3130307,
+        "celtiis": 1234273
+      },
+      "total": 10931665
+    },
+    "T1_2024": {
+      "operateurs": {
+        "mtn": 6072545,
+        "moov": 3350945,
+        "celtiis": 1224357
+      },
+      "total": 10647847
+    },
+    "T2_2024": {
+      "operateurs": {
+        "mtn": 6101371,
+        "moov": 3303734,
+        "celtiis": 1661841
+      },
+      "total": 11066946
+    },
+    "T3_2024": {
+      "operateurs": {
+        "mtn": 6265262,
+        "moov": 3169805,
+        "celtiis": 2289253
+      }
+    },
+    "T4_2024": {
+      "operateurs": {
+        "mtn": 6852058,
+        "moov": 2923627,
+        "celtiis": 2585697
+      },
+      "total": 12361382
+    },
+    "T1_2025": {
+      "operateurs": {
+        "mtn": 5283369,
+        "moov": 2931394,
+        "celtiis": 2931753
+      },
+      "total": 11146516
+    },
+    "T2_2025": {
+      "operateurs": {
+        "mtn": 4616644,
+        "moov": 2639727,
+        "celtiis": 3317431
+      },
+      "total": 10573802
+    },
+    "T3_2025": {
+      "operateurs": {
+        "mtn": 4511696,
+        "moov": 2593221,
+        "celtiis": 3519252
+      },
+      "total": 10624169
+    },
+    "T4_2025": {
+      "operateurs": {
+        "mtn": 4627281,
+        "moov": 2575175,
+        "celtiis": 3611685
+      },
+      "total": 10814141
+    },
+    "T1_2026": {
+      "operateurs": {
+        "mtn": 4770635,
+        "moov": 2546845,
+        "celtiis": 4243087
+      },
+      "total": 11560567
+    }
+  },
+  "meta": {
+    "derniere_verification": "2026-09-08",
+    "verifie": true,
+    "note": "Verifie manuellement le 2026-09-08 : bug de decalage trimestriel corrige (un operateur recemment ajoute avec des cellules vides sur les trimestres ou il n'existait pas encore se retrouvait aligne sur le premier trimestre au lieu du dernier). Reextrait des rapports sources avec alignement par position d'en-tete plutot que par compression/zip."
+  }
+}

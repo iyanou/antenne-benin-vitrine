@@ -1,0 +1,168 @@
+{
+  "recues": {
+    "T4_2022": {
+      "commerciales": 20,
+      "techniques": 4
+    },
+    "T1_2023": {
+      "commerciales": 22,
+      "techniques": 2,
+      "total": 24
+    },
+    "T2_2023": {
+      "commerciales": 26,
+      "techniques": 4,
+      "total": 30
+    },
+    "T3_2023": {
+      "commerciales": 56,
+      "techniques": 15,
+      "total": 71
+    },
+    "T4_2023": {
+      "commerciales": 48,
+      "techniques": null,
+      "total": 51
+    },
+    "T1_2024": {
+      "commerciales": 22,
+      "techniques": null,
+      "total": 25
+    },
+    "T2_2024": {
+      "commerciales": 25,
+      "techniques": null,
+      "total": 31
+    },
+    "T3_2024": {
+      "commerciales": 21,
+      "techniques": 0,
+      "total": 23
+    },
+    "T4_2024": {
+      "commerciales": 25,
+      "techniques": null,
+      "total": 26
+    },
+    "T1_2025": {
+      "commerciales": 32,
+      "techniques": 10,
+      "postales": null,
+      "total": 42
+    },
+    "T2_2025": {
+      "commerciales": 21,
+      "techniques": 2,
+      "postales": null,
+      "total": 23
+    },
+    "T3_2025": {
+      "commerciales": 28,
+      "techniques": 7,
+      "postales": null,
+      "total": 35
+    },
+    "T4_2025": {
+      "commerciales": 16,
+      "techniques": 1,
+      "postales": null,
+      "total": 17
+    },
+    "T1_2026": {
+      "commerciales": 17,
+      "techniques": 1,
+      "postales": 2,
+      "total": 20
+    }
+  },
+  "traitees": {
+    "T4_2022": {
+      "fondees": 15,
+      "infondees": 4,
+      "classees": 5,
+      "total": 24
+    },
+    "T1_2023": {
+      "fondees": 18,
+      "infondees": 1,
+      "classees": 5,
+      "total": 24
+    },
+    "T2_2023": {
+      "fondees": 24,
+      "infondees": 3,
+      "classees": 3,
+      "total": 30
+    },
+    "T3_2023": {
+      "fondees": 62,
+      "infondees": 2,
+      "classees": 7,
+      "total": 71
+    },
+    "T4_2023": {
+      "fondees": 48,
+      "infondees": 2,
+      "classees": 1,
+      "total": 51
+    },
+    "T1_2024": {
+      "fondees": 15,
+      "infondees": 3,
+      "classees": 8,
+      "total": 26
+    },
+    "T2_2024": {
+      "fondees": 26,
+      "infondees": 4,
+      "classees": 1,
+      "total": 31
+    },
+    "T3_2024": {
+      "fondees": 18,
+      "infondees": 2,
+      "classees": 3,
+      "total": 23
+    },
+    "T4_2024": {
+      "fondees": 15,
+      "infondees": 3,
+      "classees": 8,
+      "total": 26
+    },
+    "T1_2025": {
+      "fondees": 26,
+      "infondees": 7,
+      "classees": 9,
+      "total": 42
+    },
+    "T2_2025": {
+      "fondees": 12,
+      "infondees": 5,
+      "classees": 6,
+      "total": 23
+    },
+    "T3_2025": {
+      "fondees": 24,
+      "infondees": 0,
+      "classees": 11,
+      "total": 35
+    },
+    "T4_2025": {
+      "fondees": 16,
+      "infondees": 1,
+      "classees": 0,
+      "total": 17
+    },
+    "T1_2026": {
+      "fondees": 7,
+      "infondees": 1,
+      "classees": 12,
+      "total": 20
+    }
+  },
+  "meta": {
+    "derniere_verification": "2026-09-07",
+    "verifie": false
+  }
+}

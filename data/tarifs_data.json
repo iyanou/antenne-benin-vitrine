@@ -1,0 +1,84 @@
+{
+  "ftth": {
+    "installation": {
+      "sbin": 10000,
+      "isocel": 15000,
+      "gva_benin": 5000
+    },
+    "redevances": {
+      "partage": {
+        "20": {
+          "sbin": 14900
+        },
+        "40": {
+          "isocel": 15000
+        },
+        "50": {
+          "sbin": 24900,
+          "gva_benin": 15000
+        },
+        "70": {
+          "sbin": 39900
+        },
+        "150": {
+          "isocel": 25000
+        },
+        "200": {
+          "gva_benin": 30000
+        }
+      },
+      "dedie": {
+        "10": {
+          "isocel": 220000
+        },
+        "20": {
+          "sbin": 525000,
+          "isocel": 400000
+        },
+        "30": {
+          "sbin": 750000,
+          "isocel": 540000
+        },
+        "40": {
+          "isocel": 720000
+        },
+        "50": {
+          "sbin": 1200000,
+          "isocel": 900000
+        },
+        "100": {
+          "sbin": 2260000,
+          "isocel": 1845000
+        },
+        "150": {
+          "sbin": 3300000,
+          "isocel": 2490750
+        },
+        "200": {
+          "isocel": 3198000
+        }
+      }
+    }
+  },
+  "mobile_fup_5000": {
+    "mtn": {
+      "go": 11.6,
+      "mbps": 1
+    },
+    "moov": {
+      "go": 11.6,
+      "mbps": 1
+    },
+    "sbin": {
+      "go": 11.6,
+      "mbps": 2
+    }
+  },
+  "meta": {
+    "ftth_source": "Observatoire-des-tarifs-FTTH-au-31-mars-2026.pdf",
+    "mobile_source": "Tableau-de-bord_Tarifs-Internet-Mobile-31-mars-2026.pdf",
+    "derniere_verification": "2026-09-08",
+    "verifie": false,
+    "note": "Cliche instantane du dernier rapport disponible (pas une serie temporelle -- ce sont des catalogues d'offres, pas des mesures recurrentes). Mobile limite au palier 5000 FCFA 'avec FUP', seul palier ou MTN/Moov/SBIN(marque Celtiis) ont tous une offre comparable."
+  }
+}
