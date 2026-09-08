@@ -512,8 +512,14 @@
         </span>
         <span><label for="compare-field">Indicateur</label><select id="compare-field">
           <option value="2g_voice">Succès voix 2G (%)</option>
+          <option value="2g_sms">Succès SMS 2G (%)</option>
+          <option value="couverture_2g">Couverture 2G (%)</option>
           <option value="3g_voice">Succès voix 3G (%)</option>
+          <option value="3g_sms">Succès SMS 3G (%)</option>
+          <option value="3g_internet">Débit 3G (kbps)</option>
+          <option value="couverture_3g">Couverture 3G (%)</option>
           <option value="4g_internet">Débit 4G (Mbps)</option>
+          <option value="couverture_4g">Couverture 4G (%)</option>
         </select></span>
       </div>
       <div class="legend-row">
@@ -1463,17 +1469,20 @@
   ];
   const FIELD_LABELS = {
     '2g_voice': 'Succès voix 2G', '2g_sms': 'Succès SMS 2G', 'couverture_2g': 'Couverture 2G',
-    '3g_voice': 'Succès voix 3G', '3g_sms': 'Succès SMS 3G', '3g_internet': 'Débit 3G (kbps)', 'couverture_3g': 'Couverture 3G',
-    '4g_internet': 'Débit 4G (Mbps)', 'couverture_4g': 'Couverture 4G',
+    '3g_voice': 'Succès voix 3G', '3g_sms': 'Succès SMS 3G', '3g_internet': 'Débit 3G', 'couverture_3g': 'Couverture 3G',
+    '4g_internet': 'Débit 4G', 'couverture_4g': 'Couverture 4G',
   };
   const CARD_FIELDS = ['2g_voice', '2g_sms', 'couverture_2g', '3g_voice', '3g_sms', '3g_internet', 'couverture_3g', '4g_internet', 'couverture_4g'];
   const PCT_FIELDS = ['voice', 'sms', 'couverture'];
+
+  const UNIT_FIELDS = { '3g_internet': ' kbps', '4g_internet': ' Mbps' };
 
   function fmtVal(v, field) {
     if (v === undefined || v === null || v === '') return '—';
     const n = parseFloat(v);
     if (Number.isNaN(n)) return '—';
-    return PCT_FIELDS.some(k => field.includes(k)) ? n.toFixed(2) + '%' : n.toFixed(2);
+    if (PCT_FIELDS.some(k => field.includes(k))) return n.toFixed(2) + '%';
+    return n.toFixed(2) + (UNIT_FIELDS[field] || '');
   }
 
   function opCardsHTML(operateurs) {
