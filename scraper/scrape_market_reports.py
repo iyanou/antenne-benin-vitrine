@@ -23,8 +23,9 @@ PDF_LINK_RE = re.compile(
     r'href="(https://arcep\.bj/wp-content/uploads/[^"]*Observatoire-T[ée]l[ée]phonie-Mobile-T(\d)_(\d{4})\.pdf)"'
 )
 
-OBS_DIR = r"D:\eraste\Products\Telecom Data Analysis\Benin\arcep\data\observatoire"
-OUT_JSON = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\market_data.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "market"))
+OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "market_data.json"))
 
 OP_MAP = {
     'SPACETEL BENIN': 'mtn',
@@ -162,7 +163,7 @@ def main():
         time.sleep(1)
 
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta']['verifie'] = False  # a repasser a true apres revue humaine
+    store['meta'].setdefault('verifie', False)  # a repasser a true apres revue humaine
 
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, indent=2)

@@ -19,8 +19,9 @@ INDEX_URL = "https://arcep.bj/internet/"
 PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
 QUARTER_RE = re.compile(r'^T\d[-_]\d{4}$')
 
-OBS_DIR = r"D:\eraste\Products\Telecom Data Analysis\Benin\arcep\data\observatoire\internet"
-OUT_JSON = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\internet_data.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "internet"))
+OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "internet_data.json"))
 MIN_YEAR = 2024
 
 MOBILE_OP_MAP = {
@@ -224,7 +225,7 @@ def main():
         time.sleep(1)
 
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta']['verifie'] = False
+    store['meta'].setdefault('verifie', False)
 
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, indent=2)

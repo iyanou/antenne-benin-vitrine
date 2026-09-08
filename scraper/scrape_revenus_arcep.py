@@ -22,8 +22,9 @@ from urllib.parse import unquote
 INDEX_URL = "https://arcep.bj/rapports/"
 PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/[^"]+\.pdf)"')
 
-OBS_DIR = r"D:\eraste\Products\Telecom Data Analysis\Benin\arcep\data\rapports-annuels"
-OUT_JSON = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\revenus_arcep_data.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "rapports-annuels"))
+OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "revenus_arcep_data.json"))
 
 OWN_RESOURCES_PATTERNS = [
     re.compile(r"total des ressources[^(]*\(([\d\s]+)\)\s*francs", re.I),
@@ -129,7 +130,7 @@ def main():
         time.sleep(1)
 
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta']['verifie'] = True
+    store['meta'].setdefault('verifie', True)
     store['meta']['note'] = (
         "Source : rapports annuels d'activites ARCEP Benin, section 'Ressources financieres'. "
         "'recouvre_pour_etat' absent avant 2023 (structure du rapport ne separait pas encore ce "

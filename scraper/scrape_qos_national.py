@@ -19,7 +19,8 @@ import pandas as pd
 from io import StringIO
 
 URL = "https://arcep.bj/performances-mtn-et-moov/"
-QOS_JSON = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\qos_national.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+QOS_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "qos_national.json"))
 
 # table_id -> (indicateur, label, unite, seuil_col_scale, conforme_si)
 TABLES = {

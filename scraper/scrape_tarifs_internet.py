@@ -23,8 +23,9 @@ from urllib.parse import unquote
 INDEX_URL = "https://arcep.bj/tarifs-internet/"
 PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
 
-OBS_DIR = r"D:\eraste\Products\Telecom Data Analysis\Benin\arcep\data\observatoire\tarifs-internet"
-OUT_JSON = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\tarifs_data.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "tarifs-internet"))
+OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "tarifs_data.json"))
 
 OPERATOR_PATTERNS = [
     (re.compile(r'\bSBIN\b', re.I), 'sbin'),
@@ -229,7 +230,7 @@ def main():
         store['meta']['mobile_source'] = os.path.basename(path)
 
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta']['verifie'] = False
+    store['meta'].setdefault('verifie', False)
     store['meta']['note'] = (
         "Cliche instantane du dernier rapport disponible (pas une serie temporelle -- ce sont "
         "des catalogues d'offres, pas des mesures recurrentes). Mobile limite au palier 5000 FCFA "

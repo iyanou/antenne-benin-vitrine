@@ -25,8 +25,9 @@ from urllib.parse import unquote
 INDEX_URL = "https://arcep.bj/services-financiers-mobiles/"
 PDF_LINK_RE = re.compile(r'href="(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
 
-OBS_DIR = r"D:\eraste\Products\Telecom Data Analysis\Benin\arcep\data\observatoire\sfm"
-OUT_JSON = r"D:\eraste\Products\Telecom Data Analysis\Benin\vitrine\data\sfm_data.json"
+HERE = os.path.dirname(os.path.abspath(__file__))
+OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "sfm"))
+OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "sfm_data.json"))
 
 MIN_YEAR = 2024  # ne remonte pas plus loin pour cette premiere passe
 
@@ -181,7 +182,7 @@ def main():
         time.sleep(1)
 
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta']['verifie'] = False
+    store['meta'].setdefault('verifie', False)
 
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, indent=2)
