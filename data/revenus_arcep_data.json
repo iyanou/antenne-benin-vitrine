@@ -18,7 +18,7 @@
     }
   },
   "meta": {
-    "derniere_verification": "2026-09-08",
+    "derniere_verification": "2026-09-09",
     "verifie": true,
     "note": "Source : rapports annuels d'activites ARCEP Benin, section 'Ressources financieres'. 'recouvre_pour_etat' absent avant 2023 (structure du rapport ne separait pas encore ce poste) et pas encore publie pour 2025 au moment de l'extraction -- pas une erreur, l'information n'existe simplement pas dans le rapport source a ce jour."
   }

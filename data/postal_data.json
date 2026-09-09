@@ -42,9 +42,9 @@
     }
   },
   "meta": {
-    "derniere_verification": "2026-09-08",
+    "derniere_verification": "2026-09-09",
     "verifie": true,
-    "note": "Recettes : extraction minimale (total uniquement) -- categorie basse priorite ; confirme qu'aucun rapport anterieur a T2_2024 ne publie cette section (pas un echec d'extraction). Parts de marche par operateur (courrier express / colis, volume / valeur) ajoutees et verifiees le 2026-09-08 par relecture des tableaux sources + controle automatique (recettes par segment = total, parts de marche ~100% par trimestre). Les rapports anterieurs a mi-2024 ne listent pas encore Cars ATT SARL ni Africa Global Logistics comme operateurs distincts -- les sommes par trimestre pour T1-T2 2023 peuvent donc etre legerement inferieures a 100%."
+    "note": "Recettes : extraction minimale (total uniquement) -- categorie basse priorite. Parts de marche par operateur (courrier express / colis, volume / valeur) ajoutees le 2026-09-08. Les rapports anterieurs a mi-2024 ne listent pas encore Cars ATT SARL ni Africa Global Logistics comme operateurs distincts -- les sommes par trimestre pour T1-T2 2023 peuvent donc etre inferieures a 100%."
   },
   "parts_marche": {
     "courrier_express": {
