@@ -1,0 +1,34 @@
+name: Deployer le site (sans scraper)
+
+# Redeploie GitHub Pages a partir du contenu deja commite dans site/, sans relancer
+# les scrapers -- utile apres une modification manuelle de site/index.html (design,
+# contenu statique) qui n'attend pas le prochain run daily/weekly pour etre visible.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  pages: write
+  id-token: write
+
+concurrency:
+  group: antenne-benin-pipeline
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
