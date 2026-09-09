@@ -599,6 +599,72 @@ soit une strategie d'alignement par position en fallback des le depart plutot qu
 
 ---
 
+## Vision d'evolution -- "Journal Telecom de l'Afrique" (note le 2026-09-09, pas commence)
+
+Discussion avec l'utilisateur une fois le pipeline d'automatisation (scraping + build +
+deploiement GitHub Actions/Pages) termine et verifie en conditions reelles. Reflexion sur
+"maintenant qu'on a l'outil, qu'en fait-on ?" -- vision d'evolution a moyen/long terme,
+**non prioritaire pour l'instant**, notee ici pour ne pas la perdre.
+
+**Idee** : faire evoluer l'outil d'un site mono-pays (Benin) vers un outil couvrant
+**plusieurs pays de la sous-region** (Togo, Cote d'Ivoire, Senegal, Burkina Faso... — la
+liste exacte reste a definir), chacun connecte au site de son propre regulateur telecom.
+Fonctionnalites envisagees :
+- **Comparaison inter-pays** : mettre plusieurs pays cote a cote sur les memes indicateurs
+  (QoS, parts de marche, Mobile Money...) — reprend le pilier B (comparatif regional) ecarte
+  du perimetre initial en section 2, mais etendu au-dela du seul couple Benin/Togo.
+- **Page par pays** : en plus des donnees QoS/marche deja construites pour le Benin, une
+  page qui remonte aussi **l'actualite du secteur telecom** du pays (nouvelles
+  reglementations, evenements marche, incidents...).
+- **"Journal Telecom de l'Afrique"** : a partir de la matiere collectee sur la plateforme
+  (donnees + actualites par pays), publier **3 fois par semaine sur LinkedIn** les
+  informations les plus interessantes — un vrai pipeline editorial (selection automatique
+  ou semi-automatique des sujets marquants + mise en forme visuelle des posts), pas
+  seulement un site passif.
+
+**Implication technique notee par l'utilisateur, a confirmer le moment venu** : cette
+evolution demanderait tres probablement de **sortir de l'architecture actuelle** (donnees
+JSON statiques integrees directement dans le HTML au moment du build, voir section 5) pour
+passer a une **vraie base de donnees** — le volume (plusieurs pays x plusieurs sources x
+actualites qui s'accumulent dans le temps) et le besoin de requetes dynamiques
+(comparaison a la volee, recherche, alimentation du pipeline editorial) depassent ce
+qu'un seul fichier HTML statique peut raisonnablement porter.
+
+**Statut** : idee actee, non priorisee, pas de travail technique commence. A reprendre
+quand l'utilisateur voudra avancer dessus — probablement apres avoir teste la reception du
+Benin seul (visibilite, retours, opportunites reelles) avant d'investir dans l'extension
+multi-pays.
+
+---
+
+## Piste commerciale -- contact ARCEP Benin (discute le 2026-09-09, pas engage)
+
+L'utilisateur envisage de contacter l'ARCEP Benin pour explorer une mise a disposition ou
+une vente de l'outil, potentiellement en remplacement/complement de leur Atlas de
+couverture. Avis donne (demande explicitement en toute honnetete) :
+
+- **Le site est une bonne carte de visite, mais "remplacer l'Atlas" est une ouverture trop
+  ambitieuse pour un premier contact.** Recommandation : positionner le premier message
+  comme une demonstration + prise de contact ("j'ai construit ceci avec vos donnees
+  publiques"), pas comme une offre commerciale ferme -- laisser l'opportunite (licence,
+  prestation, embauche...) emerger de l'echange plutot que de la proposer d'emblee.
+  Un achat/remplacement d'outil officiel par un regulateur public passe generalement par
+  des canaux formels (marche public, relation etablie), rarement par une offre a froid.
+- **Point de vigilance a trancher avant tout contact** : les donnees regionales (section
+  A2, carte/communes) viennent de l'API Atlas `atlas.arcep.bj/api`, documentee comme
+  "pre-prod", trouvee par recherche web (pas liee depuis le site officiel de l'ARCEP) --
+  voir section 3bis. Ce n'est pas une fuite (l'utilisateur avait confirme que c'est un outil
+  volontairement mis en ligne), mais **avant d'ecrire a l'ARCEP, decider comment presenter
+  cette source** (mention transparente "API Atlas publique" plutot qu'un langage technique
+  qui donnerait l'impression d'un acces detourne).
+- **Optique professionnelle** : clarifier si cette demarche se fait a titre personnel ou
+  via Synaptique (l'employeur actuel de l'utilisateur, deja engage sur d'autres missions
+  telecom en Afrique) avant d'envoyer quoi que ce soit a un organisme public.
+
+**Statut** : discussion seulement, aucun message envoye, aucun draft prepare pour l'instant.
+
+---
+
 ## Deux corrections QoS regional/carte -- 2026-09-08
 
 1. **Champs manquants dans l'Atlas de couverture** : SMS 2G/3G, debit 3G etaient deja
