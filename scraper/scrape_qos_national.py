@@ -14,6 +14,7 @@ import json
 import os
 import re
 import time
+from datetime import datetime, timezone
 import requests
 import pandas as pd
 from io import StringIO
@@ -21,6 +22,7 @@ from io import StringIO
 URL = "https://arcep.bj/performances-mtn-et-moov/"
 HERE = os.path.dirname(os.path.abspath(__file__))
 QOS_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "qos_national.json"))
+QOS_META_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "qos_meta.json"))
 
 # table_id -> (indicateur, label, unite, seuil_col_scale, conforme_si)
 TABLES = {
@@ -57,7 +59,11 @@ def fetch_tables():
 
     out = {}
     for table_id, meta in TABLES.items():
-        dfs = pd.read_html(StringIO(html), attrs={'id': table_id}, flavor='lxml')
+        # thousands=None : le defaut pandas (',') traiterait la virgule decimale
+        # francaise de l'ARCEP ("99,37") comme un separateur de milliers et la
+        # supprimerait, produisant 9937 au lieu de 99.37 -- laisser les cellules
+        # en texte brut, parse_fr_number() se charge ensuite du format francais.
+        dfs = pd.read_html(StringIO(html), attrs={'id': table_id}, flavor='lxml', thousands=None)
         if not dfs:
             print(f'  ! table {table_id} introuvable')
             continue
@@ -88,6 +94,7 @@ def merge_into_store(scraped):
         store = json.load(f)
 
     report = []
+    added_dates = set()
     for indicateur, payload in scraped.items():
         meta = payload['meta']
         new_by_month = {}
@@ -105,6 +112,7 @@ def merge_into_store(scraped):
                     'seuil': SEUILS[indicateur], 'conforme_si': CONFORME_SI[indicateur],
                     'annee': int(annee), 'mois': int(mois), 'jours': jours_nouveaux,
                 }
+                added_dates.update(j['date'] for j in jours_nouveaux)
                 report.append(f"  NOUVEAU document {doc_id} ({len(jours_nouveaux)} jours)")
                 continue
 
@@ -113,6 +121,7 @@ def merge_into_store(scraped):
             if added:
                 existing['jours'].extend(added)
                 existing['jours'].sort(key=lambda j: j['date'])
+                added_dates.update(j['date'] for j in added)
                 report.append(f"  {doc_id} : +{len(added)} jour(s) nouveau(x) -> {[j['date'] for j in added]}")
             else:
                 report.append(f"  {doc_id} : rien de nouveau (semaine deja connue)")
@@ -120,7 +129,24 @@ def merge_into_store(scraped):
     with open(QOS_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, separators=(',', ':'))
 
-    return report
+    return report, added_dates
+
+
+def update_meta(added_dates):
+    """Met a jour qos_meta.json avec la plage exacte de jours reellement
+    livres par cette execution -- sert de defaut ('derniere periode recue')
+    au filtre du site, plutot que de deviner un nombre fixe de jours.
+    N'ecrit rien si l'execution n'a rien trouve de nouveau (page ARCEP pas
+    encore mise a jour ce jour-la) : qos_meta.json garde alors la derniere
+    plage reellement livree."""
+    if not added_dates:
+        return
+    meta = {
+        'derniere_plage_recue': {'du': min(added_dates), 'au': max(added_dates)},
+        'derniere_execution_utc': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+    }
+    with open(QOS_META_JSON, 'w', encoding='utf-8') as f:
+        json.dump(meta, f, ensure_ascii=False, separators=(',', ':'))
 
 
 if __name__ == '__main__':
@@ -129,7 +155,11 @@ if __name__ == '__main__':
     total_jours = sum(len(p['jours']) for p in scraped.values())
     print(f"{len(scraped)} indicateurs recuperes, {total_jours} lignes au total (semaine courante ARCEP)\n")
 
-    report = merge_into_store(scraped)
+    report, added_dates = merge_into_store(scraped)
     print("Fusion dans qos_national.json :")
     for line in report:
         print(line)
+
+    update_meta(added_dates)
+    if added_dates:
+        print(f"\nqos_meta.json mis a jour : derniere plage recue {min(added_dates)} -> {max(added_dates)}")

@@ -27,6 +27,7 @@ SITE_HTML = os.path.normpath(os.path.join(HERE, "..", "site", "index.html"))
 # fichier JSON -> nom de la const JS correspondante dans index.html
 JSON_TO_CONST = {
     'qos_national.json': 'QOS_DATA',
+    'qos_meta.json': 'QOS_META',
     'qos_regional.json': 'QOS_REGIONAL',
     'market_data.json': 'MARKET_DATA',
     'sfm_data.json': 'SFM_DATA',
