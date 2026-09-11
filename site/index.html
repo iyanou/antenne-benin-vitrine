@@ -474,7 +474,7 @@
     <div class="block-head" style="margin-bottom:14px;">
       <h3 style="font-size:15.5px; font-weight:800;">Tableau de bord national</h3>
       <span class="sub" id="qos-national-sub">…</span>
-      <button class="csv-btn" data-export="qos-national" hidden>⭳ Exporter en CSV</button>
+      <button class="csv-btn" data-export="qos-national">⭳ Exporter en CSV</button>
     </div>
     <div class="qos-panel">
       <div class="controls">
@@ -501,7 +501,7 @@
     <div class="block-head" id="regional" style="margin-top:34px; margin-bottom:14px;">
       <h3 style="font-size:15.5px; font-weight:800;">Détail régional — par département &amp; commune</h3>
       <span class="sub">API Atlas ARCEP — 77 communes, 12 départements</span>
-      <button class="csv-btn" data-export="qos-regional" hidden>⭳ Exporter en CSV</button>
+      <button class="csv-btn" data-export="qos-regional">⭳ Exporter en CSV</button>
     </div>
     <p class="prose" style="color:var(--ink-2); margin-bottom:18px; font-size:14.5px;">
       Contrairement au tableau national ci-dessus (mis à jour chaque semaine), ces chiffres
@@ -606,7 +606,7 @@
         <div class="block-head" style="margin-bottom:14px;">
           <h3 style="font-size:15.5px; font-weight:800;">Téléphonie mobile — parts de marché (abonnements actifs)</h3>
           <span class="sub">T3 2024 → T1 2026</span>
-          <button class="csv-btn" data-export="marche-mobile" hidden>⭳ Exporter en CSV</button>
+          <button class="csv-btn" data-export="marche-mobile">⭳ Exporter en CSV</button>
         </div>
         <div class="legend-row">
           <span class="legend-item"><span class="swatch" style="background:var(--mtn)"></span>MTN</span>
@@ -629,7 +629,7 @@
             <div class="block-head" style="margin-bottom:14px;">
               <h3 style="font-size:14.5px; font-weight:800;">Internet mobile actif</h3>
               <span class="sub">T2 2022 → T1 2026</span>
-              <button class="csv-btn" data-export="internet" hidden>⭳ CSV</button>
+              <button class="csv-btn" data-export="internet">⭳ CSV</button>
             </div>
             <div class="legend-row">
               <span class="legend-item"><span class="swatch" style="background:var(--mtn)"></span>MTN</span>
@@ -671,7 +671,7 @@
         <div class="block-head" style="margin-bottom:14px;">
           <h3 style="font-size:15.5px; font-weight:800;">Mobile Money — parts de marché</h3>
           <span class="sub">Observatoire des Services Financiers Mobiles (SFM), T3 2024 → T3 2025</span>
-          <button class="csv-btn" data-export="mobile-money" hidden>⭳ Exporter en CSV</button>
+          <button class="csv-btn" data-export="mobile-money">⭳ Exporter en CSV</button>
         </div>
         <div class="legend-row">
           <span class="legend-item"><span class="swatch" style="background:var(--mtn)"></span>MTN Mobile Money</span>
@@ -692,7 +692,7 @@
         <div class="block-head" style="margin-bottom:14px;">
           <h3 style="font-size:15.5px; font-weight:800;">Téléphonie fixe — parc d'abonnés</h3>
           <span class="sub">T3 2022 → T1 2026</span>
-          <button class="csv-btn" data-export="fixe" hidden>⭳ Exporter en CSV</button>
+          <button class="csv-btn" data-export="fixe">⭳ Exporter en CSV</button>
         </div>
         <div class="chart-holder"><canvas id="fixe-chart" role="img" aria-label="Évolution du parc téléphonie fixe"></canvas></div>
         <div class="block-head" style="margin-top:30px; margin-bottom:14px;">
@@ -708,7 +708,7 @@
         <div class="block-head" style="margin-bottom:14px;">
           <h3 style="font-size:15.5px; font-weight:800;">Gestion des plaintes</h3>
           <span class="sub">Observatoire des Plaintes ARCEP, T4 2022 → T1 2026</span>
-          <button class="csv-btn" data-export="plaintes" hidden>⭳ Exporter en CSV</button>
+          <button class="csv-btn" data-export="plaintes">⭳ Exporter en CSV</button>
         </div>
         <div class="legend-row">
           <span class="legend-item"><span class="swatch" style="background:var(--mtn)"></span>Plaintes commerciales</span>
@@ -728,7 +728,7 @@
         <div class="block-head" style="margin-bottom:14px;">
           <h3 style="font-size:15.5px; font-weight:800;">Postes — recettes des services postaux</h3>
           <span class="sub">T2 2024 → T2 2025 · recettes totales, tous opérateurs confondus</span>
-          <button class="csv-btn" data-export="postes" hidden>⭳ Exporter en CSV</button>
+          <button class="csv-btn" data-export="postes">⭳ Exporter en CSV</button>
         </div>
         <div class="chart-holder"><canvas id="postal-chart" role="img" aria-label="Évolution des recettes du marché postal"></canvas></div>
         <div class="block-head" style="margin-top:30px; margin-bottom:14px;">
@@ -751,7 +751,7 @@
         <div class="block-head" style="margin-bottom:14px;">
           <h3 style="font-size:15.5px; font-weight:800;">Finances du régulateur</h3>
           <span class="sub">Rapports annuels d'activités ARCEP, 2022 → 2025</span>
-          <button class="csv-btn" data-export="regulateur" hidden>⭳ Exporter en CSV</button>
+          <button class="csv-btn" data-export="regulateur">⭳ Exporter en CSV</button>
         </div>
         <p class="prose" style="color:var(--ink-2); margin-bottom:18px; font-size:14.5px;">
           Deux montants distincts : le budget de fonctionnement de l'ARCEP elle-même
@@ -2086,26 +2086,24 @@
       },
     };
 
-    let downloadsCap = null;
-    Promise.resolve(window.claude?.use?.('downloads')).then(cap => {
-      downloadsCap = cap || null;
-      document.querySelectorAll('.csv-btn').forEach(btn => { btn.hidden = !downloadsCap; });
-    }).catch(() => {});
-
     document.querySelectorAll('.csv-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if (!downloadsCap) return;
+      btn.addEventListener('click', () => {
         const key = btn.dataset.export;
         const builder = BUILDERS[key];
         if (!builder) return;
         const rows = builder();
         const csv = toCSV(rows);
-        const original = btn.textContent;
-        try {
-          await downloadsCap.save({ filename: `antenne-benin-${key}.csv`, data: csv });
-        } catch (e) {
-          if (e?.code === 'unavailable') btn.hidden = true;
-        }
+        // ﻿ (BOM) : force Excel a lire le fichier en UTF-8 plutot que
+        // sa page de code par defaut, sinon les caracteres accentues s'affichent mal.
+        const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `antenne-benin-${key}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
       });
     });
   })();
