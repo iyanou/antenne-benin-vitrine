@@ -51,28 +51,28 @@
       "total": 42
     },
     "T2_2025": {
-      "commerciales": 21,
-      "techniques": 2,
       "postales": null,
       "total": 23
     },
     "T3_2025": {
-      "commerciales": 28,
-      "techniques": 7,
       "postales": null,
       "total": 35
     },
     "T4_2025": {
-      "commerciales": 16,
-      "techniques": 1,
       "postales": null,
       "total": 17
     },
     "T1_2026": {
-      "commerciales": 17,
-      "techniques": 1,
       "postales": 2,
       "total": 20
+    },
+    "T2_2026": {
+      "postales": 0,
+      "total": 17
+    },
+    "T3_2026": {
+      "postales": 1,
+      "total": 26
     }
   },
   "traitees": {
@@ -159,10 +159,16 @@
       "infondees": 1,
       "classees": 12,
       "total": 20
+    },
+    "T2_2026": {
+      "fondees": 8,
+      "infondees": 4,
+      "classees": 5,
+      "total": 17
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-09",
+    "derniere_verification": "2026-11-16",
     "verifie": false
   }
 }
