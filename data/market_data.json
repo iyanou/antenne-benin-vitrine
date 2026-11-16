@@ -46,12 +46,10 @@
     },
     "T1_2026": {
       "mtn": 7337108,
-      "moov": 5296538,
       "celtiis": 6376335,
       "total": 19009981,
       "parts_marche": {
         "mtn": 38.6,
-        "moov": 27.9,
         "celtiis": 33.5
       }
     },
@@ -75,6 +73,24 @@
         "mtn": 48.6,
         "moov": 31.3,
         "celtiis": 20.0
+      }
+    },
+    "T2_2026": {
+      "mtn": 7775721,
+      "celtiis": 6611656,
+      "total": 19474394,
+      "parts_marche": {
+        "mtn": 39.9,
+        "celtiis": 34.0
+      }
+    },
+    "T3_2026": {
+      "mtn": 7770670,
+      "celtiis": 6386087,
+      "total": 18867097,
+      "parts_marche": {
+        "mtn": 41.2,
+        "celtiis": 33.8
       }
     }
   },
@@ -113,10 +129,20 @@
       "voix_min": 2182401336,
       "sms_nb": 123452579,
       "data_go": 115776855
+    },
+    "T2_2026": {
+      "voix_min": 3447620784,
+      "sms_nb": 134345419,
+      "data_go": 208693809
+    },
+    "T3_2026": {
+      "voix_min": 2650474722,
+      "sms_nb": 136021386,
+      "data_go": 213512032
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-09",
+    "derniere_verification": "2026-11-16",
     "verifie": false
   }
 }

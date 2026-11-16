@@ -7,18 +7,15 @@
     },
     "redevances": {
       "partage": {
-        "20": {
-          "sbin": 14900
-        },
         "40": {
           "isocel": 15000
         },
         "50": {
-          "sbin": 24900,
+          "sbin": 14900,
           "gva_benin": 15000
         },
-        "70": {
-          "sbin": 39900
+        "100": {
+          "sbin": 24900
         },
         "150": {
           "isocel": 25000
@@ -75,9 +72,9 @@
     }
   },
   "meta": {
-    "ftth_source": "Observatoire-des-tarifs-FTTH-au-31-mars-2026.pdf",
-    "mobile_source": "Tableau-de-bord_Tarifs-Internet-Mobile-31-mars-2026.pdf",
-    "derniere_verification": "2026-11-09",
+    "ftth_source": "Observatoire-des-tarifs-FTTH-au-30-septembre-2026.pdf",
+    "mobile_source": "Tableau-de-bord_Tarifs-Internet-Mobile_T2_2026.pdf",
+    "derniere_verification": "2026-11-16",
     "verifie": false,
     "note": "Cliche instantane du dernier rapport disponible (pas une serie temporelle -- ce sont des catalogues d'offres, pas des mesures recurrentes). Mobile limite au palier 5000 FCFA 'avec FUP', seul palier ou MTN/Moov/SBIN(marque Celtiis) ont tous une offre comparable."
   }

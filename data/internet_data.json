@@ -282,6 +282,46 @@
       },
       "total": 128222,
       "penetration_pct": 0.95
+    },
+    "T2_2026": {
+      "isp": {
+        "SBIN": 86029,
+        "GVA BENIN": 15365,
+        "AD SOLUTIONS": 12775,
+        "ISOCEL": 7468,
+        "STARLINK": 2783,
+        "SIPI-BENIN": 685,
+        "OTI": 522,
+        "EUPHORBIA": 199,
+        "JENY": 188,
+        "SUD TELECOMS": 78,
+        "FIRSTNET": 72,
+        "ABC CORPORATION": 57,
+        "WURA PLUS": 128,
+        "DATANEO": null
+      },
+      "total": 126349,
+      "penetration_pct": 0.93
+    },
+    "T3_2026": {
+      "isp": {
+        "SBIN": 99705,
+        "GVA BENIN": 19703,
+        "AD SOLUTIONS": 13706,
+        "ISOCEL": 7609,
+        "STARLINK": 3063,
+        "SIPI-BENIN": 745,
+        "OTI": 482,
+        "EUPHORBIA": 199,
+        "JENY": 188,
+        "SUD TELECOMS": 78,
+        "FIRSTNET": 72,
+        "ABC CORPORATION": 37,
+        "WURA PLUS": 130,
+        "DATANEO": null
+      },
+      "total": 145717,
+      "penetration_pct": 1.08
     }
   },
   "mobile": {
@@ -411,10 +451,26 @@
         "celtiis": 4243087
       },
       "total": 11560567
+    },
+    "T2_2026": {
+      "operateurs": {
+        "mtn": 5042083,
+        "moov": 2441084,
+        "celtiis": 4249037
+      },
+      "total": 11732204
+    },
+    "T3_2026": {
+      "operateurs": {
+        "mtn": 5129736,
+        "moov": 2408040,
+        "celtiis": 4110382
+      },
+      "total": 11648158
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-09",
+    "derniere_verification": "2026-11-16",
     "verifie": true,
     "note": "Verifie manuellement le 2026-09-08 : bug de decalage trimestriel corrige (un operateur recemment ajoute avec des cellules vides sur les trimestres ou il n'existait pas encore se retrouvait aligne sur le premier trimestre au lieu du dernier). Reextrait des rapports sources avec alignement par position d'en-tete plutot que par compression/zip."
   }

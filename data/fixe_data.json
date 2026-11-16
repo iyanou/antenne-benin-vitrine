@@ -50,10 +50,18 @@
     "T1_2026": {
       "parc_abonnes": 89575,
       "tele_densite_pct": 0.7
+    },
+    "T2_2026": {
+      "parc_abonnes": 81372,
+      "tele_densite_pct": 0.6
+    },
+    "T3_2026": {
+      "parc_abonnes": 95468,
+      "tele_densite_pct": 0.7
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-09",
+    "derniere_verification": "2026-11-16",
     "verifie": true,
     "note": "Verifie manuellement le 2026-09-08 : QUARTER_RE ne tolerait pas la variante 'T4 _2023' (espace avant l'underscore) utilisee par certains rapports, ce qui faisait sous-compter les trimestres et decalait les valeurs. Regex et normalisation corrigees, tout le jeu de donnees reextrait. Le saut T3_2025->T4_2025 (x65) est confirme present tel quel dans le rapport source ARCEP (attribue a SBIN, cause non precisee par le regulateur -- probable reclassification methodologique)."
   }
