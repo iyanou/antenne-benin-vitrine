@@ -74,7 +74,7 @@
   "meta": {
     "ftth_source": "Observatoire-des-tarifs-FTTH-au-30-septembre-2026.pdf",
     "mobile_source": "Tableau-de-bord_Tarifs-Internet-Mobile_T2_2026.pdf",
-    "derniere_verification": "2026-11-16",
+    "derniere_verification": "2026-11-23",
     "verifie": false,
     "note": "Cliche instantane du dernier rapport disponible (pas une serie temporelle -- ce sont des catalogues d'offres, pas des mesures recurrentes). Mobile limite au palier 5000 FCFA 'avec FUP', seul palier ou MTN/Moov/SBIN(marque Celtiis) ont tous une offre comparable."
   }
