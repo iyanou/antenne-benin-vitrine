@@ -8,9 +8,11 @@ DERNIER rapport disponible pour chaque type (Mobile, FTTH), en cliche instantane
 FTTH : tableau "Redevances mensuelles" mal structure par pdfplumber (colonnes operateur
 qui se decalent d'une ligne a l'autre selon les cellules fusionnees) -- extraction par
 position x/y des mots plutot que par index de colonne brut, plus fiable ici.
-Mobile : grille de forfaits tres eparse (beaucoup d'operateurs sans offre a un palier
-donne) -- on extrait uniquement le palier "avec FUP" a 5000 FCFA, le seul ou les 3
-operateurs ont systematiquement une offre, pour une comparaison honnete et fiable.
+Mobile : catalogue complet des forfaits Internet, lu par colonne operateur. Depuis le
+30 septembre 2026, l'ARCEP le publie dans l'"Observatoire des tarifs mobiles"
+(page /telephonie-mobile/) et non plus dans un document a part : les deux pages sont
+lues, et c'est la periode la plus recente qui est affichee. Les volumes sont repris tels
+qu'ecrits par l'ARCEP (elle melange 8333 Mo et 8,13 Go selon l'operateur), sans conversion.
 """
 import json
 import os
@@ -18,10 +20,11 @@ import re
 import time
 import requests
 import pdfplumber
-from urllib.parse import unquote
+
+import arcep_common as ac
 
 INDEX_URL = "https://arcep.bj/tarifs-internet/"
-PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
+MOBILE_INDEX_URL = "https://arcep.bj/telephonie-mobile/"
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "tarifs-internet"))
@@ -34,31 +37,6 @@ OPERATOR_PATTERNS = [
     (re.compile(r'\bMTN\b', re.I), 'mtn'),
     (re.compile(r'\bMOOV\b', re.I), 'moov'),
 ]
-
-
-def discover_reports():
-    r = requests.get(INDEX_URL, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    seen, ordered = set(), []
-    for url, year in PDF_LINK_RE.findall(r.text):
-        if url in seen:
-            continue
-        seen.add(url)
-        ordered.append(url)
-    return ordered
-
-
-def ensure_downloaded(url):
-    fname = unquote(url.rsplit('/', 1)[-1])
-    os.makedirs(OBS_DIR, exist_ok=True)
-    path = os.path.join(OBS_DIR, fname)
-    if os.path.exists(path):
-        return path, False
-    r = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    with open(path, 'wb') as f:
-        f.write(r.content)
-    return path, True
 
 
 def normalize_operator(name):
@@ -153,94 +131,81 @@ def extract_ftth(pdf_path):
     return result
 
 
-FUP_ROW_RE = re.compile(
-    r'^5\s*000\s+([\d,]+)\s*Go(?:\s*Plus)?/(\d)Mbps\s*30\s*jours\s+'
-    r'([\d,]+)\s*Go(?:\s*Plus)?/(\d)Mbps\s*30\s*jours\s+'
-    r'([\d,]+)\s*Go(?:\s*Plus)?/(\d)Mbps\s*30\s*jours',
-    re.I,
-)
+def clean_offer(s):
+    s = re.sub(r'\s+', ' ', s).strip()
+    s = re.sub(r'Go\s*Plus', 'Go Plus', s)
+    s = re.sub(r'\s*/\s*(\d+)\s*Mbps', r' / \1 Mbps', s)
+    s = re.sub(r'\s*\+\s*', ' + ', s)
+    return s.replace('Whatsapp', 'WhatsApp')
 
 
-def extract_mobile_fup_5000(pdf_path):
-    """Comparaison au palier 5000 FCFA 'avec FUP', seul palier ou MTN/MOOV/SBIN ont tous une offre."""
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text() or ''
-            if 'MTN' not in text.upper() or 'MOOV' not in text.upper():
+def extract_mobile(pdf_path):
+    """[{'prix': int, 'fup': bool, 'mtn'|'moov'|'sbin': {'volume': str, 'validite': str}}]"""
+    for table in ac.iter_tables(pdf_path):
+        heads = [' '.join(str(c) for c in row if c) for row in table]
+        if not any('sans FUP' in h for h in heads):
+            continue
+        hrow = next(i for i, h in enumerate(heads) if 'Forfait (FCFA)' in h)
+        vol = [i for i, c in enumerate(table[hrow]) if c == 'Volume']
+        val = [i for i, c in enumerate(table[hrow]) if c and c.startswith('Valid')]
+        ops = [c.lower() for row in table[:hrow] for c in row if c in ('MTN', 'MOOV', 'SBIN')]
+        if len(vol) != 3 or len(val) != 3 or ops != ['mtn', 'moov', 'sbin']:
+            raise ValueError(f"grille de forfaits inattendue : {os.path.basename(pdf_path)}")
+        cols = sorted([(i, op, 'volume') for i, op in zip(vol, ops)] +
+                      [(i, op, 'validite') for i, op in zip(val, ops)])
+        offers, fup = [], False
+        for row in table[hrow + 1:]:
+            if any(c and 'avec FUP' in c for c in row):
+                fup = True
                 continue
-            norm = re.sub(r'[ \t]+', ' ', text)
-            for line in norm.split('\n'):
-                m = FUP_ROW_RE.match(line.strip())
-                if m:
-                    go = lambda s: float(s.replace(',', '.'))
-                    return {
-                        'mtn': {'go': go(m.group(1)), 'mbps': int(m.group(2))},
-                        'moov': {'go': go(m.group(3)), 'mbps': int(m.group(4))},
-                        'sbin': {'go': go(m.group(5)), 'mbps': int(m.group(6))},
-                    }
-    return None
+            price = next((re.sub(r'\s', '', c) for c in row[:vol[0]]
+                          if c and re.fullmatch(r'\d[\d\s]*', c.strip())), None)
+            if price:
+                offers.append({'prix': int(price), 'fup': fup})
+            if not offers:
+                continue
+            for i, c in enumerate(row):
+                if not c or i < vol[0]:
+                    continue
+                _, op, field = [x for x in cols if x[0] <= i][-1]
+                d = offers[-1].setdefault(op, {})
+                # cellule sur plusieurs lignes : la suite arrive sur une rangee sans prix
+                d[field] = (d[field] + ' ' + c) if field in d else c
+        for o in offers:
+            for op in ops:
+                if op in o:
+                    o[op] = {k: clean_offer(v) for k, v in o[op].items()}
+        return offers
+    return []
 
 
 def main():
-    print(f"Verification des rapports sur {INDEX_URL} ...")
-    urls = discover_reports()
-    ftth_urls = [u for u in urls if 'ftth' in u.lower()]
-    mobile_urls = [u for u in urls if 'mobile' in u.lower()]
-    print(f"{len(ftth_urls)} rapports FTTH, {len(mobile_urls)} rapports Mobile detectes")
+    ftth = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=2026, exclude=('mobile',))
+    mobile = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=2026, exclude=('ftth',))
+    mobile += [r for r in ac.load_reports(MOBILE_INDEX_URL, OBS_DIR, min_upload_year=2026,
+                                          exclude=('observatoire-telephonie',))
+               if 'tarif' in ac.norm(os.path.basename(r[1]))]
+    mobile.sort(key=lambda r: ac.qkey(r[0]), reverse=True)
 
-    # dernier rapport de chaque type -- periode extraite du nom de fichier (pas fiable de se fier
-    # a la seule date d'upload, plusieurs rapports de periodes differentes sont uploades le meme mois)
-    MONTH_TO_Q = {'mars': 1, 'juin': 2, 'septembre': 3, 'decembre': 4, 'décembre': 4}
-
-    def extract_period(u):
-        fname = u.lower()
-        m = re.search(r't(\d)[_-]?(\d{4})', fname)
-        if m:
-            return (int(m.group(2)), int(m.group(1)))
-        m = re.search(r'(\d{4})_t(\d)', fname)
-        if m:
-            return (int(m.group(1)), int(m.group(2)))
-        for name, q in MONTH_TO_Q.items():
-            m = re.search(name + r'[-_]?(\d{4})', fname)
-            if m:
-                return (int(m.group(1)), q)
-        m = re.search(r'/uploads/(\d{4})/(\d{2})/', u)
-        return (int(m.group(1)), int(m.group(2)) // 3 + 1) if m else (0, 0)
-
-    def latest(url_list):
-        return sorted(url_list, key=extract_period)[-1] if url_list else None
-
-    ftth_url = latest(ftth_urls)
-    mobile_url = latest(mobile_urls)
-
-    store = {'ftth': {}, 'mobile_fup_5000': {}, 'meta': {}}
-
-    if ftth_url:
-        path, is_new = ensure_downloaded(ftth_url)
-        print(f"FTTH {'telecharge' if is_new else 'deja present'} : {os.path.basename(path)}")
-        store['ftth'] = extract_ftth(path)
-        store['meta']['ftth_source'] = os.path.basename(path)
-
-    if mobile_url:
-        path, is_new = ensure_downloaded(mobile_url)
-        print(f"Mobile {'telecharge' if is_new else 'deja present'} : {os.path.basename(path)}")
-        fup = extract_mobile_fup_5000(path)
-        if fup:
-            store['mobile_fup_5000'] = fup
-        store['meta']['mobile_source'] = os.path.basename(path)
-
-    store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta'].setdefault('verifie', False)
-    store['meta']['note'] = (
-        "Cliche instantane du dernier rapport disponible (pas une serie temporelle -- ce sont "
-        "des catalogues d'offres, pas des mesures recurrentes). Mobile limite au palier 5000 FCFA "
-        "'avec FUP', seul palier ou MTN/Moov/SBIN(marque Celtiis) ont tous une offre comparable."
-    )
-
-    os.makedirs(os.path.dirname(OUT_JSON), exist_ok=True)
+    ftth_period, ftth_path = ftth[-1]
+    store = {'ftth': extract_ftth(ftth_path), 'mobile': [], 'meta': ac.read_json(OUT_JSON).get('meta', {})}
+    for period, path in mobile:  # du plus recent au plus ancien
+        offers = extract_mobile(path)
+        print(f"  Mobile {period} {os.path.basename(path)} : {len(offers)} forfaits")
+        if offers:
+            store['mobile'] = offers
+            store['meta'].update(mobile_source=os.path.basename(path), mobile_periode=period)
+            break
+    print(f"  FTTH {ftth_period} {os.path.basename(ftth_path)}")
+    store['meta'].update(
+        ftth_source=os.path.basename(ftth_path), ftth_periode=ftth_period,
+        dernier_rapport=max((ftth_period, mobile[0][0]), key=ac.qkey),
+        derniere_verification=time.strftime('%Y-%m-%d'),
+        note="Cliche instantane du dernier catalogue publie (pas une serie temporelle). Volumes "
+             "repris tels qu'ecrits par l'ARCEP. SBIN = marque Celtiis.")
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, indent=2)
-    print(f"\nEcrit : {OUT_JSON}")
+    print(f"Ecrit : {OUT_JSON}")
 
 
 if __name__ == '__main__':

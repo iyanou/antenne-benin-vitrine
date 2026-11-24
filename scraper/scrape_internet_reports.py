@@ -1,4 +1,4 @@
-﻿"""
+"""
 Scraper Section D -- volet Internet (fixe + mobile) -- arcep.bj/internet/
 
 Noms de fichiers non uniformes -- detection par ordre d'apparition sur la page.
@@ -13,10 +13,10 @@ import re
 import time
 import requests
 import pdfplumber
-from urllib.parse import unquote
+
+import arcep_common as ac
 
 INDEX_URL = "https://arcep.bj/internet/"
-PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
 QUARTER_RE = re.compile(r'^T\d[-_]\d{4}$')
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -37,32 +37,6 @@ MOBILE_TOTAL_LABEL = 'Total Abonnement Internet mobile'
 ISP_RENAMES = {
     'JENY SAS': 'JENY',
 }
-
-
-def discover_reports():
-    r = requests.get(INDEX_URL, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    seen, ordered = set(), []
-    for url, year in PDF_LINK_RE.findall(r.text):
-        if url in seen or 'COMMUNIQUE' in url.upper():
-            continue
-        seen.add(url)
-        if int(year) >= MIN_YEAR:
-            ordered.append(url)
-    return ordered
-
-
-def ensure_downloaded(url):
-    fname = unquote(url.rsplit('/', 1)[-1])
-    os.makedirs(OBS_DIR, exist_ok=True)
-    path = os.path.join(OBS_DIR, fname)
-    if os.path.exists(path):
-        return path, False
-    r = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    with open(path, 'wb') as f:
-        f.write(r.content)
-    return path, True
 
 
 def parse_number(s):
@@ -170,39 +144,31 @@ def extract_fixe(pdf_path):
     return out
 
 
-def extract_mobile(pdf_path):
+def extract_mobile(pdf_path, quarters):
+    """Tableau 2 : abonnements Internet mobile. Trimestres deduits de la couverture
+    (arcep_common) : l'en-tete de ce tableau est parfois fautif (colonne "DESIGNATIONS"
+    en double au T1 2025, ce qui faisait perdre le total du T3 2024)."""
+    ops = {ac.norm(k): v for k, v in MOBILE_OP_MAP.items()}
     out = {}
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            for table in page.extract_tables():
-                if not table:
-                    continue
-                header = table[0]
-                hp = header_positions(header)
-                if not hp:
-                    continue
-                quarters, positions = [q for q, _ in hp], [i for _, i in hp]
-                for row in table[1:]:
-                    found = next(((i, c) for i, c in enumerate(row[:positions[0]]) if c not in (None, '')), None)
-                    if not found:
-                        continue
-                    label_index, label_cell = found
-                    label = re.sub(r'\s+', ' ', label_cell).strip()
-                    values = [parse_number(v) for v in values_for_quarters(row, positions, label_index)]
-                    if label in MOBILE_OP_MAP:
-                        op = MOBILE_OP_MAP[label]
-                        for q, v in zip(quarters, values):
-                            out.setdefault(q, {}).setdefault('operateurs', {})[op] = v
-                    elif label.startswith(MOBILE_TOTAL_LABEL):
-                        for q, v in zip(quarters, values):
-                            out.setdefault(q, {})['total'] = v
+    for table in ac.iter_tables(pdf_path):
+        for row in table:
+            label, cells = ac.split_row(row)
+            values = ac.five_values(cells)
+            if values is None:
+                continue
+            if label in ops:
+                for q, v in zip(quarters, values):
+                    out.setdefault(q, {}).setdefault('operateurs', {})[ops[label]] = v
+            elif label.startswith('total abonnement internet'):  # 'mobile actif' parfois sur la ligne suivante
+                for q, v in zip(quarters, values):
+                    out.setdefault(q, {})['total'] = v
     return out
 
 
 def main():
     print(f"Verification des rapports sur {INDEX_URL} ...")
-    urls = discover_reports()
-    print(f"{len(urls)} rapports (>= {MIN_YEAR}) detectes")
+    reports = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=MIN_YEAR, exclude=('tarif', 'ftth'))
+    print(f"{len(reports)} rapports (>= {MIN_YEAR}) detectes")
 
     if os.path.exists(OUT_JSON):
         with open(OUT_JSON, encoding='utf-8') as f:
@@ -210,11 +176,10 @@ def main():
     else:
         store = {'fixe': {}, 'mobile': {}, 'meta': {}}
 
-    for url in reversed(urls):
-        path, is_new = ensure_downloaded(url)
-        print(f"  {'telecharge' if is_new else 'deja present'} : {os.path.basename(path)}")
+    for period, path in reports:  # plus ancien -> plus recent
+        print(f"  {period} {os.path.basename(path)}")
         fixe = extract_fixe(path)
-        mobile = extract_mobile(path)
+        mobile = extract_mobile(path, ac.quarters_ending(period))
         if not fixe and not mobile:
             print(f"    ! rien extrait -- structure differente, ignore")
             continue
@@ -222,8 +187,8 @@ def main():
             store['fixe'][q] = vals
         for q, vals in mobile.items():
             store['mobile'][q] = vals
-        time.sleep(1)
 
+    store['meta']['dernier_rapport'] = reports[-1][0]
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
     store['meta'].setdefault('verifie', False)
 

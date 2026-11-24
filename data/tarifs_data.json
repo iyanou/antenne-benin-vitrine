@@ -57,25 +57,240 @@
       }
     }
   },
-  "mobile_fup_5000": {
-    "mtn": {
-      "go": 11.6,
-      "mbps": 1
+  "mobile": [
+    {
+      "prix": 100,
+      "fup": false,
+      "mtn": {
+        "volume": "166 Mo",
+        "validite": "24H"
+      },
+      "moov": {
+        "volume": "166 Mo",
+        "validite": "24H"
+      },
+      "sbin": {
+        "volume": "167 Mo",
+        "validite": "24H"
+      }
     },
-    "moov": {
-      "go": 11.6,
-      "mbps": 1
+    {
+      "prix": 150,
+      "fup": false,
+      "moov": {
+        "volume": "250 Mo",
+        "validite": "24H"
+      }
     },
-    "sbin": {
-      "go": 11.6,
-      "mbps": 2
+    {
+      "prix": 200,
+      "fup": false,
+      "mtn": {
+        "volume": "333 Mo",
+        "validite": "24H"
+      },
+      "moov": {
+        "volume": "333 Mo",
+        "validite": "24H"
+      },
+      "sbin": {
+        "volume": "333 Mo",
+        "validite": "24H"
+      }
+    },
+    {
+      "prix": 300,
+      "fup": false,
+      "mtn": {
+        "volume": "500 Mo + WhatsApp gratuit",
+        "validite": "24H"
+      },
+      "moov": {
+        "volume": "500 Mo + WhatsApp",
+        "validite": "48H"
+      },
+      "sbin": {
+        "volume": "500 Mo + Réseaux sociaux",
+        "validite": "24H"
+      }
+    },
+    {
+      "prix": 500,
+      "fup": false,
+      "mtn": {
+        "volume": "1 Go + Réseaux sociaux gratuits",
+        "validite": "24H"
+      },
+      "moov": {
+        "volume": "1 Go + Réseaux sociaux gratuits",
+        "validite": "24H"
+      },
+      "sbin": {
+        "volume": "1 Go + Accès gratuit WhatsApp, Tik Tok, Facebook, Servicepublic.bj",
+        "validite": "24H"
+      }
+    },
+    {
+      "prix": 550,
+      "fup": false,
+      "moov": {
+        "volume": "916 Mo",
+        "validite": "72H"
+      }
+    },
+    {
+      "prix": 750,
+      "fup": false,
+      "mtn": {
+        "volume": "1 Go + MTN TV et NW TV",
+        "validite": "48H"
+      },
+      "sbin": {
+        "volume": "1250 Mo + Accès gratuit WhatsApp",
+        "validite": "72H"
+      }
+    },
+    {
+      "prix": 1000,
+      "fup": false,
+      "mtn": {
+        "volume": "1666 Mo",
+        "validite": "7 jours"
+      },
+      "moov": {
+        "volume": "1,62 Go",
+        "validite": "7 jours"
+      },
+      "sbin": {
+        "volume": "1666,67 Mo",
+        "validite": "7 jours"
+      }
+    },
+    {
+      "prix": 2500,
+      "fup": false,
+      "mtn": {
+        "volume": "4166 Mo",
+        "validite": "15 jours"
+      },
+      "moov": {
+        "volume": "4 Go",
+        "validite": "15 jours"
+      },
+      "sbin": {
+        "volume": "4166,67 Mo",
+        "validite": "15 jours"
+      }
+    },
+    {
+      "prix": 5000,
+      "fup": false,
+      "mtn": {
+        "volume": "8333 Mo",
+        "validite": "30 jours"
+      },
+      "moov": {
+        "volume": "8,13 Go",
+        "validite": "30 jours"
+      },
+      "sbin": {
+        "volume": "8333,33 Mo",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 10000,
+      "fup": false,
+      "moov": {
+        "volume": "16,27 Go",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 15000,
+      "fup": true,
+      "mtn": {
+        "volume": "24,4 Go / 1 Mbps",
+        "validite": "30 jours"
+      },
+      "moov": {
+        "volume": "24,41 Go Plus / 2 Mbps",
+        "validite": "30 jours"
+      },
+      "sbin": {
+        "volume": "24,4 Go Plus / 2 Mbps",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 19000,
+      "fup": true,
+      "sbin": {
+        "volume": "31 Go Plus / 2 Mbps",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 20000,
+      "fup": true,
+      "mtn": {
+        "volume": "32,5 Go / 1 Mbps",
+        "validite": "30 jours"
+      },
+      "moov": {
+        "volume": "32,55 Go Plus / 3 Mbps",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 25000,
+      "fup": true,
+      "mtn": {
+        "volume": "40,7 Go / 1 Mbps",
+        "validite": "30 jours"
+      },
+      "moov": {
+        "volume": "40,69 Go Plus / 5 Mbps",
+        "validite": "30 jours"
+      },
+      "sbin": {
+        "volume": "41 Go Plus / 2 Mbps",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 29000,
+      "fup": true,
+      "sbin": {
+        "volume": "47,2 Go Plus / 2 Mbps",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 30000,
+      "fup": true,
+      "moov": {
+        "volume": "48,82 Go Plus / 10 Mbps",
+        "validite": "30 jours"
+      }
+    },
+    {
+      "prix": 50000,
+      "fup": true,
+      "moov": {
+        "volume": "81,38 Go Plus / 10 Mbps",
+        "validite": "30 jours"
+      }
     }
-  },
+  ],
   "meta": {
     "ftth_source": "Observatoire-des-tarifs-FTTH-au-30-septembre-2026.pdf",
-    "mobile_source": "Tableau-de-bord_Tarifs-Internet-Mobile_T2_2026.pdf",
-    "derniere_verification": "2026-11-23",
-    "verifie": false,
-    "note": "Cliche instantane du dernier rapport disponible (pas une serie temporelle -- ce sont des catalogues d'offres, pas des mesures recurrentes). Mobile limite au palier 5000 FCFA 'avec FUP', seul palier ou MTN/Moov/SBIN(marque Celtiis) ont tous une offre comparable."
+    "mobile_source": "Tableau-de-bord-des-Tarifs-mobiles_30-septembre-2026.pdf",
+    "derniere_verification": "2026-11-24",
+    "verifie": true,
+    "note": "Reextrait et recoupe a la main avec chaque rapport PDF le 2026-11-24 (trimestres deduits de la couverture du rapport, plus de l'en-tete). Controle automatique a chaque execution : scraper/validate.py, une extraction incoherente n'est jamais publiee. Mobile : catalogue complet, lu dans l'Observatoire des tarifs mobiles depuis septembre 2026 (le palier 5 000 FCFA avec FUP n'existe plus).",
+    "mobile_periode": "T3_2026",
+    "ftth_periode": "T3_2026",
+    "dernier_rapport": "T3_2026"
   }
 }

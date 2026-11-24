@@ -14,10 +14,10 @@ import re
 import time
 import requests
 import pdfplumber
-from urllib.parse import unquote
+
+import arcep_common as ac
 
 INDEX_URL = "https://arcep.bj/observatoire-postal/"
-PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
 QUARTER_RE = re.compile(r'^T\d[-_]\d{4}$')
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -33,32 +33,6 @@ LABELS = {
     'Autres recettes': 'autres',
     'TOTALES RECETTES': 'total',
 }
-
-
-def discover_reports():
-    r = requests.get(INDEX_URL, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    seen, ordered = set(), []
-    for url, year in PDF_LINK_RE.findall(r.text):
-        if url in seen or 'COMMUNIQUE' in url.upper():
-            continue
-        seen.add(url)
-        if int(year) >= MIN_YEAR:
-            ordered.append(url)
-    return ordered
-
-
-def ensure_downloaded(url):
-    fname = unquote(url.rsplit('/', 1)[-1])
-    os.makedirs(OBS_DIR, exist_ok=True)
-    path = os.path.join(OBS_DIR, fname)
-    if os.path.exists(path):
-        return path, False
-    r = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    with open(path, 'wb') as f:
-        f.write(r.content)
-    return path, True
 
 
 def parse_number(s):
@@ -193,8 +167,8 @@ def extract_recettes(pdf_path):
 
 def main():
     print(f"Verification des rapports sur {INDEX_URL} ...")
-    urls = discover_reports()
-    print(f"{len(urls)} rapports (>= {MIN_YEAR}) detectes")
+    reports = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=MIN_YEAR)
+    print(f"{len(reports)} rapports (>= {MIN_YEAR}) detectes")
 
     if os.path.exists(OUT_JSON):
         with open(OUT_JSON, encoding='utf-8') as f:
@@ -203,9 +177,8 @@ def main():
         store = {'recettes': {}, 'parts_marche': {}, 'meta': {}}
     store.setdefault('parts_marche', {})
 
-    for url in reversed(urls):
-        path, is_new = ensure_downloaded(url)
-        print(f"  {'telecharge' if is_new else 'deja present'} : {os.path.basename(path)}")
+    for period, path in reports:  # plus ancien -> plus recent
+        print(f"  {period} {os.path.basename(path)}")
         recettes = extract_recettes(path)
         if not recettes:
             print(f"    ! rien extrait (recettes) -- structure differente, ignore")
@@ -221,8 +194,8 @@ def main():
                 seg_store = store['parts_marche'].setdefault(seg, {}).setdefault(measure, {})
                 for q, ops in quarters.items():
                     seg_store[q] = ops
-        time.sleep(1)
 
+    store['meta']['dernier_rapport'] = reports[-1][0]
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
     store['meta'].setdefault('verifie', False)
     store['meta']['note'] = (

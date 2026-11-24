@@ -1,5 +1,27 @@
 {
   "abonnements": {
+    "T3_2024": {
+      "mtn": 8951193,
+      "moov": 6103953,
+      "celtiis": 3191516,
+      "total": 18246662,
+      "parts_marche": {
+        "mtn": 49.1,
+        "moov": 33.5,
+        "celtiis": 17.5
+      }
+    },
+    "T4_2024": {
+      "mtn": 8860782,
+      "moov": 5705177,
+      "celtiis": 3648522,
+      "total": 18214481,
+      "parts_marche": {
+        "mtn": 48.6,
+        "moov": 31.3,
+        "celtiis": 20.0
+      }
+    },
     "T1_2025": {
       "mtn": 8587373,
       "moov": 5938114,
@@ -46,55 +68,49 @@
     },
     "T1_2026": {
       "mtn": 7337108,
+      "moov": 5296538,
       "celtiis": 6376335,
       "total": 19009981,
       "parts_marche": {
         "mtn": 38.6,
+        "moov": 27.9,
         "celtiis": 33.5
-      }
-    },
-    "T3_2024": {
-      "mtn": 8951193,
-      "moov": 6103953,
-      "celtiis": 3191516,
-      "total": 18246662,
-      "parts_marche": {
-        "mtn": 49.1,
-        "moov": 33.5,
-        "celtiis": 17.5
-      }
-    },
-    "T4_2024": {
-      "mtn": 8860782,
-      "moov": 5705177,
-      "celtiis": 3648522,
-      "total": 18214481,
-      "parts_marche": {
-        "mtn": 48.6,
-        "moov": 31.3,
-        "celtiis": 20.0
       }
     },
     "T2_2026": {
       "mtn": 7775721,
+      "moov": 5087017,
       "celtiis": 6611656,
       "total": 19474394,
       "parts_marche": {
         "mtn": 39.9,
+        "moov": 26.1,
         "celtiis": 34.0
       }
     },
     "T3_2026": {
       "mtn": 7770670,
+      "moov": 4710340,
       "celtiis": 6386087,
       "total": 18867097,
       "parts_marche": {
         "mtn": 41.2,
+        "moov": 25.0,
         "celtiis": 33.8
       }
     }
   },
   "trafics": {
+    "T3_2024": {
+      "voix_min": 1867697711,
+      "sms_nb": 120720051,
+      "data_go": 106236203
+    },
+    "T4_2024": {
+      "voix_min": 2182401336,
+      "sms_nb": 123452579,
+      "data_go": 115776855
+    },
     "T1_2025": {
       "voix_min": 2719833793,
       "sms_nb": 117962881,
@@ -120,16 +136,6 @@
       "sms_nb": 129114757,
       "data_go": 175781303
     },
-    "T3_2024": {
-      "voix_min": 1867697711,
-      "sms_nb": 120720051,
-      "data_go": 106236203
-    },
-    "T4_2024": {
-      "voix_min": 2182401336,
-      "sms_nb": 123452579,
-      "data_go": 115776855
-    },
     "T2_2026": {
       "voix_min": 3447620784,
       "sms_nb": 134345419,
@@ -142,7 +148,9 @@
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-23",
-    "verifie": false
+    "derniere_verification": "2026-11-24",
+    "verifie": true,
+    "dernier_rapport": "T3_2026",
+    "note": "Reextrait et recoupe a la main avec chaque rapport PDF le 2026-11-24 (trimestres deduits de la couverture du rapport, plus de l'en-tete). Controle automatique a chaque execution : scraper/validate.py, une extraction incoherente n'est jamais publiee. Corrige : Moov absent de T1 a T3 2026 (libelle sur deux lignes)."
   }
 }

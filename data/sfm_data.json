@@ -1,112 +1,229 @@
 {
   "comptes": {
+    "T3_2022": {
+      "parts_marche": {
+        "mtn": 72.7,
+        "moov": 27.3
+      },
+      "comptes_actifs": 7430800,
+      "comptes_dormants": 13202595,
+      "taux_penetration": 57.54,
+      "taux_activite": 36.01
+    },
+    "T4_2022": {
+      "parts_marche": {
+        "mtn": 73.81,
+        "moov": 24.8,
+        "celtiis": 1.39
+      },
+      "comptes_actifs": 8463369,
+      "comptes_dormants": 13757098,
+      "taux_penetration": 65.53,
+      "taux_activite": 37.43
+    },
+    "T1_2023": {
+      "parts_marche": {
+        "mtn": 71.45,
+        "moov": 25.54,
+        "celtiis": 3.01
+      },
+      "comptes_actifs": 8722891,
+      "comptes_dormants": 15775650,
+      "taux_penetration": 65.47,
+      "taux_activite": 36.32
+    },
+    "T2_2023": {
+      "parts_marche": {
+        "mtn": 71.98,
+        "moov": 24.36,
+        "celtiis": 3.66
+      },
+      "comptes_actifs": 9304828,
+      "comptes_dormants": 16865238,
+      "taux_penetration": 73.8,
+      "taux_activite": 35.6
+    },
+    "T3_2023": {
+      "parts_marche": {
+        "mtn": 66.71,
+        "moov": 22.51,
+        "celtiis": 10.78
+      },
+      "comptes_actifs": 9949133,
+      "comptes_dormants": 18943352,
+      "taux_penetration": 78.92,
+      "taux_activite": 34.4
+    },
+    "T4_2023": {
+      "parts_marche": {
+        "mtn": 70.02,
+        "moov": 22.06,
+        "celtiis": 7.93
+      },
+      "comptes_actifs": 11171087,
+      "comptes_dormants": 19405370,
+      "taux_penetration": 88.61,
+      "taux_activite": 36.5
+    },
+    "T1_2024": {
+      "parts_marche": {
+        "mtn": 68.09,
+        "moov": 25.16,
+        "celtiis": 6.74
+      },
+      "comptes_actifs": 10459553,
+      "comptes_dormants": 21052406,
+      "taux_penetration": 82.97,
+      "taux_activite": 33.2
+    },
+    "T2_2024": {
+      "parts_marche": {
+        "mtn": 62.68,
+        "moov": 27.7,
+        "celtiis": 9.62
+      },
+      "comptes_actifs": 10423316,
+      "comptes_dormants": 19821762,
+      "taux_penetration": 82.68,
+      "taux_activite": 34.46
+    },
     "T3_2024": {
-      "comptes_actifs": 11106523,
-      "comptes_dormants": 20105789,
       "parts_marche": {
         "mtn": 63.97,
         "moov": 22.63,
         "celtiis": 13.4
       },
+      "comptes_actifs": 11106523,
+      "comptes_dormants": 20105789,
       "taux_penetration": 86.03,
       "taux_activite": 35.58
     },
     "T4_2024": {
-      "comptes_actifs": 11247480,
-      "comptes_dormants": 20426395,
       "parts_marche": {
         "mtn": 64.99,
         "moov": 21.59,
         "celtiis": 13.42
       },
+      "comptes_actifs": 11247480,
+      "comptes_dormants": 20426395,
       "taux_penetration": 87.12,
       "taux_activite": 35.51
     },
     "T1_2025": {
-      "comptes_actifs": 11345817,
-      "comptes_dormants": 18214934,
       "parts_marche": {
         "mtn": 61.32,
         "moov": 22.65,
         "celtiis": 16.03
       },
+      "comptes_actifs": 11345817,
+      "comptes_dormants": 18214934,
       "taux_penetration": 85.79,
       "taux_activite": 38.38
     },
     "T2_2025": {
-      "comptes_actifs": 10926793,
-      "comptes_dormants": 18448508,
       "parts_marche": {
         "mtn": 54.82,
         "moov": 24.31,
         "celtiis": 20.87
       },
+      "comptes_actifs": 10926793,
+      "comptes_dormants": 18448508,
       "taux_penetration": 82.62,
       "taux_activite": 37.2
     },
     "T3_2025": {
-      "comptes_actifs": 11059847,
-      "comptes_dormants": 19641083,
       "parts_marche": {
         "mtn": 51.98,
         "moov": 23.09,
         "celtiis": 24.93
       },
+      "comptes_actifs": 11059847,
+      "comptes_dormants": 19641083,
       "taux_penetration": 83.63,
       "taux_activite": 36.02
-    },
-    "T1_2024": {
-      "comptes_actifs": 10459553,
-      "comptes_dormants": 21052406,
-      "parts_marche": {
-        "moov": 25.16,
-        "celtiis": 6.74
-      },
-      "taux_penetration": 82.97,
-      "taux_activite": 33.2
-    },
-    "T2_2024": {
-      "comptes_actifs": 10423316,
-      "comptes_dormants": 19821762,
-      "parts_marche": {
-        "moov": 27.7,
-        "celtiis": 9.62
-      },
-      "taux_penetration": 82.68,
-      "taux_activite": 34.46
-    },
-    "T3_2023": {
-      "comptes_actifs": 11106523,
-      "comptes_dormants": 20105789,
-      "parts_marche": {
-        "moov": 22.63,
-        "celtiis": 13.4
-      },
-      "taux_penetration": 86.03,
-      "taux_activite": 35.58
-    },
-    "T4_2023": {
-      "taux_penetration": 88.61,
-      "taux_activite": 36.5
-    },
-    "T3_2022": {
-      "taux_penetration": 57.54,
-      "taux_activite": 36.01
-    },
-    "T4_2022": {
-      "taux_penetration": 65.53,
-      "taux_activite": 37.43
-    },
-    "T1_2023": {
-      "taux_penetration": 65.47,
-      "taux_activite": 36.32
-    },
-    "T2_2023": {
-      "taux_penetration": 73.8,
-      "taux_activite": 35.6
     }
   },
   "transactions": {
+    "T3_2022": {
+      "depots": {
+        "volume": 50025405,
+        "valeur_mds_fcfa": 657
+      },
+      "retraits": {
+        "volume": 47127671,
+        "valeur_mds_fcfa": 563
+      }
+    },
+    "T4_2022": {
+      "depots": {
+        "volume": 54806210,
+        "valeur_mds_fcfa": 756
+      },
+      "retraits": {
+        "volume": 50396697,
+        "valeur_mds_fcfa": 672
+      }
+    },
+    "T1_2023": {
+      "depots": {
+        "volume": 54488307,
+        "valeur_mds_fcfa": 817
+      },
+      "retraits": {
+        "volume": 50217069,
+        "valeur_mds_fcfa": 725
+      }
+    },
+    "T2_2023": {
+      "depots": {
+        "volume": 54401933,
+        "valeur_mds_fcfa": 909
+      },
+      "retraits": {
+        "volume": 52317749,
+        "valeur_mds_fcfa": 823
+      }
+    },
+    "T3_2023": {
+      "depots": {
+        "volume": 56657071,
+        "valeur_mds_fcfa": 820
+      },
+      "retraits": {
+        "volume": 54987011,
+        "valeur_mds_fcfa": 727
+      }
+    },
+    "T4_2023": {
+      "depots": {
+        "volume": 62539776,
+        "valeur_mds_fcfa": 883
+      },
+      "retraits": {
+        "valeur_mds_fcfa": 763,
+        "volume": 58064712
+      }
+    },
+    "T1_2024": {
+      "depots": {
+        "volume": 62042140,
+        "valeur_mds_fcfa": 886
+      },
+      "retraits": {
+        "volume": 56607862,
+        "valeur_mds_fcfa": 755
+      }
+    },
+    "T2_2024": {
+      "depots": {
+        "volume": 64763274,
+        "valeur_mds_fcfa": 850
+      },
+      "retraits": {
+        "volume": 59127666,
+        "valeur_mds_fcfa": 718
+      }
+    },
     "T3_2024": {
       "depots": {
         "volume": 69678213,
@@ -114,7 +231,7 @@
       },
       "retraits": {
         "volume": 62475223,
-        "valeur_mds_fcfa": 17.9
+        "valeur_mds_fcfa": 773
       }
     },
     "T4_2024": {
@@ -124,7 +241,7 @@
       },
       "retraits": {
         "volume": 64336514,
-        "valeur_mds_fcfa": 19.4
+        "valeur_mds_fcfa": 845
       }
     },
     "T1_2025": {
@@ -134,7 +251,7 @@
       },
       "retraits": {
         "volume": 63475830,
-        "valeur_mds_fcfa": 20.06
+        "valeur_mds_fcfa": 855
       }
     },
     "T2_2025": {
@@ -144,7 +261,7 @@
       },
       "retraits": {
         "volume": 67837357,
-        "valeur_mds_fcfa": 19.13
+        "valeur_mds_fcfa": 848
       }
     },
     "T3_2025": {
@@ -154,74 +271,14 @@
       },
       "retraits": {
         "volume": 70394677,
-        "valeur_mds_fcfa": 19.82
-      }
-    },
-    "T1_2024": {
-      "retraits": {
-        "volume": 56607862,
-        "valeur_mds_fcfa": 17.2
-      }
-    },
-    "T2_2024": {
-      "retraits": {
-        "volume": 59127666,
-        "valeur_mds_fcfa": 16.8
-      }
-    },
-    "T3_2023": {
-      "retraits": {
-        "volume": 62475223,
-        "valeur_mds_fcfa": 17.9
-      },
-      "depots": {
-        "volume": 56657071,
-        "valeur_mds_fcfa": 820
-      }
-    },
-    "T3_2022": {
-      "depots": {
-        "volume": 50025405,
-        "valeur_mds_fcfa": 657
-      },
-      "retraits": {
-        "volume": 393672351,
-        "valeur_mds_fcfa": 13
-      }
-    },
-    "T4_2022": {
-      "depots": {
-        "volume": 54806210,
-        "valeur_mds_fcfa": 756
-      },
-      "retraits": {
-        "volume": 433998673,
-        "valeur_mds_fcfa": 13
-      }
-    },
-    "T1_2023": {
-      "depots": {
-        "volume": 54488307,
-        "valeur_mds_fcfa": 817
-      },
-      "retraits": {
-        "volume": 457227255,
-        "valeur_mds_fcfa": 14
-      }
-    },
-    "T2_2023": {
-      "depots": {
-        "volume": 54401933,
-        "valeur_mds_fcfa": 909
-      },
-      "retraits": {
-        "volume": 484105762,
-        "valeur_mds_fcfa": 16
+        "valeur_mds_fcfa": 910.57
       }
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-23",
-    "verifie": false
+    "derniere_verification": "2026-11-24",
+    "verifie": true,
+    "dernier_rapport": "T3_2025",
+    "note": "Reextrait et recoupe a la main avec chaque rapport PDF le 2026-11-24 (trimestres deduits de la couverture du rapport, plus de l'en-tete). Controle automatique a chaque execution : scraper/validate.py, une extraction incoherente n'est jamais publiee. Corrige : retraits (valeur des transferts internationaux lue a la place), T3_2023 (copie de T3_2024 a cause d'une coquille de l'ARCEP), parts MTN 2024 absentes."
   }
 }

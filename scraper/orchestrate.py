@@ -8,10 +8,17 @@ daily  -> scrape_qos_national.py seul (page ARCEP hebdomadaire, verifiee tous le
           jours pour ne jamais rater une semaine des sa publication).
 weekly -> les 9 autres scripts (donnees trimestrielles/annuelles/irregulieres,
           une execution hebdomadaire suffit largement).
+
+Apres chaque script, le fichier produit passe les controles de validate.py. En cas
+d'echec (script ou controle), l'ancien fichier est restaure : le site garde la derniere
+version saine et le code de sortie 1 declenche l'alerte GitHub.
 """
+import os
 import subprocess
 import sys
 import time
+
+import validate
 
 HERE_SCRIPTS = {
     'daily': [
@@ -31,12 +38,32 @@ HERE_SCRIPTS = {
 }
 
 
+OUTPUTS = {
+    'scrape_qos_national.py': ['qos_national.json', 'qos_meta.json'],
+    'scrape_qos_regional.py': ['qos_regional.json'],
+    'scrape_market_reports.py': ['market_data.json'],
+    'scrape_sfm_reports.py': ['sfm_data.json'],
+    'scrape_complaints_reports.py': ['complaints_data.json'],
+    'scrape_postal_reports.py': ['postal_data.json'],
+    'scrape_internet_reports.py': ['internet_data.json'],
+    'scrape_fixe_reports.py': ['fixe_data.json'],
+    'scrape_tarifs_internet.py': ['tarifs_data.json'],
+    'scrape_revenus_arcep.py': ['revenus_arcep_data.json'],
+}
+
+
 def run_one(script):
+    paths = [os.path.join(validate.DATA_DIR, f) for f in OUTPUTS[script]]
+    before = {}
+    for p in paths:
+        if os.path.exists(p):
+            with open(p, encoding='utf-8', newline='') as f:
+                before[p] = f.read()
     print(f"\n{'=' * 60}\n{script}\n{'=' * 60}")
     start = time.time()
     result = subprocess.run(
         [sys.executable, script],
-        cwd=__import__('os').path.dirname(__import__('os').path.abspath(__file__)),
+        cwd=os.path.dirname(os.path.abspath(__file__)),
         capture_output=True, text=True,
     )
     elapsed = time.time() - start
@@ -44,6 +71,17 @@ def run_one(script):
     if result.stderr:
         print(result.stderr, file=sys.stderr)
     ok = result.returncode == 0
+    if ok:
+        errors = [e for p in paths if os.path.basename(p) in validate.CHECKS
+                  for e in validate.validate_file(os.path.basename(p), before.get(p))]
+        for e in errors:
+            print(f"  ! CONTROLE : {e}")
+        ok = not errors
+    if not ok:
+        for p, content in before.items():
+            with open(p, 'w', encoding='utf-8', newline='') as f:
+                f.write(content)
+        print("  -> version precedente restauree")
     status = 'OK' if ok else 'ECHEC'
     print(f"-- {script} : {status} ({elapsed:.1f}s)")
     return script, ok, elapsed

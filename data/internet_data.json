@@ -328,16 +328,14 @@
     "T2_2022": {
       "operateurs": {
         "mtn": 6003671,
-        "moov": 2890130,
-        "celtiis": null
+        "moov": 2890130
       },
       "total": 8893801
     },
     "T3_2022": {
       "operateurs": {
         "mtn": 6241936,
-        "moov": 2946178,
-        "celtiis": null
+        "moov": 2946178
       },
       "total": 9188114
     },
@@ -402,7 +400,8 @@
         "mtn": 6265262,
         "moov": 3169805,
         "celtiis": 2289253
-      }
+      },
+      "total": 11724320
     },
     "T4_2024": {
       "operateurs": {
@@ -470,8 +469,9 @@
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-23",
+    "derniere_verification": "2026-11-24",
     "verifie": true,
-    "note": "Verifie manuellement le 2026-09-08 : bug de decalage trimestriel corrige (un operateur recemment ajoute avec des cellules vides sur les trimestres ou il n'existait pas encore se retrouvait aligne sur le premier trimestre au lieu du dernier). Reextrait des rapports sources avec alignement par position d'en-tete plutot que par compression/zip."
+    "note": "Verifie manuellement le 2026-09-08 : bug de decalage trimestriel corrige (un operateur recemment ajoute avec des cellules vides sur les trimestres ou il n'existait pas encore se retrouvait aligne sur le premier trimestre au lieu du dernier). Reextrait des rapports sources avec alignement par position d'en-tete plutot que par compression/zip.",
+    "dernier_rapport": "T3_2026"
   }
 }

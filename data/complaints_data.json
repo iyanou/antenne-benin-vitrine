@@ -2,7 +2,8 @@
   "recues": {
     "T4_2022": {
       "commerciales": 20,
-      "techniques": 4
+      "techniques": 4,
+      "total": 24
     },
     "T1_2023": {
       "commerciales": 22,
@@ -21,56 +22,68 @@
     },
     "T4_2023": {
       "commerciales": 48,
-      "techniques": null,
+      "techniques": 3,
       "total": 51
     },
     "T1_2024": {
       "commerciales": 22,
-      "techniques": null,
+      "techniques": 3,
       "total": 25
     },
     "T2_2024": {
       "commerciales": 25,
-      "techniques": null,
+      "techniques": 6,
       "total": 31
     },
     "T3_2024": {
       "commerciales": 21,
-      "techniques": 0,
+      "techniques": 2,
       "total": 23
     },
     "T4_2024": {
       "commerciales": 25,
-      "techniques": null,
+      "techniques": 1,
       "total": 26
     },
     "T1_2025": {
       "commerciales": 32,
       "techniques": 10,
-      "postales": null,
-      "total": 42
+      "total": 42,
+      "postales": null
     },
     "T2_2025": {
-      "postales": null,
-      "total": 23
+      "commerciales": 21,
+      "techniques": 2,
+      "total": 23,
+      "postales": null
     },
     "T3_2025": {
-      "postales": null,
-      "total": 35
+      "commerciales": 28,
+      "techniques": 7,
+      "total": 35,
+      "postales": null
     },
     "T4_2025": {
-      "postales": null,
-      "total": 17
+      "commerciales": 16,
+      "techniques": 1,
+      "total": 17,
+      "postales": null
     },
     "T1_2026": {
+      "commerciales": 17,
+      "techniques": 1,
       "postales": 2,
       "total": 20
     },
     "T2_2026": {
+      "commerciales": 15,
+      "techniques": 2,
       "postales": 0,
       "total": 17
     },
     "T3_2026": {
+      "commerciales": 17,
+      "techniques": 8,
       "postales": 1,
       "total": 26
     }
@@ -107,16 +120,16 @@
       "total": 51
     },
     "T1_2024": {
-      "fondees": 15,
-      "infondees": 3,
-      "classees": 8,
-      "total": 26
+      "total": 25,
+      "fondees": 16,
+      "infondees": 6,
+      "classees": 3
     },
     "T2_2024": {
+      "total": 31,
       "fondees": 26,
       "infondees": 4,
-      "classees": 1,
-      "total": 31
+      "classees": 1
     },
     "T3_2024": {
       "fondees": 18,
@@ -165,10 +178,18 @@
       "infondees": 4,
       "classees": 5,
       "total": 17
+    },
+    "T3_2026": {
+      "fondees": 26,
+      "infondees": 0,
+      "classees": 0,
+      "total": 26
     }
   },
   "meta": {
-    "derniere_verification": "2026-11-23",
-    "verifie": false
+    "derniere_verification": "2026-11-24",
+    "verifie": true,
+    "dernier_rapport": "T3_2026",
+    "note": "Reextrait et recoupe a la main avec chaque rapport PDF le 2026-11-24 (trimestres deduits de la couverture du rapport, plus de l'en-tete). Controle automatique a chaque execution : scraper/validate.py, une extraction incoherente n'est jamais publiee. Corrige : T3_2026 absent (colonne oubliee par l'ARCEP), categories 2025-2026, T1_2024 et T3_2024 faux. Pas de rapport T3_2025 utilisable avant correction du lien."
   }
 }

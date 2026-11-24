@@ -1,193 +1,103 @@
 """
-Scraper Section D (Marche & Regulation) -- volet Services Financiers Mobiles (Mobile Money)
+Scraper Section D -- volet Services Financiers Mobiles (Mobile Money)
 -- arcep.bj/services-financiers-mobiles/
 
-Contrairement au rapport Telephonie Mobile, les noms de fichiers SFM ne suivent pas un
-gabarit unique (Observatoire-SFM-T3_2025_TAB.pdf, Tableau-de-Bord_T1_SFM_2025.pdf,
-TB_SFM_Decembre-2024.pdf...) -- la detection se fait donc par ORDRE D'APPARITION sur la
-page (l'ARCEP liste toujours du plus recent au plus ancien), pas par un regex de nom.
+Extrait : comptes actifs/dormants, parts de marche, taux de penetration et d'activite,
+depots et retraits (volume + valeur en milliards de FCFA). Trimestres deduits de la
+couverture (arcep_common.py), controles dans validate.py.
 
-Extraction ciblee sur les deux tableaux les plus fiables :
-  - Tableau 1 : comptes SFM (actifs/dormants), parts de marche par operateur,
-    taux de penetration, taux d'activite
-  - Tableau 3 (partiel) : Depots et Retraits d'argent -- volume + valeur (Mds FCFA)
-Les autres types de transaction (paiements marchands, P2P, international...) ont une
-structure de cellules fusionnees plus fragile -- non extraits dans cette premiere passe.
+2026-11-24 : l'ancienne version gardait le contexte "Retraits" jusqu'a la fin du tableau
+et finissait par stocker la valeur des transferts internationaux sortants (19,8 Mds au
+lieu de 910,57). Chaque couple (type, mesure) n'est plus lu qu'une seule fois.
 """
 import json
 import os
 import re
 import time
-import requests
-import pdfplumber
-from urllib.parse import unquote
+
+import arcep_common as ac
 
 INDEX_URL = "https://arcep.bj/services-financiers-mobiles/"
-PDF_LINK_RE = re.compile(r'href="(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
-
 HERE = os.path.dirname(os.path.abspath(__file__))
 OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "sfm"))
 OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "sfm_data.json"))
 
-MIN_YEAR = 2024  # ne remonte pas plus loin pour cette premiere passe
-
-TYPE_LABELS = {
-    "Transactions des\nDépôts d'argents": 'depots',
-    "Transactions des\nRetraits d'argents": 'retraits',
-}
+SHARE_OPS = ('mtn', 'moov', 'celtiis')
+MEASURE_RE = re.compile(r'(volume|valeur)\s*\(.*$')
 
 
-def discover_reports():
-    r = requests.get(INDEX_URL, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    seen = set()
-    ordered = []
-    for url, year in PDF_LINK_RE.findall(r.text):
-        if url in seen:
-            continue
-        seen.add(url)
-        if int(year) >= MIN_YEAR:
-            ordered.append(url)
-    return ordered  # deja du plus recent au plus ancien (ordre de la page)
+def compte_key(label):
+    if 'comptes' in label:
+        if 'actifs' in label:
+            return 'comptes_actifs'
+        # "dormants" passe parfois a la ligne suivante, seul
+        return 'comptes_dormants' if 'dormants' in label or label.endswith('sfm') else None
+    if label.startswith('taux de penetration'):
+        return 'taux_penetration'
+    if label.startswith("taux d'activite"):
+        return 'taux_activite'
+    if label.startswith(('part de marche', 'pdm')):
+        return next((op for op in SHARE_OPS if op in label), None)
+    return None
 
 
-def ensure_downloaded(url):
-    fname = unquote(url.rsplit('/', 1)[-1])
-    os.makedirs(OBS_DIR, exist_ok=True)
-    path = os.path.join(OBS_DIR, fname)
-    if os.path.exists(path):
-        return path, False
-    r = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    with open(path, 'wb') as f:
-        f.write(r.content)
-    return path, True
-
-
-def parse_number(s):
-    s = str(s).strip().replace('\xa0', '').replace(' ', '')
-    s = s.replace(',', '.') if ',' in s and '.' not in s else s
-    try:
-        return int(s)
-    except ValueError:
-        try:
-            return float(s)
-        except ValueError:
-            return None
-
-
-def clean_quarter(q):
-    return q.replace('-', '_')
-
-
-COMPTES_LABELS = {
-    'Nombre de comptes SFM\nactifs': 'comptes_actifs',
-    'Nombre de comptes SFM\ndormants': 'comptes_dormants',
-    'Part de marché MTN\nMobile Money': 'mtn',
-    'Part de marché MOOV\nMoney': 'moov',
-    'Part de marché CELTIIS\nCASH': 'celtiis',
-    "Taux de pénétration SFM": 'taux_penetration',
-    "Taux d'activité": 'taux_activite',
-}
-
-
-def extract_comptes(pdf_path):
-    out = {}
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            for table in page.extract_tables():
-                if not table or not table[0] or table[0][0] != 'Désignations':
-                    continue
-                header = table[0]
-                if 'T' not in str(header[1]):
-                    continue
-                quarters = [clean_quarter(q) for q in header[1:] if q and 'Variation' not in q]
-                for row in table[1:]:
-                    if not row or not row[0]:
-                        continue
-                    label = row[0].strip()
-                    if label not in COMPTES_LABELS:
-                        continue
-                    key = COMPTES_LABELS[label]
-                    for q, v in zip(quarters, row[1:]):
-                        val = str(v).replace('%', '').strip() if v else None
-                        num = parse_number(val) if val else None
-                        if key in ('mtn', 'moov', 'celtiis'):
-                            out.setdefault(q, {}).setdefault('parts_marche', {})[key] = num
-                        else:
-                            out.setdefault(q, {})[key] = num
-    return out
-
-
-def extract_depots_retraits(pdf_path, quarters_order):
-    """Cible uniquement les lignes Depots/Retraits (les plus proprement formatees),
-    en reconstituant le type de transaction porte par la premiere cellule non-vide."""
-    out = {}
-    current_type = None
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            for table in page.extract_tables():
-                for row in table:
-                    cells = [c for c in row if c not in (None, '')]
-                    if not cells:
-                        continue
-                    if cells[0] in TYPE_LABELS:
-                        current_type = TYPE_LABELS[cells[0]]
-                        cells = cells[1:]
-                    if current_type not in ('depots', 'retraits') or not cells:
-                        continue
-                    sub = cells[0]
-                    values = cells[1:]
-                    if 'Volume' in sub:
-                        metric = 'volume'
-                    elif 'Valeur' in sub:
-                        metric = 'valeur_mds_fcfa'
-                    else:
-                        continue
-                    nums = [parse_number(v) for v in values]
-                    nums = [n for n in nums if n is not None]
-                    # les 5 premieres valeurs numeriques = les 5 trimestres (la variation, si
-                    # presente, est la derniere -- on l'ignore ici, non critique)
-                    for q, v in zip(quarters_order, nums[:len(quarters_order)]):
-                        out.setdefault(q, {}).setdefault(current_type, {})[metric] = v
-    return out
+def extract(path, quarters):
+    comptes, transactions, seen = {}, {}, set()
+    for table in ac.iter_tables(path):
+        current = None
+        for row in table:
+            label, cells = ac.split_row(row)
+            m = MEASURE_RE.search(label)
+            if m:
+                name = label[:m.start()].strip()
+                if 'depots' in name:
+                    current = 'depots'
+                elif 'retraits' in name:
+                    current = 'retraits'
+                elif name:
+                    current = None
+                metric = 'volume' if m.group(1) == 'volume' else 'valeur_mds_fcfa'
+                values = ac.five_values(cells, variation=True)
+                if current and values and (current, metric) not in seen:
+                    seen.add((current, metric))
+                    for q, v in zip(quarters, values):
+                        transactions.setdefault(q, {}).setdefault(current, {})[metric] = v
+                if metric == 'valeur_mds_fcfa':
+                    current = None
+                continue
+            key = compte_key(label)
+            values = ac.five_values(cells)
+            if key and values and key not in seen:
+                seen.add(key)
+                for q, v in zip(quarters, values):
+                    d = comptes.setdefault(q, {})
+                    (d.setdefault('parts_marche', {}) if key in SHARE_OPS else d)[key] = v
+    return comptes, transactions
 
 
 def main():
-    print(f"Verification des rapports sur {INDEX_URL} ...")
-    urls = discover_reports()
-    print(f"{len(urls)} rapports (>= {MIN_YEAR}) detectes, du plus recent au plus ancien")
-
-    if os.path.exists(OUT_JSON):
-        with open(OUT_JSON, encoding='utf-8') as f:
-            store = json.load(f)
-    else:
-        store = {'comptes': {}, 'transactions': {}, 'meta': {}}
-
-    # Traite du plus ANCIEN au plus RECENT : quand deux rapports se chevauchent sur un
-    # meme trimestre, la version du rapport le plus recent doit gagner (ecrase en dernier).
-    for url in reversed(urls):
-        path, is_new = ensure_downloaded(url)
-        print(f"  {'telecharge' if is_new else 'deja present'} : {os.path.basename(path)}")
-        comptes = extract_comptes(path)
-        if not comptes:
-            print(f"    ! aucune donnee 'comptes SFM' extraite de ce fichier -- structure differente, ignore")
-            continue
-        quarters_order = list(comptes.keys())
-        transactions = extract_depots_retraits(path, quarters_order)
-        for q, vals in comptes.items():
-            store['comptes'][q] = vals
-        for q, vals in transactions.items():
-            store['transactions'].setdefault(q, {}).update(vals)
-        time.sleep(1)
-
-    store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta'].setdefault('verifie', False)
-
+    reports = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=2024)
+    old = ac.read_json(OUT_JSON)
+    comptes, transactions = {}, {}
+    for period, path in reports:
+        c, t = extract(path, ac.quarters_ending(period))
+        print(f"  {period} {os.path.basename(path)} : {len(c)} trim. comptes, {len(t)} trim. transactions")
+        for q, vals in c.items():
+            d = comptes.setdefault(q, {})
+            d.setdefault('parts_marche', {}).update(vals.pop('parts_marche', {}))
+            d.update(vals)
+        for q, vals in t.items():
+            for kind, mv in vals.items():
+                transactions.setdefault(q, {}).setdefault(kind, {}).update(mv)
+    store = {
+        'comptes': ac.keep_missing_quarters(comptes, old.get('comptes')),
+        'transactions': ac.keep_missing_quarters(transactions, old.get('transactions')),
+        'meta': {**old.get('meta', {}), 'dernier_rapport': reports[-1][0],
+                 'derniere_verification': time.strftime('%Y-%m-%d')},
+    }
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, indent=2)
-    print(f"\nEcrit : {OUT_JSON}")
-    print("STATUT : verifie=false -- revue humaine recommandee avant affichage public.")
+    print(f"Ecrit : {OUT_JSON}")
 
 
 if __name__ == '__main__':

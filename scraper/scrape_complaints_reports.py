@@ -1,159 +1,76 @@
 """
-Scraper Section D (Marche & Regulation) -- volet Gestion des plaintes
--- arcep.bj/observatoire-des-plaintes/
+Scraper Section D -- volet Gestion des plaintes -- arcep.bj/observatoire-des-plaintes/
 
-Noms de fichiers non uniformes (comme pour SFM) -- detection par ORDRE D'APPARITION sur
-la page plutot que par regex de nom. Note : le HTML de cette page melange
-`href="..."` et `href= "..."` (espace variable) -- la regex tolere les deux.
+Tableau 1 (plaintes recues par categorie) et Tableau 3 (plaintes traitees). Trimestres
+deduits de la couverture (arcep_common.py), controles dans validate.py.
 
-Extraction : Tableau 1 (plaintes recues par categorie : Commerciales/Techniques/Postales,
-total, taux de croissance) et Tableau 3 (plaintes traitees : fondees/infondees/classees).
-Meme structure DESIGNATION + trimestres que le rapport Telephonie Mobile.
+2026-11-24 : trois defauts corriges -- (1) libelles sur deux lignes depuis le T2 2026,
+(2) tableau "par genre" qui ecrasait le tableau principal, (3) en-tetes ARCEP fautifs
+(T1-2024 en double, colonne T3-2026 oubliee).
 """
 import json
 import os
-import re
 import time
-import requests
-import pdfplumber
-from urllib.parse import unquote
+
+import arcep_common as ac
 
 INDEX_URL = "https://arcep.bj/observatoire-des-plaintes/"
-PDF_LINK_RE = re.compile(r'href=\s*"(https://arcep\.bj/wp-content/uploads/(\d{4})/\d{2}/[^"]+\.pdf)"')
-
 HERE = os.path.dirname(os.path.abspath(__file__))
 OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "plaintes"))
 OUT_JSON = os.path.normpath(os.path.join(HERE, "..", "data", "complaints_data.json"))
 
-MIN_YEAR = 2024
 
-RECUES_LABELS = {
-    'Plaintes Commerciales': 'commerciales',
-    'Plaintes Techniques': 'techniques',
-    'Plaintes Services postaux': 'postales',
-    'Total Plaintes traitées': 'total',
-}
-TRAITEES_LABELS = {
-    'Plaintes fondées': 'fondees',
-    'Plaintes infondées': 'infondees',
-    'Plaintes classées': 'classees',
-    'Total plaintes traitées': 'total',
-}
+def row_key(kind, label):
+    if label.startswith('total'):
+        return 'total'
+    if kind == 'traitees':
+        return ('infondees' if 'infondees' in label else 'fondees' if 'fondees' in label
+                else 'classees' if 'classees' in label else None)
+    return ('commerciales' if 'plaintes commerciales' in label
+            else 'techniques' if 'plaintes techniques' in label
+            else 'postales' if 'postaux' in label else None)
 
 
-def discover_reports():
-    r = requests.get(INDEX_URL, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    seen, ordered = set(), []
-    for url, year in PDF_LINK_RE.findall(r.text):
-        if url in seen or 'COMMUNIQUE' in url.upper():
+def extract(path, quarters):
+    out = {'recues': {}, 'traitees': {}}
+    for table in ac.iter_tables(path):
+        cells_all = [ac.norm(c) for row in table for c in row if c]
+        if 'f' in cells_all or 'genre' in cells_all:
+            continue  # tableau 2 : repartition par genre
+        if any('plaintes fondees' in c for c in cells_all):
+            kind = 'traitees'
+        elif any('commerciales' in c for c in cells_all):
+            kind = 'recues'
+        else:
             continue
-        seen.add(url)
-        if int(year) >= MIN_YEAR:
-            ordered.append(url)
-    return ordered  # ordre de la page = plus recent en premier
-
-
-def ensure_downloaded(url):
-    fname = unquote(url.rsplit('/', 1)[-1])
-    os.makedirs(OBS_DIR, exist_ok=True)
-    path = os.path.join(OBS_DIR, fname)
-    if os.path.exists(path):
-        return path, False
-    r = requests.get(url, timeout=30, headers={'User-Agent': 'Mozilla/5.0 (compatible; AntenneBeninBot/1.0)'})
-    r.raise_for_status()
-    with open(path, 'wb') as f:
-        f.write(r.content)
-    return path, True
-
-
-def parse_number(s):
-    s = str(s).strip().replace('\xa0', '').replace(' ', '').replace('-', '') if str(s).strip() == '-' else str(s).strip()
-    if s in ('-', ''):
-        return None
-    s = s.replace(' ', '')
-    try:
-        return int(s)
-    except ValueError:
-        try:
-            return float(s.replace(',', '.'))
-        except ValueError:
-            return None
-
-
-def clean_quarter(q):
-    return q.replace('-', '_')
-
-
-QUARTER_RE = re.compile(r'^T\d[-_]\d{4}$')
-
-
-def extract_table(pdf_path, label_map):
-    """Peu importe la position/le remplissage des cellules d'en-tete (None,
-    chaines vides, colonne DESIGNATION ou pas) : on repere les trimestres par
-    motif (T1-2025, T2_2025...) et les lignes de donnees par leur libelle connu."""
-    out = {}
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            for table in page.extract_tables():
-                if not table:
-                    continue
-                header = table[0]
-                quarters = [clean_quarter(c.strip()) for c in header if c and QUARTER_RE.match(c.strip())]
-                if not quarters:
-                    continue
-                for row in table[1:]:
-                    cells = [c for c in row if c not in (None, '')]
-                    if not cells:
-                        continue
-                    label = cells[0].strip()
-                    if label not in label_map:
-                        continue
-                    key = label_map[label]
-                    values = cells[1:]
-                    for q, v in zip(quarters, values):
-                        out.setdefault(q, {})[key] = parse_number(v)
-    return out
+        for row in table:
+            label, cells = ac.split_row(row)
+            values, key = ac.five_values(cells), row_key(kind, label)
+            if values and key:
+                for q, v in zip(quarters, values):
+                    out[kind].setdefault(q, {})[key] = v
+    return out['recues'], out['traitees']
 
 
 def main():
-    print(f"Verification des rapports sur {INDEX_URL} ...")
-    urls = discover_reports()
-    print(f"{len(urls)} rapports (>= {MIN_YEAR}) detectes")
-
-    if os.path.exists(OUT_JSON):
-        with open(OUT_JSON, encoding='utf-8') as f:
-            store = json.load(f)
-    else:
-        store = {'recues': {}, 'traitees': {}, 'meta': {}}
-
-    for url in reversed(urls):  # plus ancien -> plus recent, le plus recent gagne
-        path, is_new = ensure_downloaded(url)
-        print(f"  {'telecharge' if is_new else 'deja present'} : {os.path.basename(path)}")
-        recues = extract_table(path, RECUES_LABELS)
-        traitees = extract_table(path, TRAITEES_LABELS)
-        if not recues and not traitees:
-            print(f"    ! rien extrait de ce fichier -- structure differente, ignore")
-            continue
-        for q, vals in recues.items():
-            store['recues'][q] = vals
-        for q, vals in traitees.items():
-            # garde-fou : fondees + infondees + classees doit egaler le total, sinon
-            # extraction suspecte (cellules fusionnees mal reconstruites) -- on rejette
-            parts = [vals.get(k) for k in ('fondees', 'infondees', 'classees')]
-            if vals.get('total') is not None and all(p is not None for p in parts):
-                if sum(parts) != vals['total']:
-                    print(f"    ! {q} : incoherent (fondees+infondees+classees != total) -- rejete")
-                    continue
-            store['traitees'][q] = vals
-        time.sleep(1)
-
-    store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')
-    store['meta'].setdefault('verifie', False)
-
+    reports = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=2024)
+    old = ac.read_json(OUT_JSON)
+    recues, traitees = {}, {}
+    for period, path in reports:
+        r, t = extract(path, ac.quarters_ending(period))
+        print(f"  {period} {os.path.basename(path)} : {len(r)} trim. recues, {len(t)} trim. traitees")
+        for store, new in ((recues, r), (traitees, t)):
+            for q, vals in new.items():
+                store.setdefault(q, {}).update(vals)
+    store = {
+        'recues': ac.keep_missing_quarters(recues, old.get('recues')),
+        'traitees': ac.keep_missing_quarters(traitees, old.get('traitees')),
+        'meta': {**old.get('meta', {}), 'dernier_rapport': reports[-1][0],
+                 'derniere_verification': time.strftime('%Y-%m-%d')},
+    }
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, indent=2)
-    print(f"\nEcrit : {OUT_JSON}")
+    print(f"Ecrit : {OUT_JSON}")
 
 
 if __name__ == '__main__':
