@@ -165,6 +165,11 @@ def check_tarifs(d):
             for op in ('mtn', 'moov', 'sbin'):
                 if op in o and not o[op].get('mo'):
                     e.append(f"historique_mobile {q} {o['prix']} {op} : volume non converti {o[op].get('volume')}")
+        for op in ('mtn', 'moov', 'sbin'):
+            f = sorted((o['prix'], o[op]['mo']) for o in offers if o['fup'] and op in o)
+            for (p1, v1), (p2, v2) in zip(f, f[1:]):
+                if v2 < v1:
+                    e.append(f"historique_mobile {q} {op} : {p2} FCFA donne moins ({v2} Mo) que {p1} FCFA ({v1} Mo)")
     if len(hf) < 2 or ac.qkey(max(hf, key=ac.qkey)) > ac.qkey(m.get('ftth_periode', 'T1_2000')):
         e.append('historique_ftth : absent ou incoherent avec le dernier rapport')
     if m.get('mobile_periode') != m.get('dernier_rapport') or m.get('ftth_periode') != m.get('dernier_rapport'):

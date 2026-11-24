@@ -168,54 +168,70 @@ def volume_mo(volume):
     return round(n * 1024 if (m.group(2) or '').lower() == 'go' else n, 2)
 
 
+def table_rows(table):
+    """Lignes d'un tableau pdfplumber : [(centre x, x gauche, texte)] par cellule non vide."""
+    for row, texts in zip(table.rows, table.extract()):
+        yield [((c[0] + c[2]) / 2, c[0], s.strip()) for c, s in zip(row.cells, texts) if c and s and s.strip()]
+
+
 def extract_mobile(pdf_path):
     """[{'prix': int, 'fup': bool, 'mtn'|'moov'|'sbin': {'volume', 'validite', 'mo'}}]
-    Deux formats : 2026 (volumes avec unite, sections "sans FUP" / "avec FUP") et
-    2025 (en-tete "Volume (MB)", chiffres seuls)."""
-    for table in ac.iter_tables(pdf_path):
-        heads = [' '.join(str(c) for c in row if c) for row in table]
-        hrow = next((i for i, h in enumerate(heads) if 'Forfait (FCFA)' in h), None)
-        if hrow is None:
-            continue
-        vol = [i for i, c in enumerate(table[hrow]) if c and c.startswith('Volume')]
-        val = [i for i, c in enumerate(table[hrow]) if c and c.startswith('Valid')]
-        ops = [c.lower() for row in table[:hrow] for c in row if c in ('MTN', 'MOOV', 'SBIN')]
-        if len(vol) != 3 or len(val) != 3 or ops != ['mtn', 'moov', 'sbin']:
-            continue
-        in_mb = 'MB' in table[hrow][vol[0]]
-        cols = sorted([(i, op, 'volume') for i, op in zip(vol, ops)] +
-                      [(i, op, 'validite') for i, op in zip(val, ops)])
-        offers, fup = [], False
-        for row in table[hrow + 1:]:
-            if any(c and 'avec FUP' in c for c in row):
-                fup = True
-                continue
-            price = next((re.sub(r'\s', '', c) for c in row[:vol[0]]
-                          if c and re.fullmatch(r'\d[\d\s]*', c.strip())), None)
-            if price:
-                offers.append({'prix': int(price), 'fup': fup})
-            if not offers:
-                continue
-            for i, c in enumerate(row):
-                if not c or i < vol[0]:
-                    continue
-                _, op, field = [x for x in cols if x[0] <= i][-1]
-                d = offers[-1].setdefault(op, {})
-                # cellule sur plusieurs lignes : la suite arrive sur une rangee sans prix
-                d[field] = (d[field] + ' ' + c) if field in d else c
-        for o in offers:
-            for op in ops:
-                if op in o:
-                    d = {k: clean_offer(v).replace(' **', '').replace('**', '') for k, v in o[op].items()}
-                    if in_mb and re.fullmatch(r'[\d\s]+', d.get('volume', '')):
-                        d['volume'] = re.sub(r'\s', '', d['volume']) + ' Mo'
-                    d['mo'] = volume_mo(d.get('volume', ''))
-                    if d['mo']:
-                        o[op] = d
-                    else:
-                        del o[op]  # case sans volume (ex. "30 jours" seul, offre portee par la ligne suivante)
-        return [o for o in offers if any(op in o for op in ops)]
-    return []
+    Deux formats : 2026 (volumes avec unite, sections "sans FUP" / "avec FUP") et 2025
+    (en-tete "Volume (MB)", chiffres seuls, section "Forfaits Internet Illimites", et suite
+    du tableau sur la page suivante, sans en-tete). Colonnes reperees par leur abscisse."""
+    ops = ('mtn', 'moov', 'sbin')
+    cols, price_max, head_page, in_mb, offers, fup = None, None, None, False, [], False
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            for table in page.find_tables():
+                rows = list(table_rows(table))
+                h = next((k for k, r in enumerate(rows) if any(s == 'Forfait (FCFA)' for _, _, s in r)), None)
+                if h is not None:
+                    if cols:
+                        continue  # un seul catalogue Internet par rapport
+                    vol = [x for _, x, s in rows[h] if s.startswith('Volume')]
+                    val = [x for _, x, s in rows[h] if s.startswith('Valid')]
+                    names = [s.lower() for r in rows[:h] for _, _, s in r if s in ('MTN', 'MOOV', 'SBIN')]
+                    if len(vol) != 3 or len(val) != 3 or names != list(ops):
+                        continue
+                    in_mb = any('MB' in s for _, _, s in rows[h])
+                    cols = sorted([(x, op, 'volume') for x, op in zip(vol, ops)] +
+                                  [(x, op, 'validite') for x, op in zip(val, ops)])
+                    price_max, rows, head_page = vol[0], rows[h + 1:], page.page_number
+                elif not cols or page.page_number == head_page:
+                    continue  # la suite du catalogue est sur une page suivante ; le reste est parasite
+                for r in rows:
+                    line = ac.norm(' '.join(s for _, _, s in r))
+                    if 'arcep.bj' in line or line.startswith(('source', 'tel :')):
+                        continue  # pied de page
+                    if 'avec fup' in line or 'internet illimites' in line:
+                        fup = True
+                        continue
+                    price = next((re.sub(r'\s', '', s) for c, _, s in r
+                                  if c < price_max and re.fullmatch(r'\d[\d\s]*', s)), None)
+                    if price:
+                        offers.append({'prix': int(price), 'fup': fup})
+                    if not offers:
+                        continue
+                    for c, _, s in r:
+                        if c < price_max:
+                            continue
+                        _, op, field = [k for k in cols if k[0] <= c][-1]
+                        d = offers[-1].setdefault(op, {})
+                        # cellule sur plusieurs lignes : la suite arrive sur une rangee sans prix
+                        d[field] = (d[field] + ' ' + s) if field in d else s
+    for o in offers:
+        for op in ops:
+            if op in o:
+                d = {k: clean_offer(v.replace('**', '')) for k, v in o[op].items()}
+                if in_mb and re.fullmatch(r'[\d\s]+', d.get('volume', '')):
+                    d['volume'] = re.sub(r'\s', '', d['volume']) + ' Mo'
+                d['mo'] = volume_mo(d.get('volume', ''))
+                if d['mo']:
+                    o[op] = d
+                else:
+                    del o[op]  # case sans volume (ex. "30 jours" seul, offre portee par la ligne suivante)
+    return [o for o in offers if any(op in o for op in ops)]
 
 
 def same_catalog(new, known):

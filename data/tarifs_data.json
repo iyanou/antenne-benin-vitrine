@@ -638,6 +638,209 @@
           "validite": "30 jours",
           "mo": 15360.0
         }
+      },
+      {
+        "prix": 15500,
+        "fup": false,
+        "mtn": {
+          "volume": "25600 Mo",
+          "validite": "30 jours",
+          "mo": 25600.0
+        }
+      },
+      {
+        "prix": 20000,
+        "fup": false,
+        "mtn": {
+          "volume": "51200 Mo",
+          "validite": "30 jours",
+          "mo": 51200.0
+        }
+      },
+      {
+        "prix": 25000,
+        "fup": false,
+        "mtn": {
+          "volume": "81920 Mo",
+          "validite": "30 jours",
+          "mo": 81920.0
+        }
+      },
+      {
+        "prix": 30000,
+        "fup": false,
+        "mtn": {
+          "volume": "102400 Mo",
+          "validite": "30 jours",
+          "mo": 102400.0
+        }
+      },
+      {
+        "prix": 40000,
+        "fup": false,
+        "mtn": {
+          "volume": "153600 Mo",
+          "validite": "30 jours",
+          "mo": 153600.0
+        }
+      },
+      {
+        "prix": 50000,
+        "fup": false,
+        "mtn": {
+          "volume": "256000 Mo",
+          "validite": "30 jours",
+          "mo": 256000.0
+        }
+      },
+      {
+        "prix": 15100,
+        "fup": true,
+        "mtn": {
+          "volume": "20480 Mo",
+          "validite": "30 jours",
+          "mo": 20480.0
+        },
+        "moov": {
+          "volume": "25600 Mo",
+          "validite": "30 jours",
+          "mo": 25600.0
+        },
+        "sbin": {
+          "volume": "40960 Mo",
+          "validite": "30 jours",
+          "mo": 40960.0
+        }
+      },
+      {
+        "prix": 15500,
+        "fup": true,
+        "moov": {
+          "volume": "40960 Mo",
+          "validite": "30 jours",
+          "mo": 40960.0
+        }
+      },
+      {
+        "prix": 19000,
+        "fup": true,
+        "sbin": {
+          "volume": "61440 Mo",
+          "validite": "30 jours",
+          "mo": 61440.0
+        }
+      },
+      {
+        "prix": 20000,
+        "fup": true,
+        "mtn": {
+          "volume": "40960 Mo",
+          "validite": "30 jours",
+          "mo": 40960.0
+        },
+        "moov": {
+          "volume": "61440 Mo",
+          "validite": "30 jours",
+          "mo": 61440.0
+        }
+      },
+      {
+        "prix": 25000,
+        "fup": true,
+        "mtn": {
+          "volume": "81920 Mo",
+          "validite": "30 jours",
+          "mo": 81920.0
+        },
+        "moov": {
+          "volume": "97280 Mo",
+          "validite": "30 jours",
+          "mo": 97280.0
+        },
+        "sbin": {
+          "volume": "97280 Mo",
+          "validite": "30 jours",
+          "mo": 97280.0
+        }
+      },
+      {
+        "prix": 29000,
+        "fup": true,
+        "sbin": {
+          "volume": "112640 Mo",
+          "validite": "30 jours",
+          "mo": 112640.0
+        }
+      },
+      {
+        "prix": 30000,
+        "fup": true,
+        "mtn": {
+          "volume": "102400 Mo",
+          "validite": "30 jours",
+          "mo": 102400.0
+        },
+        "moov": {
+          "volume": "133120 Mo",
+          "validite": "30 jours",
+          "mo": 133120.0
+        }
+      },
+      {
+        "prix": 50000,
+        "fup": true,
+        "mtn": {
+          "volume": "512000 Mo",
+          "validite": "30 jours",
+          "mo": 512000.0
+        },
+        "moov": {
+          "volume": "512000 Mo",
+          "validite": "30 jours",
+          "mo": 512000.0
+        }
+      },
+      {
+        "prix": 75000,
+        "fup": true,
+        "mtn": {
+          "volume": "768000 Mo",
+          "validite": "30 jours",
+          "mo": 768000.0
+        },
+        "moov": {
+          "volume": "768000 Mo",
+          "validite": "30 jours",
+          "mo": 768000.0
+        }
+      },
+      {
+        "prix": 100000,
+        "fup": true,
+        "mtn": {
+          "volume": "1048576 Mo",
+          "validite": "30 jours",
+          "mo": 1048576.0
+        },
+        "moov": {
+          "volume": "1024000 Mo",
+          "validite": "30 jours",
+          "mo": 1024000.0
+        }
+      },
+      {
+        "prix": 125000,
+        "fup": true,
+        "mtn": {
+          "volume": "2097152 Mo",
+          "validite": "30 jours",
+          "mo": 2097152.0
+        },
+        "moov": {
+          "volume": "2048000 Mo",
+          "validite": "30 jours",
+          "mo": 2048000.0
+        }
       }
     ],
     "T1_2026": [
@@ -1429,14 +1632,13 @@
     "mobile_periode": "T3_2026",
     "ftth_periode": "T3_2026",
     "dernier_rapport": "T3_2026",
-    "libelles_periodes": {
-      "T1_2025": "mars 2025",
-      "T3_2025": "septembre 2025",
-      "T1_2026": "mars 2026",
-      "T3_2026": "septembre 2026"
-    },
     "inchange_jusqu_a": {
       "T1_2025": "septembre 2025"
+    },
+    "libelles_periodes": {
+      "T1_2025": "mars 2025",
+      "T1_2026": "mars 2026",
+      "T3_2026": "septembre 2026"
     }
   }
 }
