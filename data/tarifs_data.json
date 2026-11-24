@@ -288,7 +288,7 @@
     "mobile_source": "Tableau-de-bord-des-Tarifs-mobiles_30-septembre-2026.pdf",
     "derniere_verification": "2026-11-24",
     "verifie": true,
-    "note": "Reextrait et recoupe a la main avec chaque rapport PDF le 2026-11-24 (trimestres deduits de la couverture du rapport, plus de l'en-tete). Controle automatique a chaque execution : scraper/validate.py, une extraction incoherente n'est jamais publiee. Mobile : catalogue complet, lu dans l'Observatoire des tarifs mobiles depuis septembre 2026 (le palier 5 000 FCFA avec FUP n'existe plus).",
+    "note": "Cliche instantane du dernier catalogue publie (pas une serie temporelle). Volumes repris tels qu'ecrits par l'ARCEP. SBIN = marque Celtiis.",
     "mobile_periode": "T3_2026",
     "ftth_periode": "T3_2026",
     "dernier_rapport": "T3_2026"
