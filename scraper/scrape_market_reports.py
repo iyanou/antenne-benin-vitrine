@@ -7,6 +7,8 @@ calculees) et trafics reseau. Les trimestres viennent de la couverture du rappor
 
 2026-11-24 : depuis le T2 2026 l'ARCEP ecrit "MOOV AFRICA" et "BENIN" sur deux lignes --
 la comparaison exacte de libelle faisait disparaitre Moov en silence.
+Ajoute le 2026-11-24 : abonnements par technologie (2G/3G/4G), parts de marche en
+valeur (chiffre d'affaires, lues sur le camembert du rapport) et repartition par sexe.
 """
 import json
 import os
@@ -22,10 +24,11 @@ FIRST_QUARTER = 'T3_2024'
 
 OPERATORS = {'spacetel benin': 'mtn', 'moov africa benin': 'moov', 'celtiis': 'celtiis'}
 TRAFIC = {'trafic voix': 'voix_min', 'trafic sms': 'sms_nb', 'trafic data': 'data_go'}
+TECH = {'abonnement 2g': '2g', 'abonnement 3g': '3g', 'abonnement 4g': '4g'}
 
 
 def extract(path, quarters):
-    abo, trafics = {}, {}
+    abo, trafics, techs = {}, {}, {}
     for table in ac.iter_tables(path):
         is_abo = any(ac.norm(c) == 'designations' for c in table[0] if c)
         for row in table:
@@ -37,23 +40,38 @@ def extract(path, quarters):
                 target, key = abo, OPERATORS[label]
             elif is_abo and label.startswith('total abonnements'):
                 target, key = abo, 'total'
+            elif label in TECH:
+                target, key = techs, TECH[label]
             else:
                 key = next((k for p, k in TRAFIC.items() if label.startswith(p)), None)
                 target = trafics
             if key:
                 for q, v in zip(quarters, values):
                     target.setdefault(q, {})[key] = v
-    return abo, trafics
+    return abo, trafics, techs
 
 
 def main():
     reports = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=2025, exclude=('tarif', 'annuel'))
     old = ac.read_json(OUT_JSON)
-    abonnements, trafics = {}, {}
+    abonnements, trafics, technologies, valeur, genre = {}, {}, {}, {}, {}
     for period, path in reports:
-        a, t = extract(path, ac.quarters_ending(period))
-        print(f"  {period} {os.path.basename(path)} : {len(a)} trim. abonnements, {len(t)} trim. trafics")
-        for store, new in ((abonnements, a), (trafics, t)):
+        a, t, tech = extract(path, ac.quarters_ending(period))
+        print(f"  {period} {os.path.basename(path)} : {len(a)} trim. abonnements, {len(t)} trim. trafics, "
+              f"{len(tech)} trim. technologies")
+        # parts de marche en valeur : seulement le trimestre du rapport. Le camembert "volume"
+        # sert de controle : il doit redonner les parts calculees sur les abonnements.
+        pies, last = ac.pie_shares(path), a.get(period, {})
+        if pies and last.get('total') and all(
+                abs(pies['volume'][op] - last[op] / last['total'] * 100) <= (0.6 if isinstance(pies['volume'][op], int) else 0.15)
+                for op in ('mtn', 'moov', 'celtiis')):  # etiquettes parfois arrondies a l'unite
+            valeur[period] = pies['valeur']
+        else:
+            print(f"    ! parts en valeur {period} non lues ou incoherentes avec les abonnements")
+        g = ac.gender_split(path)
+        if g:
+            genre[period] = g
+        for store, new in ((abonnements, a), (trafics, t), (technologies, tech)):
             for q, vals in new.items():
                 if ac.qkey(q) >= ac.qkey(FIRST_QUARTER):
                     store.setdefault(q, {}).update(vals)
@@ -64,6 +82,9 @@ def main():
     store = {
         'abonnements': ac.keep_missing_quarters(abonnements, old.get('abonnements')),
         'trafics': ac.keep_missing_quarters(trafics, old.get('trafics')),
+        'technologies': ac.keep_missing_quarters(technologies, old.get('technologies')),
+        'parts_valeur': ac.keep_missing_quarters(valeur, old.get('parts_valeur')),
+        'genre': ac.keep_missing_quarters(genre, old.get('genre')),
         'meta': {**old.get('meta', {}), 'dernier_rapport': reports[-1][0],
                  'derniere_verification': time.strftime('%Y-%m-%d')},
     }

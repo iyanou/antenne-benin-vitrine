@@ -21,5 +21,86 @@
     "derniere_verification": "2026-11-24",
     "verifie": true,
     "note": "Source : rapports annuels d'activites ARCEP Benin, section 'Ressources financieres'. 'recouvre_pour_etat' absent avant 2023 (structure du rapport ne separait pas encore ce poste) et pas encore publie pour 2025 au moment de l'extraction -- pas une erreur, l'information n'existe simplement pas dans le rapport source a ce jour."
+  },
+  "chiffres_cles": {
+    "2025": {
+      "ca_marche_mds": 382.4,
+      "ca_mobile_mds": 350.02,
+      "investissements_mds": 112.203,
+      "cartes_sim_millions": 18.17,
+      "abonnes_uniques": 10328542,
+      "penetration_mobile_pct": 78.1,
+      "penetration_internet_pct": 64.9,
+      "arpu_fcfa": 1622,
+      "trafic_voix_mds_min": 10.374,
+      "trafic_data_millions_go": 551.6,
+      "sms_millions": 603.188,
+      "plaintes": 117,
+      "ca_sfm_mds": 82.5,
+      "investissements_par_operateur_mds": {
+        "mtn": 48.769,
+        "moov": 27.046,
+        "celtiis": 35.88
+      },
+      "parts_valeur_pct": {
+        "mtn": 40.9,
+        "moov": 23.5,
+        "celtiis": 35.6
+      },
+      "sfm_parts_comptes_pct": {
+        "mtn": 51,
+        "moov": 22,
+        "celtiis": 27
+      },
+      "sfm_parts_ca_pct": {
+        "mtn": 83,
+        "moov": 10.6,
+        "celtiis": 6.4
+      },
+      "sanctions_couverture_fcfa": {
+        "moov": 1506290505,
+        "mtn": 3351317641
+      }
+    },
+    "2024": {
+      "ca_marche_mds": 365.627,
+      "ca_mobile_mds": 339.578,
+      "cartes_sim_millions": 18.2,
+      "abonnes_uniques": 10943657,
+      "penetration_mobile_pct": 83.4,
+      "penetration_internet_pct": 63.5,
+      "arpu_fcfa": 1731,
+      "trafic_voix_mds_min": 6.844,
+      "trafic_data_millions_go": 375.4,
+      "sms_millions": 432.2,
+      "plaintes": 107,
+      "sfm_parts_comptes_pct": {
+        "mtn": 65,
+        "moov": 21.6,
+        "celtiis": 13.4
+      }
+    },
+    "2023": {
+      "ca_marche_mds": 357.686,
+      "ca_mobile_mds": 334.894,
+      "investissements_mds": 93.474,
+      "cartes_sim_millions": 16.3,
+      "abonnes_uniques": 8489402,
+      "penetration_mobile_pct": 67.3,
+      "penetration_internet_pct": 55.4,
+      "arpu_fcfa": 1893,
+      "trafic_data_millions_go": 280,
+      "sms_millions": 439.3,
+      "plaintes": 176
+    },
+    "2022": {
+      "ca_marche_mds": 343.489,
+      "abonnes_uniques": 6811527,
+      "penetration_mobile_pct": 52.7,
+      "penetration_internet_pct": 42.1,
+      "trafic_voix_mds_min": 6.488,
+      "trafic_data_millions_go": 203.07,
+      "sms_millions": 601.877
+    }
   }
 }

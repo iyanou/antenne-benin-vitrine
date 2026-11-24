@@ -8,8 +8,11 @@ Deux chiffres par annee, extraits du rapport annuel d'activites (section
     (absent de la structure du rapport avant 2023, et pas encore publie au moment
     de la redaction du rapport 2025 -- normal, pas un bug d'extraction)
 
-Rapports annuels tres volumineux (80-280+ pages, gros PDF avec images) -- on ne
-telecharge et parse que la page contenant la section 1.3.2, pas tout le document.
+Ajoute le 2026-11-24 : chiffres cles du marche ("chiffres_cles" par annee), lus dans le
+texte du rapport par des phrases types (chiffre d'affaires, abonnes uniques, penetration,
+ARPU, trafics, plaintes, investissements, parts de marche en valeur, Mobile Money,
+sanctions). Un indicateur dont la phrase n'est pas trouvee est simplement absent : il
+n'est jamais devine. Les phrases ont ete verifiees sur les rapports 2023, 2024 et 2025.
 """
 import json
 import os
@@ -17,6 +20,8 @@ import re
 import time
 import requests
 import pdfplumber
+
+import arcep_common as ac
 from urllib.parse import unquote
 
 INDEX_URL = "https://arcep.bj/rapports/"
@@ -106,6 +111,73 @@ def extract_revenus(pdf_path):
     return None
 
 
+def num(s):
+    s = re.sub(r'\s', '', s).replace(',', '.')
+    return float(s) if '.' in s else int(s)
+
+
+N = r'(\d[\d\s]*(?:,\d+)?)'
+OPS3 = ('mtn', 'moov', 'celtiis')
+KEY_FIGURES = {
+    # cle : (motif sur le texte normalise -- minuscules, sans accents --, groupes -> valeurs)
+    'ca_marche_mds': r"marche des communications electroniques affiche au 31 decembre 20\d\d, un chiffre d'affaires (?:estime a |de )" + N + " milliards",
+    'ca_mobile_mds': r"operateurs de reseaux de communications electroniques mobiles en 20\d\d (?:est|a ete)(?: estime a| evalue a| de)? " + N + " milliards",
+    'investissements_mds': r"volume global des investissements dans les reseaux de communications electroniques (?:est|de) (?:estime a |evalue a |de )?" + N + " milliards",
+    'cartes_sim_millions': r"nombre de cartes sim actives connectees aux reseaux de communications electroniques mobiles est (?:estime|evalue) a " + N + " millions",
+    'abonnes_uniques': r"nombre d'abonnes\d* a la telephonie mobile est (?:estime|evalue) a " + N + " au 31 decembre",
+    'penetration_mobile_pct': r"soit une penetration mobile de " + N + r" ?%",
+    'penetration_internet_pct': r"soit une penetration internet mobile de " + N + r" ?%",
+    'arpu_fcfa': r"\(average revenue per user . arpu\) au cours de l'annee(?: 20\d\d)? est evalue a " + N + " fcfa",
+    'trafic_voix_mds_min': r"trafic voix[^.]*?" + N + " milliards de minutes",
+    'trafic_data_millions_go': r"trafic internet mobile[^.]*?" + N + " millions de g",
+    'sms_millions': r"volume des sms echanges[^.]*?" + N + " millions",
+    'plaintes': r"\((\d+)\) plaintes ont ete enregistrees",
+    'ca_sfm_mds': r"chiffre d'affaires des fournisseurs du service financier mobile est de " + N + " milliards",
+}
+GROUPS = {
+    'investissements_par_operateur_mds': (r"spacetel benin sa, moov ?africa benin sa,? et sbin sa,? ont investi[^.]*?montants de "
+                                          + N + " ; " + N + " et " + N + " milliards", OPS3),
+    'parts_valeur_pct': (r"spacetel benin, moov africa benin et sbin, qui detiennent respectivement des parts de marche de "
+                         + N + "%, " + N + "% et " + N + "%", OPS3),
+    'sfm_parts_comptes_pct': (r"mtn mobile money, moov money et celtiis cash detiennent respectivement "
+                              + N + "%, " + N + "% et " + N + "% des comptes", OPS3),
+    'sfm_parts_ca_pct': (r"environ " + N + "% pour mtn mobile money, " + N + "% pour moov money et " + N + "% pour celtiis cash", OPS3),
+}
+SANCTION_RE = re.compile(r"sanctions pecuniaires des montants respectifs[^(]*\(([\d\s]+)\) francs cfa a l'encontre de "
+                         r"([a-z ]+?) sa et[^(]*\(([\d\s]+)\) francs cfa a l'encontre de ([a-z ]+?) sa")
+OP_NAMES = {'spacetel benin': 'mtn', 'moov africa benin': 'moov', 'sbin': 'celtiis'}
+
+
+def report_text(path):
+    """Texte complet normalise, mis en cache a cote du PDF (gros rapports)."""
+    cache = path + '.txt'
+    if os.path.exists(cache) and os.path.getmtime(cache) >= os.path.getmtime(path):
+        with open(cache, encoding='utf-8') as f:
+            return f.read()
+    with pdfplumber.open(path) as pdf:
+        text = ac.norm(' '.join(page.extract_text() or '' for page in pdf.pages))
+    with open(cache, 'w', encoding='utf-8') as f:
+        f.write(text)
+    return text
+
+
+def extract_key_figures(text):
+    out = {}
+    for key, pattern in KEY_FIGURES.items():
+        m = re.search(pattern, text)
+        if m:
+            out[key] = num(m.group(1))
+    for key, (pattern, names) in GROUPS.items():
+        m = re.search(pattern, text)
+        if m:
+            out[key] = {n: num(v) for n, v in zip(names, m.groups())}
+    m = SANCTION_RE.search(text)
+    if m:
+        out['sanctions_couverture_fcfa'] = {OP_NAMES.get(m.group(2).strip(), m.group(2).strip()): num(m.group(1)),
+                                           OP_NAMES.get(m.group(4).strip(), m.group(4).strip()): num(m.group(3))}
+    return out
+
+
 def main():
     print(f"Verification des rapports sur {INDEX_URL} ...")
     urls = discover_reports()
@@ -127,6 +199,10 @@ def main():
         annee = str(result.pop('annee'))
         store['par_annee'][annee] = result
         print(f"    OK {annee} : {result}")
+        figures = extract_key_figures(report_text(path))
+        if figures:
+            store.setdefault('chiffres_cles', {})[annee] = figures
+            print(f"    chiffres cles {annee} : {len(figures)} indicateurs")
         time.sleep(1)
 
     store['meta']['derniere_verification'] = time.strftime('%Y-%m-%d')

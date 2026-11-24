@@ -63,15 +63,18 @@
       "fup": false,
       "mtn": {
         "volume": "166 Mo",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 166.0
       },
       "moov": {
         "volume": "166 Mo",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 166.0
       },
       "sbin": {
         "volume": "167 Mo",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 167.0
       }
     },
     {
@@ -79,7 +82,8 @@
       "fup": false,
       "moov": {
         "volume": "250 Mo",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 250.0
       }
     },
     {
@@ -87,15 +91,18 @@
       "fup": false,
       "mtn": {
         "volume": "333 Mo",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 333.0
       },
       "moov": {
         "volume": "333 Mo",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 333.0
       },
       "sbin": {
         "volume": "333 Mo",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 333.0
       }
     },
     {
@@ -103,15 +110,18 @@
       "fup": false,
       "mtn": {
         "volume": "500 Mo + WhatsApp gratuit",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 500.0
       },
       "moov": {
         "volume": "500 Mo + WhatsApp",
-        "validite": "48H"
+        "validite": "48H",
+        "mo": 500.0
       },
       "sbin": {
         "volume": "500 Mo + Réseaux sociaux",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 500.0
       }
     },
     {
@@ -119,15 +129,18 @@
       "fup": false,
       "mtn": {
         "volume": "1 Go + Réseaux sociaux gratuits",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 1024.0
       },
       "moov": {
         "volume": "1 Go + Réseaux sociaux gratuits",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 1024.0
       },
       "sbin": {
         "volume": "1 Go + Accès gratuit WhatsApp, Tik Tok, Facebook, Servicepublic.bj",
-        "validite": "24H"
+        "validite": "24H",
+        "mo": 1024.0
       }
     },
     {
@@ -135,7 +148,8 @@
       "fup": false,
       "moov": {
         "volume": "916 Mo",
-        "validite": "72H"
+        "validite": "72H",
+        "mo": 916.0
       }
     },
     {
@@ -143,11 +157,13 @@
       "fup": false,
       "mtn": {
         "volume": "1 Go + MTN TV et NW TV",
-        "validite": "48H"
+        "validite": "48H",
+        "mo": 1024.0
       },
       "sbin": {
         "volume": "1250 Mo + Accès gratuit WhatsApp",
-        "validite": "72H"
+        "validite": "72H",
+        "mo": 1250.0
       }
     },
     {
@@ -155,15 +171,18 @@
       "fup": false,
       "mtn": {
         "volume": "1666 Mo",
-        "validite": "7 jours"
+        "validite": "7 jours",
+        "mo": 1666.0
       },
       "moov": {
         "volume": "1,62 Go",
-        "validite": "7 jours"
+        "validite": "7 jours",
+        "mo": 1658.88
       },
       "sbin": {
         "volume": "1666,67 Mo",
-        "validite": "7 jours"
+        "validite": "7 jours",
+        "mo": 1666.67
       }
     },
     {
@@ -171,15 +190,18 @@
       "fup": false,
       "mtn": {
         "volume": "4166 Mo",
-        "validite": "15 jours"
+        "validite": "15 jours",
+        "mo": 4166.0
       },
       "moov": {
         "volume": "4 Go",
-        "validite": "15 jours"
+        "validite": "15 jours",
+        "mo": 4096.0
       },
       "sbin": {
         "volume": "4166,67 Mo",
-        "validite": "15 jours"
+        "validite": "15 jours",
+        "mo": 4166.67
       }
     },
     {
@@ -187,15 +209,18 @@
       "fup": false,
       "mtn": {
         "volume": "8333 Mo",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 8333.0
       },
       "moov": {
         "volume": "8,13 Go",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 8325.12
       },
       "sbin": {
         "volume": "8333,33 Mo",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 8333.33
       }
     },
     {
@@ -203,7 +228,8 @@
       "fup": false,
       "moov": {
         "volume": "16,27 Go",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 16660.48
       }
     },
     {
@@ -211,15 +237,18 @@
       "fup": true,
       "mtn": {
         "volume": "24,4 Go / 1 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 24985.6
       },
       "moov": {
         "volume": "24,41 Go Plus / 2 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 24995.84
       },
       "sbin": {
         "volume": "24,4 Go Plus / 2 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 24985.6
       }
     },
     {
@@ -227,7 +256,8 @@
       "fup": true,
       "sbin": {
         "volume": "31 Go Plus / 2 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 31744.0
       }
     },
     {
@@ -235,11 +265,13 @@
       "fup": true,
       "mtn": {
         "volume": "32,5 Go / 1 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 33280.0
       },
       "moov": {
         "volume": "32,55 Go Plus / 3 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 33331.2
       }
     },
     {
@@ -247,15 +279,18 @@
       "fup": true,
       "mtn": {
         "volume": "40,7 Go / 1 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 41676.8
       },
       "moov": {
         "volume": "40,69 Go Plus / 5 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 41666.56
       },
       "sbin": {
         "volume": "41 Go Plus / 2 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 41984.0
       }
     },
     {
@@ -263,7 +298,8 @@
       "fup": true,
       "sbin": {
         "volume": "47,2 Go Plus / 2 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 48332.8
       }
     },
     {
@@ -271,7 +307,8 @@
       "fup": true,
       "moov": {
         "volume": "48,82 Go Plus / 10 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 49991.68
       }
     },
     {
@@ -279,18 +316,1127 @@
       "fup": true,
       "moov": {
         "volume": "81,38 Go Plus / 10 Mbps",
-        "validite": "30 jours"
+        "validite": "30 jours",
+        "mo": 83333.12
       }
     }
   ],
+  "historique_mobile": {
+    "T1_2025": [
+      {
+        "prix": 25,
+        "fup": false,
+        "mtn": {
+          "volume": "16 Mo",
+          "validite": "24H",
+          "mo": 16.0
+        },
+        "moov": {
+          "volume": "17 Mo",
+          "validite": "24H",
+          "mo": 17.0
+        }
+      },
+      {
+        "prix": 50,
+        "fup": false,
+        "mtn": {
+          "volume": "34 Mo",
+          "validite": "24H",
+          "mo": 34.0
+        },
+        "moov": {
+          "volume": "34 Mo",
+          "validite": "24H",
+          "mo": 34.0
+        }
+      },
+      {
+        "prix": 100,
+        "fup": false,
+        "mtn": {
+          "volume": "70 Mo",
+          "validite": "24H",
+          "mo": 70.0
+        },
+        "moov": {
+          "volume": "100 Mo",
+          "validite": "24H",
+          "mo": 100.0
+        },
+        "sbin": {
+          "volume": "125 Mo",
+          "validite": "24H",
+          "mo": 125.0
+        }
+      },
+      {
+        "prix": 150,
+        "fup": false,
+        "mtn": {
+          "volume": "120 Mo",
+          "validite": "24H",
+          "mo": 120.0
+        },
+        "moov": {
+          "volume": "150 Mo",
+          "validite": "24H",
+          "mo": 150.0
+        }
+      },
+      {
+        "prix": 200,
+        "fup": false,
+        "mtn": {
+          "volume": "170 Mo",
+          "validite": "24H",
+          "mo": 170.0
+        },
+        "moov": {
+          "volume": "200 Mo",
+          "validite": "24H",
+          "mo": 200.0
+        },
+        "sbin": {
+          "volume": "260 Mo",
+          "validite": "24H",
+          "mo": 260.0
+        }
+      },
+      {
+        "prix": 250,
+        "fup": false,
+        "mtn": {
+          "volume": "220 Mo",
+          "validite": "24H",
+          "mo": 220.0
+        },
+        "moov": {
+          "volume": "250 Mo",
+          "validite": "24H",
+          "mo": 250.0
+        }
+      },
+      {
+        "prix": 300,
+        "fup": false,
+        "moov": {
+          "volume": "300 Mo",
+          "validite": "24H",
+          "mo": 300.0
+        }
+      },
+      {
+        "prix": 500,
+        "fup": false,
+        "mtn": {
+          "volume": "450 Mo",
+          "validite": "3 jours",
+          "mo": 450.0
+        },
+        "moov": {
+          "volume": "500 Mo",
+          "validite": "3 jours",
+          "mo": 500.0
+        },
+        "sbin": {
+          "volume": "660 Mo",
+          "validite": "48H",
+          "mo": 660.0
+        }
+      },
+      {
+        "prix": 550,
+        "fup": false,
+        "moov": {
+          "volume": "560 Mo",
+          "validite": "3 jours",
+          "mo": 560.0
+        }
+      },
+      {
+        "prix": 750,
+        "fup": false,
+        "moov": {
+          "volume": "760 Mo",
+          "validite": "3 jours",
+          "mo": 760.0
+        },
+        "sbin": {
+          "volume": "1024 Mo",
+          "validite": "3 jours",
+          "mo": 1024.0
+        }
+      },
+      {
+        "prix": 995,
+        "fup": false,
+        "mtn": {
+          "volume": "1024 Mo",
+          "validite": "3 jours",
+          "mo": 1024.0
+        },
+        "moov": {
+          "volume": "1024 Mo",
+          "validite": "3 jours",
+          "mo": 1024.0
+        }
+      },
+      {
+        "prix": 500,
+        "fup": false,
+        "moov": {
+          "volume": "350 Mo",
+          "validite": "5 jours",
+          "mo": 350.0
+        }
+      },
+      {
+        "prix": 1000,
+        "fup": false,
+        "mtn": {
+          "volume": "850 Mo",
+          "validite": "7 jours",
+          "mo": 850.0
+        },
+        "moov": {
+          "volume": "1024 Mo",
+          "validite": "7 jours",
+          "mo": 1024.0
+        },
+        "sbin": {
+          "volume": "1434 Mo",
+          "validite": "7 jours",
+          "mo": 1434.0
+        }
+      },
+      {
+        "prix": 1500,
+        "fup": false,
+        "moov": {
+          "volume": "1536 Mo",
+          "validite": "7 jours",
+          "mo": 1536.0
+        }
+      },
+      {
+        "prix": 1500,
+        "fup": false,
+        "sbin": {
+          "volume": "2150 Mo",
+          "validite": "7 jours",
+          "mo": 2150.0
+        }
+      },
+      {
+        "prix": 2000,
+        "fup": false,
+        "mtn": {
+          "volume": "1800 Mo",
+          "validite": "7 jours",
+          "mo": 1800.0
+        },
+        "sbin": {
+          "volume": "2867 Mo",
+          "validite": "7 jours",
+          "mo": 2867.0
+        }
+      },
+      {
+        "prix": 2000,
+        "fup": false,
+        "moov": {
+          "volume": "2048 Mo",
+          "validite": "15 jours",
+          "mo": 2048.0
+        }
+      },
+      {
+        "prix": 2500,
+        "fup": false,
+        "mtn": {
+          "volume": "2300 Mo",
+          "validite": "20 jours",
+          "mo": 2300.0
+        },
+        "moov": {
+          "volume": "2560 Mo",
+          "validite": "20 jours",
+          "mo": 2560.0
+        }
+      },
+      {
+        "prix": 3000,
+        "fup": false,
+        "sbin": {
+          "volume": "4301 Mo",
+          "validite": "30 jours",
+          "mo": 4301.0
+        }
+      },
+      {
+        "prix": 4000,
+        "fup": false,
+        "mtn": {
+          "volume": "3700 Mo",
+          "validite": "20 jours",
+          "mo": 3700.0
+        },
+        "moov": {
+          "volume": "4096 Mo",
+          "validite": "20 jours",
+          "mo": 4096.0
+        }
+      },
+      {
+        "prix": 5000,
+        "fup": false,
+        "moov": {
+          "volume": "5120 Mo",
+          "validite": "30 jours",
+          "mo": 5120.0
+        },
+        "sbin": {
+          "volume": "7373 Mo",
+          "validite": "30 jours",
+          "mo": 7373.0
+        }
+      },
+      {
+        "prix": 6000,
+        "fup": false,
+        "mtn": {
+          "volume": "5700 Mo",
+          "validite": "30 jours",
+          "mo": 5700.0
+        },
+        "moov": {
+          "volume": "6144 Mo",
+          "validite": "30 jours",
+          "mo": 6144.0
+        }
+      },
+      {
+        "prix": 10000,
+        "fup": false,
+        "moov": {
+          "volume": "10240 Mo",
+          "validite": "30 jours",
+          "mo": 10240.0
+        },
+        "sbin": {
+          "volume": "14848 Mo",
+          "validite": "30 jours",
+          "mo": 14848.0
+        }
+      },
+      {
+        "prix": 15000,
+        "fup": false,
+        "moov": {
+          "volume": "15360 Mo",
+          "validite": "30 jours",
+          "mo": 15360.0
+        }
+      }
+    ],
+    "T1_2026": [
+      {
+        "prix": 100,
+        "fup": false,
+        "mtn": {
+          "volume": "238 Mo",
+          "validite": "24H",
+          "mo": 238.0
+        },
+        "moov": {
+          "volume": "238 Mo",
+          "validite": "24H",
+          "mo": 238.0
+        },
+        "sbin": {
+          "volume": "238 Mo",
+          "validite": "24H",
+          "mo": 238.0
+        }
+      },
+      {
+        "prix": 150,
+        "fup": false,
+        "moov": {
+          "volume": "357 Mo",
+          "validite": "24H",
+          "mo": 357.0
+        }
+      },
+      {
+        "prix": 200,
+        "fup": false,
+        "mtn": {
+          "volume": "476 Mo",
+          "validite": "24H",
+          "mo": 476.0
+        },
+        "moov": {
+          "volume": "476 Mo",
+          "validite": "24H",
+          "mo": 476.0
+        },
+        "sbin": {
+          "volume": "476 Mo",
+          "validite": "24H",
+          "mo": 476.0
+        }
+      },
+      {
+        "prix": 300,
+        "fup": false,
+        "sbin": {
+          "volume": "500 Mo + WhatsApp",
+          "validite": "24H",
+          "mo": 500.0
+        }
+      },
+      {
+        "prix": 500,
+        "fup": false,
+        "mtn": {
+          "volume": "1,2 Go",
+          "validite": "3 jours",
+          "mo": 1228.8
+        },
+        "moov": {
+          "volume": "1,16 Go",
+          "validite": "3 jours",
+          "mo": 1187.84
+        },
+        "sbin": {
+          "volume": "1,16 Go",
+          "validite": "3 jours",
+          "mo": 1187.84
+        }
+      },
+      {
+        "prix": 750,
+        "fup": false,
+        "sbin": {
+          "volume": "1,5 Go + WhatsApp",
+          "validite": "3 jours",
+          "mo": 1536.0
+        }
+      },
+      {
+        "prix": 1000,
+        "fup": false,
+        "mtn": {
+          "volume": "2,3 Go",
+          "validite": "7 jours",
+          "mo": 2355.2
+        },
+        "moov": {
+          "volume": "2,3 Go",
+          "validite": "7 jours",
+          "mo": 2355.2
+        },
+        "sbin": {
+          "volume": "1,8 Go + WhatsApp",
+          "validite": "7 jours",
+          "mo": 1843.2
+        }
+      },
+      {
+        "prix": 1500,
+        "fup": false,
+        "sbin": {
+          "volume": "3,49 Go",
+          "validite": "7 jours",
+          "mo": 3573.76
+        }
+      },
+      {
+        "prix": 2000,
+        "fup": false,
+        "moov": {
+          "volume": "4,6 Go",
+          "validite": "7 jours",
+          "mo": 4710.4
+        }
+      },
+      {
+        "prix": 2500,
+        "fup": false,
+        "mtn": {
+          "volume": "5,8 Go",
+          "validite": "15 jours",
+          "mo": 5939.2
+        }
+      },
+      {
+        "prix": 3000,
+        "fup": false,
+        "moov": {
+          "volume": "6,9 Go",
+          "validite": "15 jours",
+          "mo": 7065.6
+        },
+        "sbin": {
+          "volume": "6,96 Go",
+          "validite": "15 jours",
+          "mo": 7127.04
+        }
+      },
+      {
+        "prix": 5000,
+        "fup": false,
+        "sbin": {
+          "volume": "11,6 Go",
+          "validite": "30 jours",
+          "mo": 11878.4
+        }
+      },
+      {
+        "prix": 7000,
+        "fup": false,
+        "sbin": {
+          "volume": "16,2 Go",
+          "validite": "30 jours",
+          "mo": 16588.8
+        }
+      },
+      {
+        "prix": 5000,
+        "fup": true,
+        "mtn": {
+          "volume": "11,6 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 11878.4
+        },
+        "moov": {
+          "volume": "11,6 Go Plus / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 11878.4
+        },
+        "sbin": {
+          "volume": "11,6 Go / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 11878.4
+        }
+      },
+      {
+        "prix": 10000,
+        "fup": true,
+        "mtn": {
+          "volume": "23,3 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 23859.2
+        },
+        "moov": {
+          "volume": "23,2 Go Plus / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 23756.8
+        },
+        "sbin": {
+          "volume": "23,25 Go / 2 Mbps",
+          "mo": 23808.0
+        }
+      },
+      {
+        "prix": 15000,
+        "fup": true,
+        "mtn": {
+          "volume": "34,9 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 35737.6
+        },
+        "moov": {
+          "volume": "34,8 Go Plus / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 35635.2
+        }
+      },
+      {
+        "prix": 15100,
+        "fup": true,
+        "sbin": {
+          "volume": "35,1 Go / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 35942.4
+        }
+      },
+      {
+        "prix": 19000,
+        "fup": true,
+        "sbin": {
+          "volume": "44,2 Go / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 45260.8
+        }
+      },
+      {
+        "prix": 20000,
+        "fup": true,
+        "mtn": {
+          "volume": "46,5 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 47616.0
+        },
+        "moov": {
+          "volume": "46,5 Go Plus / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 47616.0
+        }
+      },
+      {
+        "prix": 25000,
+        "fup": true,
+        "mtn": {
+          "volume": "58,1 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 59494.4
+        },
+        "moov": {
+          "volume": "58 Go Plus / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 59392.0
+        },
+        "sbin": {
+          "volume": "58,1 Go / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 59494.4
+        }
+      },
+      {
+        "prix": 29000,
+        "fup": true,
+        "sbin": {
+          "volume": "67,4 Go / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 69017.6
+        }
+      },
+      {
+        "prix": 30000,
+        "fup": true,
+        "moov": {
+          "volume": "69,7 Go Plus / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 71372.8
+        }
+      },
+      {
+        "prix": 50000,
+        "fup": true,
+        "moov": {
+          "volume": "116,2 Go Plus / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 118988.8
+        }
+      }
+    ],
+    "T3_2026": [
+      {
+        "prix": 100,
+        "fup": false,
+        "mtn": {
+          "volume": "166 Mo",
+          "validite": "24H",
+          "mo": 166.0
+        },
+        "moov": {
+          "volume": "166 Mo",
+          "validite": "24H",
+          "mo": 166.0
+        },
+        "sbin": {
+          "volume": "167 Mo",
+          "validite": "24H",
+          "mo": 167.0
+        }
+      },
+      {
+        "prix": 150,
+        "fup": false,
+        "moov": {
+          "volume": "250 Mo",
+          "validite": "24H",
+          "mo": 250.0
+        }
+      },
+      {
+        "prix": 200,
+        "fup": false,
+        "mtn": {
+          "volume": "333 Mo",
+          "validite": "24H",
+          "mo": 333.0
+        },
+        "moov": {
+          "volume": "333 Mo",
+          "validite": "24H",
+          "mo": 333.0
+        },
+        "sbin": {
+          "volume": "333 Mo",
+          "validite": "24H",
+          "mo": 333.0
+        }
+      },
+      {
+        "prix": 300,
+        "fup": false,
+        "mtn": {
+          "volume": "500 Mo + WhatsApp gratuit",
+          "validite": "24H",
+          "mo": 500.0
+        },
+        "moov": {
+          "volume": "500 Mo + WhatsApp",
+          "validite": "48H",
+          "mo": 500.0
+        },
+        "sbin": {
+          "volume": "500 Mo + Réseaux sociaux",
+          "validite": "24H",
+          "mo": 500.0
+        }
+      },
+      {
+        "prix": 500,
+        "fup": false,
+        "mtn": {
+          "volume": "1 Go + Réseaux sociaux gratuits",
+          "validite": "24H",
+          "mo": 1024.0
+        },
+        "moov": {
+          "volume": "1 Go + Réseaux sociaux gratuits",
+          "validite": "24H",
+          "mo": 1024.0
+        },
+        "sbin": {
+          "volume": "1 Go + Accès gratuit WhatsApp, Tik Tok, Facebook, Servicepublic.bj",
+          "validite": "24H",
+          "mo": 1024.0
+        }
+      },
+      {
+        "prix": 550,
+        "fup": false,
+        "moov": {
+          "volume": "916 Mo",
+          "validite": "72H",
+          "mo": 916.0
+        }
+      },
+      {
+        "prix": 750,
+        "fup": false,
+        "mtn": {
+          "volume": "1 Go + MTN TV et NW TV",
+          "validite": "48H",
+          "mo": 1024.0
+        },
+        "sbin": {
+          "volume": "1250 Mo + Accès gratuit WhatsApp",
+          "validite": "72H",
+          "mo": 1250.0
+        }
+      },
+      {
+        "prix": 1000,
+        "fup": false,
+        "mtn": {
+          "volume": "1666 Mo",
+          "validite": "7 jours",
+          "mo": 1666.0
+        },
+        "moov": {
+          "volume": "1,62 Go",
+          "validite": "7 jours",
+          "mo": 1658.88
+        },
+        "sbin": {
+          "volume": "1666,67 Mo",
+          "validite": "7 jours",
+          "mo": 1666.67
+        }
+      },
+      {
+        "prix": 2500,
+        "fup": false,
+        "mtn": {
+          "volume": "4166 Mo",
+          "validite": "15 jours",
+          "mo": 4166.0
+        },
+        "moov": {
+          "volume": "4 Go",
+          "validite": "15 jours",
+          "mo": 4096.0
+        },
+        "sbin": {
+          "volume": "4166,67 Mo",
+          "validite": "15 jours",
+          "mo": 4166.67
+        }
+      },
+      {
+        "prix": 5000,
+        "fup": false,
+        "mtn": {
+          "volume": "8333 Mo",
+          "validite": "30 jours",
+          "mo": 8333.0
+        },
+        "moov": {
+          "volume": "8,13 Go",
+          "validite": "30 jours",
+          "mo": 8325.12
+        },
+        "sbin": {
+          "volume": "8333,33 Mo",
+          "validite": "30 jours",
+          "mo": 8333.33
+        }
+      },
+      {
+        "prix": 10000,
+        "fup": false,
+        "moov": {
+          "volume": "16,27 Go",
+          "validite": "30 jours",
+          "mo": 16660.48
+        }
+      },
+      {
+        "prix": 15000,
+        "fup": true,
+        "mtn": {
+          "volume": "24,4 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 24985.6
+        },
+        "moov": {
+          "volume": "24,41 Go Plus / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 24995.84
+        },
+        "sbin": {
+          "volume": "24,4 Go Plus / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 24985.6
+        }
+      },
+      {
+        "prix": 19000,
+        "fup": true,
+        "sbin": {
+          "volume": "31 Go Plus / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 31744.0
+        }
+      },
+      {
+        "prix": 20000,
+        "fup": true,
+        "mtn": {
+          "volume": "32,5 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 33280.0
+        },
+        "moov": {
+          "volume": "32,55 Go Plus / 3 Mbps",
+          "validite": "30 jours",
+          "mo": 33331.2
+        }
+      },
+      {
+        "prix": 25000,
+        "fup": true,
+        "mtn": {
+          "volume": "40,7 Go / 1 Mbps",
+          "validite": "30 jours",
+          "mo": 41676.8
+        },
+        "moov": {
+          "volume": "40,69 Go Plus / 5 Mbps",
+          "validite": "30 jours",
+          "mo": 41666.56
+        },
+        "sbin": {
+          "volume": "41 Go Plus / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 41984.0
+        }
+      },
+      {
+        "prix": 29000,
+        "fup": true,
+        "sbin": {
+          "volume": "47,2 Go Plus / 2 Mbps",
+          "validite": "30 jours",
+          "mo": 48332.8
+        }
+      },
+      {
+        "prix": 30000,
+        "fup": true,
+        "moov": {
+          "volume": "48,82 Go Plus / 10 Mbps",
+          "validite": "30 jours",
+          "mo": 49991.68
+        }
+      },
+      {
+        "prix": 50000,
+        "fup": true,
+        "moov": {
+          "volume": "81,38 Go Plus / 10 Mbps",
+          "validite": "30 jours",
+          "mo": 83333.12
+        }
+      }
+    ]
+  },
+  "historique_ftth": {
+    "T1_2025": {
+      "partage": {
+        "20": {
+          "sbin": 14900,
+          "isocel": 15000
+        },
+        "40": {
+          "isocel": 25000
+        },
+        "50": {
+          "sbin": 24900,
+          "isocel": 40000
+        },
+        "70": {
+          "sbin": 39900,
+          "isocel": 70000
+        },
+        "100": {
+          "isocel": 125000
+        },
+        "150": {
+          "isocel": 160000
+        }
+      },
+      "dedie": {
+        "10": {
+          "isocel": 220000
+        },
+        "20": {
+          "sbin": 525000,
+          "isocel": 400000
+        },
+        "30": {
+          "sbin": 750000,
+          "isocel": 540000
+        },
+        "40": {
+          "isocel": 720000
+        },
+        "50": {
+          "sbin": 1200000,
+          "isocel": 900000
+        },
+        "100": {
+          "sbin": 2260000,
+          "isocel": 1845000
+        },
+        "150": {
+          "sbin": 3300000,
+          "isocel": 2490750
+        },
+        "200": {
+          "isocel": 3198000
+        }
+      }
+    },
+    "T2_2025": {
+      "partage": {
+        "20": {
+          "sbin": 14900,
+          "isocel": 15000
+        },
+        "40": {
+          "isocel": 25000
+        },
+        "50": {
+          "sbin": 24900,
+          "isocel": 40000,
+          "gva_benin": 15000
+        },
+        "70": {
+          "sbin": 39900,
+          "isocel": 70000
+        },
+        "100": {
+          "isocel": 125000
+        },
+        "150": {
+          "isocel": 160000
+        },
+        "200": {
+          "gva_benin": 30000
+        }
+      },
+      "dedie": {
+        "10": {
+          "isocel": 220000
+        },
+        "20": {
+          "sbin": 525000,
+          "isocel": 400000
+        },
+        "30": {
+          "sbin": 750000,
+          "isocel": 540000
+        },
+        "40": {
+          "isocel": 720000
+        },
+        "50": {
+          "sbin": 1200000,
+          "isocel": 900000
+        },
+        "100": {
+          "sbin": 2260000,
+          "isocel": 1845000
+        },
+        "150": {
+          "sbin": 3300000,
+          "isocel": 2490750
+        },
+        "200": {
+          "isocel": 3198000
+        }
+      }
+    },
+    "T1_2026": {
+      "partage": {
+        "20": {
+          "sbin": 14900
+        },
+        "40": {
+          "isocel": 15000
+        },
+        "50": {
+          "sbin": 24900,
+          "gva_benin": 15000
+        },
+        "70": {
+          "sbin": 39900
+        },
+        "150": {
+          "isocel": 25000
+        },
+        "200": {
+          "gva_benin": 30000
+        }
+      },
+      "dedie": {
+        "10": {
+          "isocel": 220000
+        },
+        "20": {
+          "sbin": 525000,
+          "isocel": 400000
+        },
+        "30": {
+          "sbin": 750000,
+          "isocel": 540000
+        },
+        "40": {
+          "isocel": 720000
+        },
+        "50": {
+          "sbin": 1200000,
+          "isocel": 900000
+        },
+        "100": {
+          "sbin": 2260000,
+          "isocel": 1845000
+        },
+        "150": {
+          "sbin": 3300000,
+          "isocel": 2490750
+        },
+        "200": {
+          "isocel": 3198000
+        }
+      }
+    },
+    "T3_2026": {
+      "partage": {
+        "40": {
+          "isocel": 15000
+        },
+        "50": {
+          "sbin": 14900,
+          "gva_benin": 15000
+        },
+        "100": {
+          "sbin": 24900
+        },
+        "150": {
+          "isocel": 25000
+        },
+        "200": {
+          "gva_benin": 30000
+        }
+      },
+      "dedie": {
+        "10": {
+          "isocel": 220000
+        },
+        "20": {
+          "sbin": 525000,
+          "isocel": 400000
+        },
+        "30": {
+          "sbin": 750000,
+          "isocel": 540000
+        },
+        "40": {
+          "isocel": 720000
+        },
+        "50": {
+          "sbin": 1200000,
+          "isocel": 900000
+        },
+        "100": {
+          "sbin": 2260000,
+          "isocel": 1845000
+        },
+        "150": {
+          "sbin": 3300000,
+          "isocel": 2490750
+        },
+        "200": {
+          "isocel": 3198000
+        }
+      }
+    }
+  },
   "meta": {
     "ftth_source": "Observatoire-des-tarifs-FTTH-au-30-septembre-2026.pdf",
     "mobile_source": "Tableau-de-bord-des-Tarifs-mobiles_30-septembre-2026.pdf",
     "derniere_verification": "2026-11-24",
     "verifie": true,
-    "note": "Cliche instantane du dernier catalogue publie (pas une serie temporelle). Volumes repris tels qu'ecrits par l'ARCEP. SBIN = marque Celtiis.",
     "mobile_periode": "T3_2026",
     "ftth_periode": "T3_2026",
-    "dernier_rapport": "T3_2026"
+    "dernier_rapport": "T3_2026",
+    "libelles_periodes": {
+      "T1_2025": "mars 2025",
+      "T3_2025": "septembre 2025",
+      "T1_2026": "mars 2026",
+      "T3_2026": "septembre 2026"
+    },
+    "inchange_jusqu_a": {
+      "T1_2025": "septembre 2025"
+    }
   }
 }

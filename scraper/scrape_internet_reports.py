@@ -180,6 +180,9 @@ def main():
         print(f"  {period} {os.path.basename(path)}")
         fixe = extract_fixe(path)
         mobile = extract_mobile(path, ac.quarters_ending(period))
+        g = ac.gender_split(path)
+        if g:
+            store.setdefault('genre_mobile', {})[period] = g
         if not fixe and not mobile:
             print(f"    ! rien extrait -- structure differente, ignore")
             continue

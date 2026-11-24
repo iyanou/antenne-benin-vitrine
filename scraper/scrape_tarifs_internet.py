@@ -25,6 +25,7 @@ import arcep_common as ac
 
 INDEX_URL = "https://arcep.bj/tarifs-internet/"
 MOBILE_INDEX_URL = "https://arcep.bj/telephonie-mobile/"
+HISTORY_FROM = 2025  # annee de mise en ligne des plus anciens rapports conserves en historique
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OBS_DIR = os.path.normpath(os.path.join(HERE, "..", "cache", "tarifs-internet"))
@@ -139,18 +140,49 @@ def clean_offer(s):
     return s.replace('Whatsapp', 'WhatsApp')
 
 
+MONTH_Q = {'janvier': 1, 'fevrier': 1, 'mars': 1, 'avril': 2, 'mai': 2, 'juin': 2, 'juillet': 3,
+           'aout': 3, 'septembre': 3, 'octobre': 4, 'novembre': 4, 'decembre': 4}
+SOURCE_RE = re.compile(r'donnees operateurs,?\s*(' + '|'.join(MONTH_Q) + r')\s*(20\d\d)')
+VOLUME_RE = re.compile(r'(\d[\d\s]*(?:,\d+)?)\s*(Go|Mo|MB)?', re.I)
+
+
+def data_period(pdf_path, cover_period):
+    """Periode reelle des offres : la ligne "Source : (Donnees Operateurs, mars 2026)".
+    L'ARCEP republie parfois le catalogue d'un trimestre precedent sous une nouvelle
+    couverture (ex. tableau de bord "au 30 juin 2026" contenant les offres de mars)."""
+    with pdfplumber.open(pdf_path) as pdf:
+        text = ac.norm(' '.join(page.extract_text() or '' for page in pdf.pages))
+    found = SOURCE_RE.findall(text)
+    if not found:
+        return cover_period, None
+    month, year = found[-1]
+    return f"T{MONTH_Q[month]}_{year}", f"{month} {year}"
+
+
+def volume_mo(volume):
+    """Volume en Mo (1 Go = 1024 Mo, convention ARCEP : 4 Go = 4096 Mo)."""
+    m = VOLUME_RE.match(volume)
+    if not m:
+        return None
+    n = float(re.sub(r'\s', '', m.group(1)).replace(',', '.'))
+    return round(n * 1024 if (m.group(2) or '').lower() == 'go' else n, 2)
+
+
 def extract_mobile(pdf_path):
-    """[{'prix': int, 'fup': bool, 'mtn'|'moov'|'sbin': {'volume': str, 'validite': str}}]"""
+    """[{'prix': int, 'fup': bool, 'mtn'|'moov'|'sbin': {'volume', 'validite', 'mo'}}]
+    Deux formats : 2026 (volumes avec unite, sections "sans FUP" / "avec FUP") et
+    2025 (en-tete "Volume (MB)", chiffres seuls)."""
     for table in ac.iter_tables(pdf_path):
         heads = [' '.join(str(c) for c in row if c) for row in table]
-        if not any('sans FUP' in h for h in heads):
+        hrow = next((i for i, h in enumerate(heads) if 'Forfait (FCFA)' in h), None)
+        if hrow is None:
             continue
-        hrow = next(i for i, h in enumerate(heads) if 'Forfait (FCFA)' in h)
-        vol = [i for i, c in enumerate(table[hrow]) if c == 'Volume']
+        vol = [i for i, c in enumerate(table[hrow]) if c and c.startswith('Volume')]
         val = [i for i, c in enumerate(table[hrow]) if c and c.startswith('Valid')]
         ops = [c.lower() for row in table[:hrow] for c in row if c in ('MTN', 'MOOV', 'SBIN')]
         if len(vol) != 3 or len(val) != 3 or ops != ['mtn', 'moov', 'sbin']:
-            raise ValueError(f"grille de forfaits inattendue : {os.path.basename(pdf_path)}")
+            continue
+        in_mb = 'MB' in table[hrow][vol[0]]
         cols = sorted([(i, op, 'volume') for i, op in zip(vol, ops)] +
                       [(i, op, 'validite') for i, op in zip(val, ops)])
         offers, fup = [], False
@@ -174,35 +206,77 @@ def extract_mobile(pdf_path):
         for o in offers:
             for op in ops:
                 if op in o:
-                    o[op] = {k: clean_offer(v) for k, v in o[op].items()}
-        return offers
+                    d = {k: clean_offer(v).replace(' **', '').replace('**', '') for k, v in o[op].items()}
+                    if in_mb and re.fullmatch(r'[\d\s]+', d.get('volume', '')):
+                        d['volume'] = re.sub(r'\s', '', d['volume']) + ' Mo'
+                    d['mo'] = volume_mo(d.get('volume', ''))
+                    if d['mo']:
+                        o[op] = d
+                    else:
+                        del o[op]  # case sans volume (ex. "30 jours" seul, offre portee par la ligne suivante)
+        return [o for o in offers if any(op in o for op in ops)]
     return []
 
 
-def main():
-    ftth = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=2026, exclude=('mobile',))
-    mobile = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=2026, exclude=('ftth',))
-    mobile += [r for r in ac.load_reports(MOBILE_INDEX_URL, OBS_DIR, min_upload_year=2026,
-                                          exclude=('observatoire-telephonie',))
-               if 'tarif' in ac.norm(os.path.basename(r[1]))]
-    mobile.sort(key=lambda r: ac.qkey(r[0]), reverse=True)
+def same_catalog(new, known):
+    """Vrai si le catalogue n'apporte rien : identique, ou simple extrait d'un catalogue deja vu
+    (table coupee sur deux pages dans un rapport qui republie le meme trimestre)."""
+    return all(o in known for o in new)
 
-    ftth_period, ftth_path = ftth[-1]
-    store = {'ftth': extract_ftth(ftth_path), 'mobile': [], 'meta': ac.read_json(OUT_JSON).get('meta', {})}
-    for period, path in mobile:  # du plus recent au plus ancien
+
+def main():
+    ftth = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=HISTORY_FROM, exclude=('mobile',))
+    mobile = ac.load_reports(INDEX_URL, OBS_DIR, min_upload_year=HISTORY_FROM, exclude=('ftth', 'fixe'))
+    mobile += [r for r in ac.load_reports(MOBILE_INDEX_URL, OBS_DIR, min_upload_year=HISTORY_FROM,
+                                          exclude=('telephonie', 'annuel'))
+               if 'tarif' in ac.norm(os.path.basename(r[1]))]
+    old = ac.read_json(OUT_JSON)
+
+    # historique mobile : un catalogue par periode reelle des donnees, doublons ecartes
+    hist_mobile, labels, confirmed = {}, {}, {}
+    for period, path in sorted(mobile, key=lambda r: ac.qkey(r[0])):
         offers = extract_mobile(path)
-        print(f"  Mobile {period} {os.path.basename(path)} : {len(offers)} forfaits")
-        if offers:
-            store['mobile'] = offers
-            store['meta'].update(mobile_source=os.path.basename(path), mobile_periode=period)
-            break
-    print(f"  FTTH {ftth_period} {os.path.basename(ftth_path)}")
+        if not offers:
+            continue
+        dp, label = data_period(path, period)
+        print(f"  Mobile {period} (donnees {label or dp}) {os.path.basename(path)} : {len(offers)} forfaits")
+        # meme catalogue deja vu, ou republication partielle de la meme periode : on garde le plus complet
+        known = next((k for k, o in hist_mobile.items() if same_catalog(offers, o)), None)
+        if known or len(hist_mobile.get(dp, [])) >= len(offers):
+            if known and ac.qkey(dp) > ac.qkey(known):
+                confirmed[known] = label or dp  # catalogue inchange, revu a cette date
+            continue
+        hist_mobile[dp] = offers
+        labels[dp] = label
+    hist_ftth = {}
+    for period, path in sorted(ftth, key=lambda r: ac.qkey(r[0])):
+        # redevances seules : les frais d'installation en promotion ("20 000 / 10 000*") des
+        # anciens rapports ne sont pas lus de facon fiable
+        r = extract_ftth(path)['redevances']
+        if r['partage'] and (not hist_ftth or r != hist_ftth[max(hist_ftth, key=ac.qkey)]):
+            hist_ftth[period] = r
+    hist_mobile = ac.keep_missing_quarters(hist_mobile, old.get('historique_mobile'))
+    hist_ftth = ac.keep_missing_quarters(hist_ftth, old.get('historique_ftth'))
+
+    m_period = max(hist_mobile, key=ac.qkey)
+    f_period, f_path = ftth[-1]
+    store = {
+        'ftth': extract_ftth(f_path),
+        'mobile': hist_mobile[m_period],
+        'historique_mobile': hist_mobile,
+        'historique_ftth': hist_ftth,
+        'meta': old.get('meta', {}),
+    }
+    print(f"  FTTH {f_period} {os.path.basename(f_path)} ; historique mobile {list(hist_mobile)}, "
+          f"fibre {list(hist_ftth)}")
     store['meta'].update(
-        ftth_source=os.path.basename(ftth_path), ftth_periode=ftth_period,
-        dernier_rapport=max((ftth_period, mobile[0][0]), key=ac.qkey),
-        derniere_verification=time.strftime('%Y-%m-%d'),
-        note="Cliche instantane du dernier catalogue publie (pas une serie temporelle). Volumes "
-             "repris tels qu'ecrits par l'ARCEP. SBIN = marque Celtiis.")
+        ftth_source=os.path.basename(f_path), ftth_periode=f_period, mobile_periode=m_period,
+        mobile_source=next(os.path.basename(p) for q, p in mobile
+                           if data_period(p, q)[0] == m_period and extract_mobile(p)),
+        inchange_jusqu_a={**old.get('meta', {}).get('inchange_jusqu_a', {}), **confirmed},
+        libelles_periodes={k: v for k, v in {**old.get('meta', {}).get('libelles_periodes', {}), **labels}.items() if v},
+        dernier_rapport=max((f_period, m_period), key=ac.qkey),
+        derniere_verification=time.strftime('%Y-%m-%d'))
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(store, f, ensure_ascii=False, indent=2)
     print(f"Ecrit : {OUT_JSON}")

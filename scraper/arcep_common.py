@@ -9,6 +9,7 @@ double, colonne oubliee, "T3-2023" au lieu de "T3-2024"...).
 Une ligne qui n'a pas exactement 5 valeurs est rejetee, jamais devinee.
 """
 import json
+import math
 import os
 import re
 import time
@@ -152,3 +153,54 @@ def keep_missing_quarters(new, old):
     for q, v in (old or {}).items():
         new.setdefault(q, v)
     return {q: new[q] for q in sorted(new, key=qkey)}
+
+
+GENDER_RE = re.compile(r'par sexe\s*(\d{1,2}(?:,\d+)?)\s*%\s*(\d{1,2}(?:,\d+)?)\s*%')
+
+
+def gender_split(path):
+    """{'hommes': x, 'femmes': y} du graphique "repartition ... par sexe" (homme a gauche,
+    femme a droite, verifie sur les rapports T2/T3 2026), ou None."""
+    with pdfplumber.open(path) as pdf:
+        text = ' '.join(page.extract_text() or '' for page in pdf.pages)
+    m = GENDER_RE.search(re.sub(r'\s+', ' ', text))
+    if not m:
+        return None
+    h, f = (float(x.replace(',', '.')) for x in m.groups())
+    return {'hommes': h, 'femmes': f} if abs(h + f - 100) <= 0.2 else None
+
+
+PCT_WORD = re.compile(r'^\d{1,2}(?:,\d+)?%$')
+
+
+def pie_shares(path, title_word='valeur', series=('mtn', 'moov', 'celtiis')):
+    """Parts lues sur les deux camemberts "Part de marche en volume / en valeur".
+
+    pdfplumber rend les etiquettes dans le desordre ; on les remet dans l'ordre des
+    tranches : angle horaire depuis midi autour du centre de chaque camembert (centre
+    deduit des courbes du dessin). Les tranches suivent l'ordre de la legende
+    (SPACETEL, MOOV, CELTIIS). Renvoie ({'volume': {...}, 'valeur': {...}}) ou None."""
+    with pdfplumber.open(path) as pdf:
+        for page in pdf.pages:
+            words = page.extract_words()
+            titles = [w for w in words if w['text'] == title_word]
+            if not titles or not any(w['text'] == 'Part' for w in words):
+                continue
+            top = titles[0]['top']
+            mid = page.width / 2
+            out = {}
+            for right, name in ((False, 'volume'), (True, 'valeur')):
+                in_half = lambda o: (((o['x0'] + o['x1']) / 2) > mid) == right
+                curves = [c for c in page.curves if top < c['top'] < top + 220 and in_half(c)]
+                labels = [w for w in words if PCT_WORD.match(w['text']) and top - 5 < w['top'] < top + 220
+                          and in_half(w)]
+                if not curves or len(labels) != len(series):
+                    return None
+                cx = (min(c['x0'] for c in curves) + max(c['x1'] for c in curves)) / 2
+                cy = (min(c['top'] for c in curves) + max(c['bottom'] for c in curves)) / 2
+                angle = lambda w: math.degrees(math.atan2((w['x0'] + w['x1']) / 2 - cx,
+                                                          cy - (w['top'] + w['bottom']) / 2)) % 360
+                ordered = sorted(labels, key=angle)
+                out[name] = {op: parse_number(w['text']) for op, w in zip(series, ordered)}
+            return out
+    return None

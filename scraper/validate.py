@@ -51,7 +51,22 @@ def check_market(d):
     for q, v in d['trafics'].items():
         if not all(v.get(k) for k in ('voix_min', 'sms_nb', 'data_go')):
             e.append(f"trafics {q} : valeur absente")
+    series(e, 'technologies', d['technologies'], last)
+    for q, v in d['technologies'].items():
+        same(e, f"technologies {q} 2G+3G+4G/total", sum(v.get(k) or 0 for k in ('2g', '3g', '4g')),
+             d['abonnements'].get(q, {}).get('total'))
+    series(e, 'parts_valeur', d['parts_valeur'], last)
+    for q, v in d['parts_valeur'].items():
+        if not all(v.get(op) for op in OPS):
+            e.append(f"parts_valeur {q} : operateur absent")
+        same(e, f"parts_valeur {q} somme", sum(v.get(op) or 0 for op in OPS), 100, 0.3)
+    e += check_gender('genre', d.get('genre', {}))
     return e
+
+
+def check_gender(name, g):
+    return [f"{name} {q} : hommes + femmes != 100" for q, v in g.items()
+            if abs((v.get('hommes') or 0) + (v.get('femmes') or 0) - 100) > 0.2]
 
 
 def check_sfm(d):
@@ -105,6 +120,7 @@ def check_internet(d):
         if not all(o.get(op) for op in OPS) and ac.qkey(q) >= ac.qkey('T1_2023'):
             e.append(f"mobile {q} : operateur absent")
         same(e, f"mobile {q} somme/total", sum(x or 0 for x in o.values()), v.get('total'))
+    e += check_gender('genre_mobile', d.get('genre_mobile', {}))
     return e
 
 
@@ -141,6 +157,16 @@ def check_tarifs(d):
         for op in ('mtn', 'moov', 'sbin'):
             if op in o and not any(u in o[op].get('volume', '') for u in ('Mo', 'Go')):
                 e.append(f"mobile {o['prix']} {op} : volume illisible {o[op]}")
+    hm, hf = d.get('historique_mobile', {}), d.get('historique_ftth', {})
+    if len(hm) < 2 or max(hm, key=ac.qkey) != m.get('mobile_periode') or hm[m['mobile_periode']] != d['mobile']:
+        e.append('historique_mobile : absent, ou dernier catalogue different du catalogue affiche')
+    for q, offers in hm.items():
+        for o in offers:
+            for op in ('mtn', 'moov', 'sbin'):
+                if op in o and not o[op].get('mo'):
+                    e.append(f"historique_mobile {q} {o['prix']} {op} : volume non converti {o[op].get('volume')}")
+    if len(hf) < 2 or ac.qkey(max(hf, key=ac.qkey)) > ac.qkey(m.get('ftth_periode', 'T1_2000')):
+        e.append('historique_ftth : absent ou incoherent avec le dernier rapport')
     if m.get('mobile_periode') != m.get('dernier_rapport') or m.get('ftth_periode') != m.get('dernier_rapport'):
         print(f"  (info) tarifs : mobile {m.get('mobile_periode')}, fibre {m.get('ftth_periode')}, "
               f"dernier rapport {m.get('dernier_rapport')}")
@@ -148,8 +174,21 @@ def check_tarifs(d):
 
 
 def check_revenus(d):
-    return [f"revenus {y} : ressources propres absentes" for y, v in d['par_annee'].items()
-            if not v.get('ressources_propres')] or ([] if d['par_annee'] else ['revenus : vide'])
+    e = [f"revenus {y} : ressources propres absentes" for y, v in d['par_annee'].items()
+         if not v.get('ressources_propres')] or ([] if d['par_annee'] else ['revenus : vide'])
+    cc = d.get('chiffres_cles', {})
+    if not cc or max(cc) != max(d['par_annee']):
+        e.append('chiffres_cles : absents pour la derniere annee publiee')
+    for y, v in cc.items():
+        if not v.get('ca_marche_mds'):
+            e.append(f"chiffres_cles {y} : chiffre d'affaires du marche absent")
+        for k in ('parts_valeur_pct', 'sfm_parts_comptes_pct', 'sfm_parts_ca_pct'):
+            if k in v:
+                same(e, f"chiffres_cles {y} {k} somme", sum(v[k].values()), 100, 0.5)
+        if v.get('abonnes_uniques') and v.get('cartes_sim_millions') and not (
+                1 < v['cartes_sim_millions'] * 1e6 / v['abonnes_uniques'] < 3):
+            e.append(f"chiffres_cles {y} : SIM / abonnes uniques invraisemblable")
+    return e
 
 
 RANGES = {'succes_voix': (50, 100), 'blocage_voix': (0, 50), 'dl_3g': (50, 20000),

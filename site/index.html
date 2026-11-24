@@ -620,6 +620,31 @@
           <h3 style="font-size:15.5px; font-weight:800;">Trafic réseau (dernier trimestre disponible)</h3>
         </div>
         <div class="stats" id="trafic-stats"></div>
+
+        <div class="block-head" style="margin-top:34px; margin-bottom:14px;">
+          <h3 style="font-size:15.5px; font-weight:800;">Parts de marché en valeur (chiffre d'affaires)</h3>
+          <span class="sub" data-range="market-valeur"></span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-item"><span class="swatch" style="background:var(--mtn)"></span>MTN</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--celtiis)"></span>Celtiis</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--moov)"></span>Moov Africa</span>
+        </div>
+        <div class="chart-holder"><canvas id="market-value-chart" role="img" aria-label="Évolution des parts de marché en valeur"></canvas></div>
+        <div class="stats" id="market-value-stats"></div>
+
+        <div class="block-head" style="margin-top:34px; margin-bottom:14px;">
+          <h3 style="font-size:15.5px; font-weight:800;">Abonnements mobiles par technologie</h3>
+          <span class="sub" data-range="market-tech"></span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-item"><span class="swatch" style="background:var(--ink-muted)"></span>2G</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--accent)"></span>3G</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--brand)"></span>4G</span>
+        </div>
+        <div class="chart-holder"><canvas id="market-tech-chart" role="img" aria-label="Abonnements mobiles par technologie"></canvas></div>
+        <p class="stat-note" id="market-tech-note" style="margin-top:8px;"></p>
+        <div class="stats" id="market-genre-stats" style="margin-top:18px;"></div>
       </div>
     </div>
 
@@ -660,10 +685,33 @@
         <div class="overflow-x"><table class="tarif-table" id="tarif-mobile-table"></table></div>
 
         <div class="block-head" style="margin-top:34px; margin-bottom:14px;">
+          <h3 style="font-size:15.5px; font-weight:800;">Ce que le même prix vous donne, dans le temps</h3>
+          <span class="sub" id="tarif-hist-sub">Volume de data d'un forfait sans FUP, à prix égal</span>
+        </div>
+        <div class="range-row" id="tarif-hist-prices" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;"></div>
+        <div class="legend-row">
+          <span class="legend-item"><span class="swatch" style="background:var(--mtn)"></span>MTN</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--celtiis)"></span>SBIN (Celtiis)</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--moov)"></span>Moov Africa</span>
+        </div>
+        <div class="chart-holder"><canvas id="tarif-hist-chart" role="img" aria-label="Évolution du volume de data à prix égal"></canvas></div>
+
+        <div class="block-head" style="margin-top:34px; margin-bottom:14px;">
           <h3 style="font-size:15.5px; font-weight:800;">Tarifs — Internet fixe FTTH</h3>
           <span class="sub" id="tarif-ftth-sub">Frais d'installation et redevances mensuelles par palier de débit</span>
         </div>
         <div class="overflow-x"><table class="tarif-table" id="ftth-table"></table></div>
+
+        <div class="block-head" style="margin-top:34px; margin-bottom:14px;">
+          <h3 style="font-size:15.5px; font-weight:800;">Fibre : prix du Mbit/s dans le temps</h3>
+          <span class="sub" id="ftth-hist-sub">Offre en débit partagé la plus avantageuse de chaque fournisseur, en FCFA par Mbit/s et par mois</span>
+        </div>
+        <div class="legend-row">
+          <span class="legend-item"><span class="swatch" style="background:var(--celtiis)"></span>SBIN (Celtiis)</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--accent)"></span>Isocel</span>
+          <span class="legend-item"><span class="swatch" style="background:var(--mtn)"></span>GVA Bénin</span>
+        </div>
+        <div class="chart-holder"><canvas id="ftth-hist-chart" role="img" aria-label="Évolution du prix du Mbit/s en fibre"></canvas></div>
       </div>
     </div>
 
@@ -762,6 +810,16 @@
           n'apparaît dans le rapport annuel que depuis 2023.
         </p>
         <div class="overflow-x"><table class="tarif-table" id="regulateur-table"></table></div>
+
+        <div class="block-head" style="margin-top:34px; margin-bottom:14px;">
+          <h3 style="font-size:15.5px; font-weight:800;">Chiffres clés des rapports annuels</h3>
+          <span class="sub" data-range="chiffres-cles" data-prefix="Rapports annuels d'activités ARCEP, "></span>
+        </div>
+        <p class="prose" style="color:var(--ink-2); margin-bottom:14px; font-size:14px;">
+          Repris tels qu'écrits dans chaque rapport annuel. « — » : chiffre non publié dans le
+          rapport de l'année. Les abonnés uniques sont comptés après élimination des multi-SIM.
+        </p>
+        <div class="overflow-x"><table class="tarif-table" id="chiffres-cles-table"></table></div>
       </div>
     </div>
   </section>
@@ -1029,7 +1087,7 @@
   render();
 
   // ---- Marche & Regulation ----
-  const MARKET_DATA = {"abonnements":{"T3_2024":{"mtn":8951193,"moov":6103953,"celtiis":3191516,"total":18246662,"parts_marche":{"mtn":49.1,"moov":33.5,"celtiis":17.5}},"T4_2024":{"mtn":8860782,"moov":5705177,"celtiis":3648522,"total":18214481,"parts_marche":{"mtn":48.6,"moov":31.3,"celtiis":20.0}},"T1_2025":{"mtn":8587373,"moov":5938114,"celtiis":4178572,"total":18704059,"parts_marche":{"mtn":45.9,"moov":31.7,"celtiis":22.3}},"T2_2025":{"mtn":8467024,"moov":5520384,"celtiis":4649114,"total":18636522,"parts_marche":{"mtn":45.4,"moov":29.6,"celtiis":24.9}},"T3_2025":{"mtn":6897211,"moov":5417711,"celtiis":5212965,"total":17527887,"parts_marche":{"mtn":39.3,"moov":30.9,"celtiis":29.7}},"T4_2025":{"mtn":6960590,"moov":5297072,"celtiis":5921124,"total":18178786,"parts_marche":{"mtn":38.3,"moov":29.1,"celtiis":32.6}},"T1_2026":{"mtn":7337108,"moov":5296538,"celtiis":6376335,"total":19009981,"parts_marche":{"mtn":38.6,"moov":27.9,"celtiis":33.5}},"T2_2026":{"mtn":7775721,"moov":5087017,"celtiis":6611656,"total":19474394,"parts_marche":{"mtn":39.9,"moov":26.1,"celtiis":34.0}},"T3_2026":{"mtn":7770670,"moov":4710340,"celtiis":6386087,"total":18867097,"parts_marche":{"mtn":41.2,"moov":25.0,"celtiis":33.8}}},"trafics":{"T3_2024":{"voix_min":1867697711,"sms_nb":120720051,"data_go":106236203},"T4_2024":{"voix_min":2182401336,"sms_nb":123452579,"data_go":115776855},"T1_2025":{"voix_min":2719833793,"sms_nb":117962881,"data_go":121480245},"T2_2025":{"voix_min":2671763989,"sms_nb":205824011,"data_go":132786226},"T3_2025":{"voix_min":2492756284,"sms_nb":147138430,"data_go":145803604},"T4_2025":{"voix_min":2489679381,"sms_nb":132263463,"data_go":151512414},"T1_2026":{"voix_min":3339265080,"sms_nb":129114757,"data_go":175781303},"T2_2026":{"voix_min":3447620784,"sms_nb":134345419,"data_go":208693809},"T3_2026":{"voix_min":2650474722,"sms_nb":136021386,"data_go":213512032}},"meta":{"derniere_verification":"2026-11-24","verifie":true,"dernier_rapport":"T3_2026","note":"Reextrait et recoupe a la main avec chaque rapport PDF le 2026-11-24 (trimestres deduits de la couverture du rapport, plus de l'en-tete). Controle automatique a chaque execution : scraper/validate.py, une extraction incoherente n'est jamais publiee. Corrige : Moov absent de T1 a T3 2026 (libelle sur deux lignes)."}};
+  const MARKET_DATA = {"abonnements":{"T3_2024":{"mtn":8951193,"moov":6103953,"celtiis":3191516,"total":18246662,"parts_marche":{"mtn":49.1,"moov":33.5,"celtiis":17.5}},"T4_2024":{"mtn":8860782,"moov":5705177,"celtiis":3648522,"total":18214481,"parts_marche":{"mtn":48.6,"moov":31.3,"celtiis":20.0}},"T1_2025":{"mtn":8587373,"moov":5938114,"celtiis":4178572,"total":18704059,"parts_marche":{"mtn":45.9,"moov":31.7,"celtiis":22.3}},"T2_2025":{"mtn":8467024,"moov":5520384,"celtiis":4649114,"total":18636522,"parts_marche":{"mtn":45.4,"moov":29.6,"celtiis":24.9}},"T3_2025":{"mtn":6897211,"moov":5417711,"celtiis":5212965,"total":17527887,"parts_marche":{"mtn":39.3,"moov":30.9,"celtiis":29.7}},"T4_2025":{"mtn":6960590,"moov":5297072,"celtiis":5921124,"total":18178786,"parts_marche":{"mtn":38.3,"moov":29.1,"celtiis":32.6}},"T1_2026":{"mtn":7337108,"moov":5296538,"celtiis":6376335,"total":19009981,"parts_marche":{"mtn":38.6,"moov":27.9,"celtiis":33.5}},"T2_2026":{"mtn":7775721,"moov":5087017,"celtiis":6611656,"total":19474394,"parts_marche":{"mtn":39.9,"moov":26.1,"celtiis":34.0}},"T3_2026":{"mtn":7770670,"moov":4710340,"celtiis":6386087,"total":18867097,"parts_marche":{"mtn":41.2,"moov":25.0,"celtiis":33.8}}},"trafics":{"T3_2024":{"voix_min":1867697711,"sms_nb":120720051,"data_go":106236203},"T4_2024":{"voix_min":2182401336,"sms_nb":123452579,"data_go":115776855},"T1_2025":{"voix_min":2719833793,"sms_nb":117962881,"data_go":121480245},"T2_2025":{"voix_min":2671763989,"sms_nb":205824011,"data_go":132786226},"T3_2025":{"voix_min":2492756284,"sms_nb":147138430,"data_go":145803604},"T4_2025":{"voix_min":2489679381,"sms_nb":132263463,"data_go":151512414},"T1_2026":{"voix_min":3339265080,"sms_nb":129114757,"data_go":175781303},"T2_2026":{"voix_min":3447620784,"sms_nb":134345419,"data_go":208693809},"T3_2026":{"voix_min":2650474722,"sms_nb":136021386,"data_go":213512032}},"technologies":{"T3_2024":{"2g":6979942,"3g":6800962,"4g":4465758},"T4_2024":{"2g":6968130,"3g":6797273,"4g":4449078},"T1_2025":{"2g":8727371,"3g":3133176,"4g":6843512},"T2_2025":{"2g":8629854,"3g":3238149,"4g":6768519},"T3_2025":{"2g":8012228,"3g":3187063,"4g":6328596},"T4_2025":{"2g":7936967,"3g":3379322,"4g":6862497},"T1_2026":{"2g":8180794,"3g":3250052,"4g":7579135},"T2_2026":{"2g":8258454,"3g":3061683,"4g":8154257},"T3_2026":{"2g":8302217,"3g":2343038,"4g":8221842}},"parts_valeur":{"T4_2024":{"mtn":46.36,"moov":26.15,"celtiis":27.49},"T1_2025":{"mtn":45.7,"moov":25.2,"celtiis":29.1},"T2_2025":{"mtn":43.05,"moov":25.13,"celtiis":31.82},"T3_2025":{"mtn":39.02,"moov":23.34,"celtiis":37.64},"T4_2025":{"mtn":36.98,"moov":21.13,"celtiis":41.89},"T1_2026":{"mtn":39.23,"moov":22.05,"celtiis":38.72},"T2_2026":{"mtn":42.99,"moov":24.19,"celtiis":32.82},"T3_2026":{"mtn":47.01,"moov":22.39,"celtiis":30.6}},"genre":{"T2_2026":{"hommes":61.55,"femmes":38.45},"T3_2026":{"hommes":59.0,"femmes":41.0}},"meta":{"derniere_verification":"2026-11-24","verifie":true,"dernier_rapport":"T3_2026","note":"Reextrait et recoupe a la main avec chaque rapport PDF le 2026-11-24 (trimestres deduits de la couverture du rapport, plus de l'en-tete). Controle automatique a chaque execution : scraper/validate.py, une extraction incoherente n'est jamais publiee. Corrige : Moov absent de T1 a T3 2026 (libelle sur deux lignes)."}};
 
   (function renderMarket() {
     const quarterOrder = (q) => {
@@ -1219,7 +1277,7 @@
   })();
 
   // ---- Internet (fixe + mobile) ----
-  const INTERNET_DATA = {"fixe":{"T2_2022":{"isp":{"SBIN":13761,"ISOCEL":3074,"OTI":997,"FIRSTNET":77,"JENY":225,"SUD TELECOMS":65,"DATANEO":null,"ABC CORPORATION":20,"EUPHORBIA":null},"total":18219,"penetration_pct":0.14},"T3_2022":{"isp":{"SBIN":14871,"ISOCEL":2873,"OTI":1064,"FIRSTNET":76,"JENY":239,"SUD TELECOMS":65,"DATANEO":null,"ABC CORPORATION":22,"EUPHORBIA":null},"total":19210,"penetration_pct":0.15},"T4_2022":{"isp":{"SBIN":15710,"ISOCEL":3716,"OTI":1162,"FIRSTNET":75,"JENY":257,"SUD TELECOMS":104,"DATANEO":null,"ABC CORPORATION":38,"EUPHORBIA":null},"total":21062,"penetration_pct":0.16},"T1_2023":{"isp":{"SBIN":19154,"ISOCEL":3822,"OTI":1164,"FIRSTNET":69,"JENY":259,"SUD TELECOMS":134,"DATANEO":6,"ABC CORPORATION":33,"EUPHORBIA":null},"total":24641,"penetration_pct":0.18},"T2_2023":{"isp":{"SBIN":13719,"ISOCEL":4102,"OTI":1102,"FIRSTNET":69,"JENY":259,"SUD TELECOMS":135,"DATANEO":6,"ABC CORPORATION":28,"EUPHORBIA":214},"total":19634,"penetration_pct":0.16},"T3_2023":{"isp":{"SBIN":15513,"ISOCEL":4867,"OTI":1109,"FIRSTNET":64,"JENY":164,"SUD TELECOMS":93,"DATANEO":6,"ABC CORPORATION":27,"EUPHORBIA":219},"total":22062,"penetration_pct":0.17},"T4_2023":{"isp":{"SBIN":17393,"ISOCEL":5021,"OTI":1128,"FIRSTNET":71,"JENY":165,"SUD TELECOMS":77,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":226,"AD SOLUTIONS":null},"total":24113,"penetration_pct":0.19},"T1_2024":{"isp":{"SBIN":19498,"ISOCEL":5209,"OTI":1129,"FIRSTNET":71,"JENY":165,"SUD TELECOMS":78,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":232,"AD SOLUTIONS":null,"SIPI-BENIN":null},"total":26414,"penetration_pct":0.19},"T2_2024":{"isp":{"SBIN":22093,"ISOCEL":5012,"OTI":1136,"FIRSTNET":66,"JENY":165,"SUD TELECOMS":80,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":232,"AD SOLUTIONS":null,"SIPI-BENIN":null,"WURA PLUS":null,"GVA BENIN":null,"STARLINK":null},"total":28816,"penetration_pct":0.2},"T3_2024":{"isp":{"SBIN":25528,"ISOCEL":5296,"OTI":1085,"FIRSTNET":66,"JENY":165,"SUD TELECOMS":80,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":232,"AD SOLUTIONS":null,"SIPI-BENIN":null,"WURA PLUS":null,"GVA BENIN":null,"STARLINK":null},"total":32484,"penetration_pct":0.23},"T4_2024":{"isp":{"SBIN":30554,"GVA BENIN":null,"AD SOLUTIONS":2311,"ISOCEL":5578,"STARLINK":null,"SIPI-BENIN":null,"OTI":1074,"EUPHORBIA":232,"JENY":203,"SUD TELECOMS":77,"FIRSTNET":66,"ABC CORPORATION":26,"WURA PLUS":null,"DATANEO":6},"total":40127,"penetration_pct":0.31},"T1_2025":{"isp":{"SBIN":36475,"GVA BENIN":null,"AD SOLUTIONS":2417,"ISOCEL":5640,"STARLINK":null,"SIPI-BENIN":485,"OTI":831,"EUPHORBIA":195,"JENY":63,"SUD TELECOMS":47,"FIRSTNET":67,"ABC CORPORATION":59,"WURA PLUS":null,"DATANEO":6},"total":46285,"penetration_pct":0.35},"T2_2025":{"isp":{"SBIN":42383,"GVA BENIN":1646,"AD SOLUTIONS":2611,"ISOCEL":5909,"STARLINK":1013,"SIPI-BENIN":506,"OTI":601,"EUPHORBIA":187,"JENY":115,"SUD TELECOMS":47,"FIRSTNET":64,"ABC CORPORATION":63,"WURA PLUS":48,"DATANEO":6},"total":55199,"penetration_pct":0.42},"T3_2025":{"isp":{"SBIN":59553,"GVA BENIN":4104,"AD SOLUTIONS":6215,"ISOCEL":6123,"STARLINK":1593,"SIPI-BENIN":657,"OTI":596,"EUPHORBIA":187,"JENY":115,"SUD TELECOMS":48,"FIRSTNET":65,"ABC CORPORATION":63,"WURA PLUS":48,"DATANEO":6},"total":79373,"penetration_pct":0.6},"T4_2025":{"isp":{"SBIN":77852,"GVA BENIN":11935,"AD SOLUTIONS":6763,"ISOCEL":5075,"STARLINK":2215,"SIPI-BENIN":663,"OTI":568,"EUPHORBIA":198,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":69,"ABC CORPORATION":57,"WURA PLUS":54,"DATANEO":null},"total":105715,"penetration_pct":0.8},"T1_2026":{"isp":{"SBIN":94233,"GVA BENIN":12321,"AD SOLUTIONS":12508,"ISOCEL":4724,"STARLINK":2550,"SIPI-BENIN":663,"OTI":544,"EUPHORBIA":198,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":68,"ABC CORPORATION":57,"WURA PLUS":90,"DATANEO":null},"total":128222,"penetration_pct":0.95},"T2_2026":{"isp":{"SBIN":86029,"GVA BENIN":15365,"AD SOLUTIONS":12775,"ISOCEL":7468,"STARLINK":2783,"SIPI-BENIN":685,"OTI":522,"EUPHORBIA":199,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":72,"ABC CORPORATION":57,"WURA PLUS":128,"DATANEO":null},"total":126349,"penetration_pct":0.93},"T3_2026":{"isp":{"SBIN":99705,"GVA BENIN":19703,"AD SOLUTIONS":13706,"ISOCEL":7609,"STARLINK":3063,"SIPI-BENIN":745,"OTI":482,"EUPHORBIA":199,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":72,"ABC CORPORATION":37,"WURA PLUS":130,"DATANEO":null},"total":145717,"penetration_pct":1.08}},"mobile":{"T2_2022":{"operateurs":{"mtn":6003671,"moov":2890130},"total":8893801},"T3_2022":{"operateurs":{"mtn":6241936,"moov":2946178},"total":9188114},"T4_2022":{"operateurs":{"mtn":6485379,"moov":2877192,"celtiis":364609},"total":9727180},"T1_2023":{"operateurs":{"mtn":6819130,"moov":2906454,"celtiis":423610},"total":10149194},"T2_2023":{"operateurs":{"mtn":7246418,"moov":1737464,"celtiis":516679},"total":9500561},"T3_2023":{"operateurs":{"mtn":6852058,"moov":3012320,"celtiis":1052138},"total":10916516},"T4_2023":{"operateurs":{"mtn":6567085,"moov":3130307,"celtiis":1234273},"total":10931665},"T1_2024":{"operateurs":{"mtn":6072545,"moov":3350945,"celtiis":1224357},"total":10647847},"T2_2024":{"operateurs":{"mtn":6101371,"moov":3303734,"celtiis":1661841},"total":11066946},"T3_2024":{"operateurs":{"mtn":6265262,"moov":3169805,"celtiis":2289253},"total":11724320},"T4_2024":{"operateurs":{"mtn":6852058,"moov":2923627,"celtiis":2585697},"total":12361382},"T1_2025":{"operateurs":{"mtn":5283369,"moov":2931394,"celtiis":2931753},"total":11146516},"T2_2025":{"operateurs":{"mtn":4616644,"moov":2639727,"celtiis":3317431},"total":10573802},"T3_2025":{"operateurs":{"mtn":4511696,"moov":2593221,"celtiis":3519252},"total":10624169},"T4_2025":{"operateurs":{"mtn":4627281,"moov":2575175,"celtiis":3611685},"total":10814141},"T1_2026":{"operateurs":{"mtn":4770635,"moov":2546845,"celtiis":4243087},"total":11560567},"T2_2026":{"operateurs":{"mtn":5042083,"moov":2441084,"celtiis":4249037},"total":11732204},"T3_2026":{"operateurs":{"mtn":5129736,"moov":2408040,"celtiis":4110382},"total":11648158}},"meta":{"derniere_verification":"2026-11-24","verifie":true,"note":"Verifie manuellement le 2026-09-08 : bug de decalage trimestriel corrige (un operateur recemment ajoute avec des cellules vides sur les trimestres ou il n'existait pas encore se retrouvait aligne sur le premier trimestre au lieu du dernier). Reextrait des rapports sources avec alignement par position d'en-tete plutot que par compression/zip.","dernier_rapport":"T3_2026"}};
+  const INTERNET_DATA = {"fixe":{"T2_2022":{"isp":{"SBIN":13761,"ISOCEL":3074,"OTI":997,"FIRSTNET":77,"JENY":225,"SUD TELECOMS":65,"DATANEO":null,"ABC CORPORATION":20,"EUPHORBIA":null},"total":18219,"penetration_pct":0.14},"T3_2022":{"isp":{"SBIN":14871,"ISOCEL":2873,"OTI":1064,"FIRSTNET":76,"JENY":239,"SUD TELECOMS":65,"DATANEO":null,"ABC CORPORATION":22,"EUPHORBIA":null},"total":19210,"penetration_pct":0.15},"T4_2022":{"isp":{"SBIN":15710,"ISOCEL":3716,"OTI":1162,"FIRSTNET":75,"JENY":257,"SUD TELECOMS":104,"DATANEO":null,"ABC CORPORATION":38,"EUPHORBIA":null},"total":21062,"penetration_pct":0.16},"T1_2023":{"isp":{"SBIN":19154,"ISOCEL":3822,"OTI":1164,"FIRSTNET":69,"JENY":259,"SUD TELECOMS":134,"DATANEO":6,"ABC CORPORATION":33,"EUPHORBIA":null},"total":24641,"penetration_pct":0.18},"T2_2023":{"isp":{"SBIN":13719,"ISOCEL":4102,"OTI":1102,"FIRSTNET":69,"JENY":259,"SUD TELECOMS":135,"DATANEO":6,"ABC CORPORATION":28,"EUPHORBIA":214},"total":19634,"penetration_pct":0.16},"T3_2023":{"isp":{"SBIN":15513,"ISOCEL":4867,"OTI":1109,"FIRSTNET":64,"JENY":164,"SUD TELECOMS":93,"DATANEO":6,"ABC CORPORATION":27,"EUPHORBIA":219},"total":22062,"penetration_pct":0.17},"T4_2023":{"isp":{"SBIN":17393,"ISOCEL":5021,"OTI":1128,"FIRSTNET":71,"JENY":165,"SUD TELECOMS":77,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":226,"AD SOLUTIONS":null},"total":24113,"penetration_pct":0.19},"T1_2024":{"isp":{"SBIN":19498,"ISOCEL":5209,"OTI":1129,"FIRSTNET":71,"JENY":165,"SUD TELECOMS":78,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":232,"AD SOLUTIONS":null,"SIPI-BENIN":null},"total":26414,"penetration_pct":0.19},"T2_2024":{"isp":{"SBIN":22093,"ISOCEL":5012,"OTI":1136,"FIRSTNET":66,"JENY":165,"SUD TELECOMS":80,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":232,"AD SOLUTIONS":null,"SIPI-BENIN":null,"WURA PLUS":null,"GVA BENIN":null,"STARLINK":null},"total":28816,"penetration_pct":0.2},"T3_2024":{"isp":{"SBIN":25528,"ISOCEL":5296,"OTI":1085,"FIRSTNET":66,"JENY":165,"SUD TELECOMS":80,"DATANEO":6,"ABC CORPORATION":26,"EUPHORBIA":232,"AD SOLUTIONS":null,"SIPI-BENIN":null,"WURA PLUS":null,"GVA BENIN":null,"STARLINK":null},"total":32484,"penetration_pct":0.23},"T4_2024":{"isp":{"SBIN":30554,"GVA BENIN":null,"AD SOLUTIONS":2311,"ISOCEL":5578,"STARLINK":null,"SIPI-BENIN":null,"OTI":1074,"EUPHORBIA":232,"JENY":203,"SUD TELECOMS":77,"FIRSTNET":66,"ABC CORPORATION":26,"WURA PLUS":null,"DATANEO":6},"total":40127,"penetration_pct":0.31},"T1_2025":{"isp":{"SBIN":36475,"GVA BENIN":null,"AD SOLUTIONS":2417,"ISOCEL":5640,"STARLINK":null,"SIPI-BENIN":485,"OTI":831,"EUPHORBIA":195,"JENY":63,"SUD TELECOMS":47,"FIRSTNET":67,"ABC CORPORATION":59,"WURA PLUS":null,"DATANEO":6},"total":46285,"penetration_pct":0.35},"T2_2025":{"isp":{"SBIN":42383,"GVA BENIN":1646,"AD SOLUTIONS":2611,"ISOCEL":5909,"STARLINK":1013,"SIPI-BENIN":506,"OTI":601,"EUPHORBIA":187,"JENY":115,"SUD TELECOMS":47,"FIRSTNET":64,"ABC CORPORATION":63,"WURA PLUS":48,"DATANEO":6},"total":55199,"penetration_pct":0.42},"T3_2025":{"isp":{"SBIN":59553,"GVA BENIN":4104,"AD SOLUTIONS":6215,"ISOCEL":6123,"STARLINK":1593,"SIPI-BENIN":657,"OTI":596,"EUPHORBIA":187,"JENY":115,"SUD TELECOMS":48,"FIRSTNET":65,"ABC CORPORATION":63,"WURA PLUS":48,"DATANEO":6},"total":79373,"penetration_pct":0.6},"T4_2025":{"isp":{"SBIN":77852,"GVA BENIN":11935,"AD SOLUTIONS":6763,"ISOCEL":5075,"STARLINK":2215,"SIPI-BENIN":663,"OTI":568,"EUPHORBIA":198,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":69,"ABC CORPORATION":57,"WURA PLUS":54,"DATANEO":null},"total":105715,"penetration_pct":0.8},"T1_2026":{"isp":{"SBIN":94233,"GVA BENIN":12321,"AD SOLUTIONS":12508,"ISOCEL":4724,"STARLINK":2550,"SIPI-BENIN":663,"OTI":544,"EUPHORBIA":198,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":68,"ABC CORPORATION":57,"WURA PLUS":90,"DATANEO":null},"total":128222,"penetration_pct":0.95},"T2_2026":{"isp":{"SBIN":86029,"GVA BENIN":15365,"AD SOLUTIONS":12775,"ISOCEL":7468,"STARLINK":2783,"SIPI-BENIN":685,"OTI":522,"EUPHORBIA":199,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":72,"ABC CORPORATION":57,"WURA PLUS":128,"DATANEO":null},"total":126349,"penetration_pct":0.93},"T3_2026":{"isp":{"SBIN":99705,"GVA BENIN":19703,"AD SOLUTIONS":13706,"ISOCEL":7609,"STARLINK":3063,"SIPI-BENIN":745,"OTI":482,"EUPHORBIA":199,"JENY":188,"SUD TELECOMS":78,"FIRSTNET":72,"ABC CORPORATION":37,"WURA PLUS":130,"DATANEO":null},"total":145717,"penetration_pct":1.08}},"mobile":{"T2_2022":{"operateurs":{"mtn":6003671,"moov":2890130},"total":8893801},"T3_2022":{"operateurs":{"mtn":6241936,"moov":2946178},"total":9188114},"T4_2022":{"operateurs":{"mtn":6485379,"moov":2877192,"celtiis":364609},"total":9727180},"T1_2023":{"operateurs":{"mtn":6819130,"moov":2906454,"celtiis":423610},"total":10149194},"T2_2023":{"operateurs":{"mtn":7246418,"moov":1737464,"celtiis":516679},"total":9500561},"T3_2023":{"operateurs":{"mtn":6852058,"moov":3012320,"celtiis":1052138},"total":10916516},"T4_2023":{"operateurs":{"mtn":6567085,"moov":3130307,"celtiis":1234273},"total":10931665},"T1_2024":{"operateurs":{"mtn":6072545,"moov":3350945,"celtiis":1224357},"total":10647847},"T2_2024":{"operateurs":{"mtn":6101371,"moov":3303734,"celtiis":1661841},"total":11066946},"T3_2024":{"operateurs":{"mtn":6265262,"moov":3169805,"celtiis":2289253},"total":11724320},"T4_2024":{"operateurs":{"mtn":6852058,"moov":2923627,"celtiis":2585697},"total":12361382},"T1_2025":{"operateurs":{"mtn":5283369,"moov":2931394,"celtiis":2931753},"total":11146516},"T2_2025":{"operateurs":{"mtn":4616644,"moov":2639727,"celtiis":3317431},"total":10573802},"T3_2025":{"operateurs":{"mtn":4511696,"moov":2593221,"celtiis":3519252},"total":10624169},"T4_2025":{"operateurs":{"mtn":4627281,"moov":2575175,"celtiis":3611685},"total":10814141},"T1_2026":{"operateurs":{"mtn":4770635,"moov":2546845,"celtiis":4243087},"total":11560567},"T2_2026":{"operateurs":{"mtn":5042083,"moov":2441084,"celtiis":4249037},"total":11732204},"T3_2026":{"operateurs":{"mtn":5129736,"moov":2408040,"celtiis":4110382},"total":11648158}},"meta":{"derniere_verification":"2026-11-24","verifie":true,"note":"Verifie manuellement le 2026-09-08 : bug de decalage trimestriel corrige (un operateur recemment ajoute avec des cellules vides sur les trimestres ou il n'existait pas encore se retrouvait aligne sur le premier trimestre au lieu du dernier). Reextrait des rapports sources avec alignement par position d'en-tete plutot que par compression/zip.","dernier_rapport":"T3_2026"},"genre_mobile":{"T3_2026":{"hommes":61.59,"femmes":38.41}}};
 
   (function renderInternet() {
     const quarterOrder = (q) => {
@@ -1477,7 +1535,7 @@
   })();
 
   // ---- Tarifs Internet (Mobile + FTTH) ----
-  const TARIFS_DATA = {"ftth":{"installation":{"sbin":10000,"isocel":15000,"gva_benin":5000},"redevances":{"partage":{"40":{"isocel":15000},"50":{"sbin":14900,"gva_benin":15000},"100":{"sbin":24900},"150":{"isocel":25000},"200":{"gva_benin":30000}},"dedie":{"10":{"isocel":220000},"20":{"sbin":525000,"isocel":400000},"30":{"sbin":750000,"isocel":540000},"40":{"isocel":720000},"50":{"sbin":1200000,"isocel":900000},"100":{"sbin":2260000,"isocel":1845000},"150":{"sbin":3300000,"isocel":2490750},"200":{"isocel":3198000}}}},"mobile":[{"prix":100,"fup":false,"mtn":{"volume":"166 Mo","validite":"24H"},"moov":{"volume":"166 Mo","validite":"24H"},"sbin":{"volume":"167 Mo","validite":"24H"}},{"prix":150,"fup":false,"moov":{"volume":"250 Mo","validite":"24H"}},{"prix":200,"fup":false,"mtn":{"volume":"333 Mo","validite":"24H"},"moov":{"volume":"333 Mo","validite":"24H"},"sbin":{"volume":"333 Mo","validite":"24H"}},{"prix":300,"fup":false,"mtn":{"volume":"500 Mo + WhatsApp gratuit","validite":"24H"},"moov":{"volume":"500 Mo + WhatsApp","validite":"48H"},"sbin":{"volume":"500 Mo + Réseaux sociaux","validite":"24H"}},{"prix":500,"fup":false,"mtn":{"volume":"1 Go + Réseaux sociaux gratuits","validite":"24H"},"moov":{"volume":"1 Go + Réseaux sociaux gratuits","validite":"24H"},"sbin":{"volume":"1 Go + Accès gratuit WhatsApp, Tik Tok, Facebook, Servicepublic.bj","validite":"24H"}},{"prix":550,"fup":false,"moov":{"volume":"916 Mo","validite":"72H"}},{"prix":750,"fup":false,"mtn":{"volume":"1 Go + MTN TV et NW TV","validite":"48H"},"sbin":{"volume":"1250 Mo + Accès gratuit WhatsApp","validite":"72H"}},{"prix":1000,"fup":false,"mtn":{"volume":"1666 Mo","validite":"7 jours"},"moov":{"volume":"1,62 Go","validite":"7 jours"},"sbin":{"volume":"1666,67 Mo","validite":"7 jours"}},{"prix":2500,"fup":false,"mtn":{"volume":"4166 Mo","validite":"15 jours"},"moov":{"volume":"4 Go","validite":"15 jours"},"sbin":{"volume":"4166,67 Mo","validite":"15 jours"}},{"prix":5000,"fup":false,"mtn":{"volume":"8333 Mo","validite":"30 jours"},"moov":{"volume":"8,13 Go","validite":"30 jours"},"sbin":{"volume":"8333,33 Mo","validite":"30 jours"}},{"prix":10000,"fup":false,"moov":{"volume":"16,27 Go","validite":"30 jours"}},{"prix":15000,"fup":true,"mtn":{"volume":"24,4 Go / 1 Mbps","validite":"30 jours"},"moov":{"volume":"24,41 Go Plus / 2 Mbps","validite":"30 jours"},"sbin":{"volume":"24,4 Go Plus / 2 Mbps","validite":"30 jours"}},{"prix":19000,"fup":true,"sbin":{"volume":"31 Go Plus / 2 Mbps","validite":"30 jours"}},{"prix":20000,"fup":true,"mtn":{"volume":"32,5 Go / 1 Mbps","validite":"30 jours"},"moov":{"volume":"32,55 Go Plus / 3 Mbps","validite":"30 jours"}},{"prix":25000,"fup":true,"mtn":{"volume":"40,7 Go / 1 Mbps","validite":"30 jours"},"moov":{"volume":"40,69 Go Plus / 5 Mbps","validite":"30 jours"},"sbin":{"volume":"41 Go Plus / 2 Mbps","validite":"30 jours"}},{"prix":29000,"fup":true,"sbin":{"volume":"47,2 Go Plus / 2 Mbps","validite":"30 jours"}},{"prix":30000,"fup":true,"moov":{"volume":"48,82 Go Plus / 10 Mbps","validite":"30 jours"}},{"prix":50000,"fup":true,"moov":{"volume":"81,38 Go Plus / 10 Mbps","validite":"30 jours"}}],"meta":{"ftth_source":"Observatoire-des-tarifs-FTTH-au-30-septembre-2026.pdf","mobile_source":"Tableau-de-bord-des-Tarifs-mobiles_30-septembre-2026.pdf","derniere_verification":"2026-11-24","verifie":true,"note":"Cliche instantane du dernier catalogue publie (pas une serie temporelle). Volumes repris tels qu'ecrits par l'ARCEP. SBIN = marque Celtiis.","mobile_periode":"T3_2026","ftth_periode":"T3_2026","dernier_rapport":"T3_2026"}};
+  const TARIFS_DATA = {"ftth":{"installation":{"sbin":10000,"isocel":15000,"gva_benin":5000},"redevances":{"partage":{"40":{"isocel":15000},"50":{"sbin":14900,"gva_benin":15000},"100":{"sbin":24900},"150":{"isocel":25000},"200":{"gva_benin":30000}},"dedie":{"10":{"isocel":220000},"20":{"sbin":525000,"isocel":400000},"30":{"sbin":750000,"isocel":540000},"40":{"isocel":720000},"50":{"sbin":1200000,"isocel":900000},"100":{"sbin":2260000,"isocel":1845000},"150":{"sbin":3300000,"isocel":2490750},"200":{"isocel":3198000}}}},"mobile":[{"prix":100,"fup":false,"mtn":{"volume":"166 Mo","validite":"24H","mo":166.0},"moov":{"volume":"166 Mo","validite":"24H","mo":166.0},"sbin":{"volume":"167 Mo","validite":"24H","mo":167.0}},{"prix":150,"fup":false,"moov":{"volume":"250 Mo","validite":"24H","mo":250.0}},{"prix":200,"fup":false,"mtn":{"volume":"333 Mo","validite":"24H","mo":333.0},"moov":{"volume":"333 Mo","validite":"24H","mo":333.0},"sbin":{"volume":"333 Mo","validite":"24H","mo":333.0}},{"prix":300,"fup":false,"mtn":{"volume":"500 Mo + WhatsApp gratuit","validite":"24H","mo":500.0},"moov":{"volume":"500 Mo + WhatsApp","validite":"48H","mo":500.0},"sbin":{"volume":"500 Mo + Réseaux sociaux","validite":"24H","mo":500.0}},{"prix":500,"fup":false,"mtn":{"volume":"1 Go + Réseaux sociaux gratuits","validite":"24H","mo":1024.0},"moov":{"volume":"1 Go + Réseaux sociaux gratuits","validite":"24H","mo":1024.0},"sbin":{"volume":"1 Go + Accès gratuit WhatsApp, Tik Tok, Facebook, Servicepublic.bj","validite":"24H","mo":1024.0}},{"prix":550,"fup":false,"moov":{"volume":"916 Mo","validite":"72H","mo":916.0}},{"prix":750,"fup":false,"mtn":{"volume":"1 Go + MTN TV et NW TV","validite":"48H","mo":1024.0},"sbin":{"volume":"1250 Mo + Accès gratuit WhatsApp","validite":"72H","mo":1250.0}},{"prix":1000,"fup":false,"mtn":{"volume":"1666 Mo","validite":"7 jours","mo":1666.0},"moov":{"volume":"1,62 Go","validite":"7 jours","mo":1658.88},"sbin":{"volume":"1666,67 Mo","validite":"7 jours","mo":1666.67}},{"prix":2500,"fup":false,"mtn":{"volume":"4166 Mo","validite":"15 jours","mo":4166.0},"moov":{"volume":"4 Go","validite":"15 jours","mo":4096.0},"sbin":{"volume":"4166,67 Mo","validite":"15 jours","mo":4166.67}},{"prix":5000,"fup":false,"mtn":{"volume":"8333 Mo","validite":"30 jours","mo":8333.0},"moov":{"volume":"8,13 Go","validite":"30 jours","mo":8325.12},"sbin":{"volume":"8333,33 Mo","validite":"30 jours","mo":8333.33}},{"prix":10000,"fup":false,"moov":{"volume":"16,27 Go","validite":"30 jours","mo":16660.48}},{"prix":15000,"fup":true,"mtn":{"volume":"24,4 Go / 1 Mbps","validite":"30 jours","mo":24985.6},"moov":{"volume":"24,41 Go Plus / 2 Mbps","validite":"30 jours","mo":24995.84},"sbin":{"volume":"24,4 Go Plus / 2 Mbps","validite":"30 jours","mo":24985.6}},{"prix":19000,"fup":true,"sbin":{"volume":"31 Go Plus / 2 Mbps","validite":"30 jours","mo":31744.0}},{"prix":20000,"fup":true,"mtn":{"volume":"32,5 Go / 1 Mbps","validite":"30 jours","mo":33280.0},"moov":{"volume":"32,55 Go Plus / 3 Mbps","validite":"30 jours","mo":33331.2}},{"prix":25000,"fup":true,"mtn":{"volume":"40,7 Go / 1 Mbps","validite":"30 jours","mo":41676.8},"moov":{"volume":"40,69 Go Plus / 5 Mbps","validite":"30 jours","mo":41666.56},"sbin":{"volume":"41 Go Plus / 2 Mbps","validite":"30 jours","mo":41984.0}},{"prix":29000,"fup":true,"sbin":{"volume":"47,2 Go Plus / 2 Mbps","validite":"30 jours","mo":48332.8}},{"prix":30000,"fup":true,"moov":{"volume":"48,82 Go Plus / 10 Mbps","validite":"30 jours","mo":49991.68}},{"prix":50000,"fup":true,"moov":{"volume":"81,38 Go Plus / 10 Mbps","validite":"30 jours","mo":83333.12}}],"historique_mobile":{"T1_2025":[{"prix":25,"fup":false,"mtn":{"volume":"16 Mo","validite":"24H","mo":16.0},"moov":{"volume":"17 Mo","validite":"24H","mo":17.0}},{"prix":50,"fup":false,"mtn":{"volume":"34 Mo","validite":"24H","mo":34.0},"moov":{"volume":"34 Mo","validite":"24H","mo":34.0}},{"prix":100,"fup":false,"mtn":{"volume":"70 Mo","validite":"24H","mo":70.0},"moov":{"volume":"100 Mo","validite":"24H","mo":100.0},"sbin":{"volume":"125 Mo","validite":"24H","mo":125.0}},{"prix":150,"fup":false,"mtn":{"volume":"120 Mo","validite":"24H","mo":120.0},"moov":{"volume":"150 Mo","validite":"24H","mo":150.0}},{"prix":200,"fup":false,"mtn":{"volume":"170 Mo","validite":"24H","mo":170.0},"moov":{"volume":"200 Mo","validite":"24H","mo":200.0},"sbin":{"volume":"260 Mo","validite":"24H","mo":260.0}},{"prix":250,"fup":false,"mtn":{"volume":"220 Mo","validite":"24H","mo":220.0},"moov":{"volume":"250 Mo","validite":"24H","mo":250.0}},{"prix":300,"fup":false,"moov":{"volume":"300 Mo","validite":"24H","mo":300.0}},{"prix":500,"fup":false,"mtn":{"volume":"450 Mo","validite":"3 jours","mo":450.0},"moov":{"volume":"500 Mo","validite":"3 jours","mo":500.0},"sbin":{"volume":"660 Mo","validite":"48H","mo":660.0}},{"prix":550,"fup":false,"moov":{"volume":"560 Mo","validite":"3 jours","mo":560.0}},{"prix":750,"fup":false,"moov":{"volume":"760 Mo","validite":"3 jours","mo":760.0},"sbin":{"volume":"1024 Mo","validite":"3 jours","mo":1024.0}},{"prix":995,"fup":false,"mtn":{"volume":"1024 Mo","validite":"3 jours","mo":1024.0},"moov":{"volume":"1024 Mo","validite":"3 jours","mo":1024.0}},{"prix":500,"fup":false,"moov":{"volume":"350 Mo","validite":"5 jours","mo":350.0}},{"prix":1000,"fup":false,"mtn":{"volume":"850 Mo","validite":"7 jours","mo":850.0},"moov":{"volume":"1024 Mo","validite":"7 jours","mo":1024.0},"sbin":{"volume":"1434 Mo","validite":"7 jours","mo":1434.0}},{"prix":1500,"fup":false,"moov":{"volume":"1536 Mo","validite":"7 jours","mo":1536.0}},{"prix":1500,"fup":false,"sbin":{"volume":"2150 Mo","validite":"7 jours","mo":2150.0}},{"prix":2000,"fup":false,"mtn":{"volume":"1800 Mo","validite":"7 jours","mo":1800.0},"sbin":{"volume":"2867 Mo","validite":"7 jours","mo":2867.0}},{"prix":2000,"fup":false,"moov":{"volume":"2048 Mo","validite":"15 jours","mo":2048.0}},{"prix":2500,"fup":false,"mtn":{"volume":"2300 Mo","validite":"20 jours","mo":2300.0},"moov":{"volume":"2560 Mo","validite":"20 jours","mo":2560.0}},{"prix":3000,"fup":false,"sbin":{"volume":"4301 Mo","validite":"30 jours","mo":4301.0}},{"prix":4000,"fup":false,"mtn":{"volume":"3700 Mo","validite":"20 jours","mo":3700.0},"moov":{"volume":"4096 Mo","validite":"20 jours","mo":4096.0}},{"prix":5000,"fup":false,"moov":{"volume":"5120 Mo","validite":"30 jours","mo":5120.0},"sbin":{"volume":"7373 Mo","validite":"30 jours","mo":7373.0}},{"prix":6000,"fup":false,"mtn":{"volume":"5700 Mo","validite":"30 jours","mo":5700.0},"moov":{"volume":"6144 Mo","validite":"30 jours","mo":6144.0}},{"prix":10000,"fup":false,"moov":{"volume":"10240 Mo","validite":"30 jours","mo":10240.0},"sbin":{"volume":"14848 Mo","validite":"30 jours","mo":14848.0}},{"prix":15000,"fup":false,"moov":{"volume":"15360 Mo","validite":"30 jours","mo":15360.0}}],"T1_2026":[{"prix":100,"fup":false,"mtn":{"volume":"238 Mo","validite":"24H","mo":238.0},"moov":{"volume":"238 Mo","validite":"24H","mo":238.0},"sbin":{"volume":"238 Mo","validite":"24H","mo":238.0}},{"prix":150,"fup":false,"moov":{"volume":"357 Mo","validite":"24H","mo":357.0}},{"prix":200,"fup":false,"mtn":{"volume":"476 Mo","validite":"24H","mo":476.0},"moov":{"volume":"476 Mo","validite":"24H","mo":476.0},"sbin":{"volume":"476 Mo","validite":"24H","mo":476.0}},{"prix":300,"fup":false,"sbin":{"volume":"500 Mo + WhatsApp","validite":"24H","mo":500.0}},{"prix":500,"fup":false,"mtn":{"volume":"1,2 Go","validite":"3 jours","mo":1228.8},"moov":{"volume":"1,16 Go","validite":"3 jours","mo":1187.84},"sbin":{"volume":"1,16 Go","validite":"3 jours","mo":1187.84}},{"prix":750,"fup":false,"sbin":{"volume":"1,5 Go + WhatsApp","validite":"3 jours","mo":1536.0}},{"prix":1000,"fup":false,"mtn":{"volume":"2,3 Go","validite":"7 jours","mo":2355.2},"moov":{"volume":"2,3 Go","validite":"7 jours","mo":2355.2},"sbin":{"volume":"1,8 Go + WhatsApp","validite":"7 jours","mo":1843.2}},{"prix":1500,"fup":false,"sbin":{"volume":"3,49 Go","validite":"7 jours","mo":3573.76}},{"prix":2000,"fup":false,"moov":{"volume":"4,6 Go","validite":"7 jours","mo":4710.4}},{"prix":2500,"fup":false,"mtn":{"volume":"5,8 Go","validite":"15 jours","mo":5939.2}},{"prix":3000,"fup":false,"moov":{"volume":"6,9 Go","validite":"15 jours","mo":7065.6},"sbin":{"volume":"6,96 Go","validite":"15 jours","mo":7127.04}},{"prix":5000,"fup":false,"sbin":{"volume":"11,6 Go","validite":"30 jours","mo":11878.4}},{"prix":7000,"fup":false,"sbin":{"volume":"16,2 Go","validite":"30 jours","mo":16588.8}},{"prix":5000,"fup":true,"mtn":{"volume":"11,6 Go / 1 Mbps","validite":"30 jours","mo":11878.4},"moov":{"volume":"11,6 Go Plus / 1 Mbps","validite":"30 jours","mo":11878.4},"sbin":{"volume":"11,6 Go / 2 Mbps","validite":"30 jours","mo":11878.4}},{"prix":10000,"fup":true,"mtn":{"volume":"23,3 Go / 1 Mbps","validite":"30 jours","mo":23859.2},"moov":{"volume":"23,2 Go Plus / 1 Mbps","validite":"30 jours","mo":23756.8},"sbin":{"volume":"23,25 Go / 2 Mbps","mo":23808.0}},{"prix":15000,"fup":true,"mtn":{"volume":"34,9 Go / 1 Mbps","validite":"30 jours","mo":35737.6},"moov":{"volume":"34,8 Go Plus / 1 Mbps","validite":"30 jours","mo":35635.2}},{"prix":15100,"fup":true,"sbin":{"volume":"35,1 Go / 2 Mbps","validite":"30 jours","mo":35942.4}},{"prix":19000,"fup":true,"sbin":{"volume":"44,2 Go / 2 Mbps","validite":"30 jours","mo":45260.8}},{"prix":20000,"fup":true,"mtn":{"volume":"46,5 Go / 1 Mbps","validite":"30 jours","mo":47616.0},"moov":{"volume":"46,5 Go Plus / 1 Mbps","validite":"30 jours","mo":47616.0}},{"prix":25000,"fup":true,"mtn":{"volume":"58,1 Go / 1 Mbps","validite":"30 jours","mo":59494.4},"moov":{"volume":"58 Go Plus / 1 Mbps","validite":"30 jours","mo":59392.0},"sbin":{"volume":"58,1 Go / 2 Mbps","validite":"30 jours","mo":59494.4}},{"prix":29000,"fup":true,"sbin":{"volume":"67,4 Go / 2 Mbps","validite":"30 jours","mo":69017.6}},{"prix":30000,"fup":true,"moov":{"volume":"69,7 Go Plus / 1 Mbps","validite":"30 jours","mo":71372.8}},{"prix":50000,"fup":true,"moov":{"volume":"116,2 Go Plus / 1 Mbps","validite":"30 jours","mo":118988.8}}],"T3_2026":[{"prix":100,"fup":false,"mtn":{"volume":"166 Mo","validite":"24H","mo":166.0},"moov":{"volume":"166 Mo","validite":"24H","mo":166.0},"sbin":{"volume":"167 Mo","validite":"24H","mo":167.0}},{"prix":150,"fup":false,"moov":{"volume":"250 Mo","validite":"24H","mo":250.0}},{"prix":200,"fup":false,"mtn":{"volume":"333 Mo","validite":"24H","mo":333.0},"moov":{"volume":"333 Mo","validite":"24H","mo":333.0},"sbin":{"volume":"333 Mo","validite":"24H","mo":333.0}},{"prix":300,"fup":false,"mtn":{"volume":"500 Mo + WhatsApp gratuit","validite":"24H","mo":500.0},"moov":{"volume":"500 Mo + WhatsApp","validite":"48H","mo":500.0},"sbin":{"volume":"500 Mo + Réseaux sociaux","validite":"24H","mo":500.0}},{"prix":500,"fup":false,"mtn":{"volume":"1 Go + Réseaux sociaux gratuits","validite":"24H","mo":1024.0},"moov":{"volume":"1 Go + Réseaux sociaux gratuits","validite":"24H","mo":1024.0},"sbin":{"volume":"1 Go + Accès gratuit WhatsApp, Tik Tok, Facebook, Servicepublic.bj","validite":"24H","mo":1024.0}},{"prix":550,"fup":false,"moov":{"volume":"916 Mo","validite":"72H","mo":916.0}},{"prix":750,"fup":false,"mtn":{"volume":"1 Go + MTN TV et NW TV","validite":"48H","mo":1024.0},"sbin":{"volume":"1250 Mo + Accès gratuit WhatsApp","validite":"72H","mo":1250.0}},{"prix":1000,"fup":false,"mtn":{"volume":"1666 Mo","validite":"7 jours","mo":1666.0},"moov":{"volume":"1,62 Go","validite":"7 jours","mo":1658.88},"sbin":{"volume":"1666,67 Mo","validite":"7 jours","mo":1666.67}},{"prix":2500,"fup":false,"mtn":{"volume":"4166 Mo","validite":"15 jours","mo":4166.0},"moov":{"volume":"4 Go","validite":"15 jours","mo":4096.0},"sbin":{"volume":"4166,67 Mo","validite":"15 jours","mo":4166.67}},{"prix":5000,"fup":false,"mtn":{"volume":"8333 Mo","validite":"30 jours","mo":8333.0},"moov":{"volume":"8,13 Go","validite":"30 jours","mo":8325.12},"sbin":{"volume":"8333,33 Mo","validite":"30 jours","mo":8333.33}},{"prix":10000,"fup":false,"moov":{"volume":"16,27 Go","validite":"30 jours","mo":16660.48}},{"prix":15000,"fup":true,"mtn":{"volume":"24,4 Go / 1 Mbps","validite":"30 jours","mo":24985.6},"moov":{"volume":"24,41 Go Plus / 2 Mbps","validite":"30 jours","mo":24995.84},"sbin":{"volume":"24,4 Go Plus / 2 Mbps","validite":"30 jours","mo":24985.6}},{"prix":19000,"fup":true,"sbin":{"volume":"31 Go Plus / 2 Mbps","validite":"30 jours","mo":31744.0}},{"prix":20000,"fup":true,"mtn":{"volume":"32,5 Go / 1 Mbps","validite":"30 jours","mo":33280.0},"moov":{"volume":"32,55 Go Plus / 3 Mbps","validite":"30 jours","mo":33331.2}},{"prix":25000,"fup":true,"mtn":{"volume":"40,7 Go / 1 Mbps","validite":"30 jours","mo":41676.8},"moov":{"volume":"40,69 Go Plus / 5 Mbps","validite":"30 jours","mo":41666.56},"sbin":{"volume":"41 Go Plus / 2 Mbps","validite":"30 jours","mo":41984.0}},{"prix":29000,"fup":true,"sbin":{"volume":"47,2 Go Plus / 2 Mbps","validite":"30 jours","mo":48332.8}},{"prix":30000,"fup":true,"moov":{"volume":"48,82 Go Plus / 10 Mbps","validite":"30 jours","mo":49991.68}},{"prix":50000,"fup":true,"moov":{"volume":"81,38 Go Plus / 10 Mbps","validite":"30 jours","mo":83333.12}}]},"historique_ftth":{"T1_2025":{"partage":{"20":{"sbin":14900,"isocel":15000},"40":{"isocel":25000},"50":{"sbin":24900,"isocel":40000},"70":{"sbin":39900,"isocel":70000},"100":{"isocel":125000},"150":{"isocel":160000}},"dedie":{"10":{"isocel":220000},"20":{"sbin":525000,"isocel":400000},"30":{"sbin":750000,"isocel":540000},"40":{"isocel":720000},"50":{"sbin":1200000,"isocel":900000},"100":{"sbin":2260000,"isocel":1845000},"150":{"sbin":3300000,"isocel":2490750},"200":{"isocel":3198000}}},"T2_2025":{"partage":{"20":{"sbin":14900,"isocel":15000},"40":{"isocel":25000},"50":{"sbin":24900,"isocel":40000,"gva_benin":15000},"70":{"sbin":39900,"isocel":70000},"100":{"isocel":125000},"150":{"isocel":160000},"200":{"gva_benin":30000}},"dedie":{"10":{"isocel":220000},"20":{"sbin":525000,"isocel":400000},"30":{"sbin":750000,"isocel":540000},"40":{"isocel":720000},"50":{"sbin":1200000,"isocel":900000},"100":{"sbin":2260000,"isocel":1845000},"150":{"sbin":3300000,"isocel":2490750},"200":{"isocel":3198000}}},"T1_2026":{"partage":{"20":{"sbin":14900},"40":{"isocel":15000},"50":{"sbin":24900,"gva_benin":15000},"70":{"sbin":39900},"150":{"isocel":25000},"200":{"gva_benin":30000}},"dedie":{"10":{"isocel":220000},"20":{"sbin":525000,"isocel":400000},"30":{"sbin":750000,"isocel":540000},"40":{"isocel":720000},"50":{"sbin":1200000,"isocel":900000},"100":{"sbin":2260000,"isocel":1845000},"150":{"sbin":3300000,"isocel":2490750},"200":{"isocel":3198000}}},"T3_2026":{"partage":{"40":{"isocel":15000},"50":{"sbin":14900,"gva_benin":15000},"100":{"sbin":24900},"150":{"isocel":25000},"200":{"gva_benin":30000}},"dedie":{"10":{"isocel":220000},"20":{"sbin":525000,"isocel":400000},"30":{"sbin":750000,"isocel":540000},"40":{"isocel":720000},"50":{"sbin":1200000,"isocel":900000},"100":{"sbin":2260000,"isocel":1845000},"150":{"sbin":3300000,"isocel":2490750},"200":{"isocel":3198000}}}},"meta":{"ftth_source":"Observatoire-des-tarifs-FTTH-au-30-septembre-2026.pdf","mobile_source":"Tableau-de-bord-des-Tarifs-mobiles_30-septembre-2026.pdf","derniere_verification":"2026-11-24","verifie":true,"mobile_periode":"T3_2026","ftth_periode":"T3_2026","dernier_rapport":"T3_2026","libelles_periodes":{"T1_2025":"mars 2025","T3_2025":"septembre 2025","T1_2026":"mars 2026","T3_2026":"septembre 2026"},"inchange_jusqu_a":{"T1_2025":"septembre 2025"}}};
 
   (function renderTarifs() {
     const OP_LABELS = { mtn: 'MTN', moov: 'Moov Africa', sbin: 'SBIN (Celtiis)', isocel: 'Isocel', gva_benin: 'GVA Bénin' };
@@ -1545,7 +1603,7 @@
   })();
 
   // ---- Regulateur (finances ARCEP) ----
-  const REVENUS_ARCEP_DATA = {"par_annee":{"2025":{"ressources_propres":4768581763,"recouvre_pour_etat":null},"2024":{"ressources_propres":6520742720,"recouvre_pour_etat":66129397493},"2023":{"ressources_propres":5631715055,"recouvre_pour_etat":72481825834},"2022":{"ressources_propres":5100000000,"recouvre_pour_etat":null}},"meta":{"derniere_verification":"2026-11-24","verifie":true,"note":"Source : rapports annuels d'activites ARCEP Benin, section 'Ressources financieres'. 'recouvre_pour_etat' absent avant 2023 (structure du rapport ne separait pas encore ce poste) et pas encore publie pour 2025 au moment de l'extraction -- pas une erreur, l'information n'existe simplement pas dans le rapport source a ce jour."}};
+  const REVENUS_ARCEP_DATA = {"par_annee":{"2025":{"ressources_propres":4768581763,"recouvre_pour_etat":null},"2024":{"ressources_propres":6520742720,"recouvre_pour_etat":66129397493},"2023":{"ressources_propres":5631715055,"recouvre_pour_etat":72481825834},"2022":{"ressources_propres":5100000000,"recouvre_pour_etat":null}},"meta":{"derniere_verification":"2026-11-24","verifie":true,"note":"Source : rapports annuels d'activites ARCEP Benin, section 'Ressources financieres'. 'recouvre_pour_etat' absent avant 2023 (structure du rapport ne separait pas encore ce poste) et pas encore publie pour 2025 au moment de l'extraction -- pas une erreur, l'information n'existe simplement pas dans le rapport source a ce jour."},"chiffres_cles":{"2025":{"ca_marche_mds":382.4,"ca_mobile_mds":350.02,"investissements_mds":112.203,"cartes_sim_millions":18.17,"abonnes_uniques":10328542,"penetration_mobile_pct":78.1,"penetration_internet_pct":64.9,"arpu_fcfa":1622,"trafic_voix_mds_min":10.374,"trafic_data_millions_go":551.6,"sms_millions":603.188,"plaintes":117,"ca_sfm_mds":82.5,"investissements_par_operateur_mds":{"mtn":48.769,"moov":27.046,"celtiis":35.88},"parts_valeur_pct":{"mtn":40.9,"moov":23.5,"celtiis":35.6},"sfm_parts_comptes_pct":{"mtn":51,"moov":22,"celtiis":27},"sfm_parts_ca_pct":{"mtn":83,"moov":10.6,"celtiis":6.4},"sanctions_couverture_fcfa":{"moov":1506290505,"mtn":3351317641}},"2024":{"ca_marche_mds":365.627,"ca_mobile_mds":339.578,"cartes_sim_millions":18.2,"abonnes_uniques":10943657,"penetration_mobile_pct":83.4,"penetration_internet_pct":63.5,"arpu_fcfa":1731,"trafic_voix_mds_min":6.844,"trafic_data_millions_go":375.4,"sms_millions":432.2,"plaintes":107,"sfm_parts_comptes_pct":{"mtn":65,"moov":21.6,"celtiis":13.4}},"2023":{"ca_marche_mds":357.686,"ca_mobile_mds":334.894,"investissements_mds":93.474,"cartes_sim_millions":16.3,"abonnes_uniques":8489402,"penetration_mobile_pct":67.3,"penetration_internet_pct":55.4,"arpu_fcfa":1893,"trafic_data_millions_go":280,"sms_millions":439.3,"plaintes":176},"2022":{"ca_marche_mds":343.489,"abonnes_uniques":6811527,"penetration_mobile_pct":52.7,"penetration_internet_pct":42.1,"trafic_voix_mds_min":6.488,"trafic_data_millions_go":203.07,"sms_millions":601.877}}};
 
   (function renderRegulateur() {
     const fmtBig = (n) => n == null ? '—' : new Intl.NumberFormat('fr-FR').format(n) + ' FCFA';
@@ -1981,6 +2039,166 @@
     }
   })();
 
+  // ---- Series ajoutees le 2026-11-24 : valeur, technologies, genre, historique des tarifs, rapports annuels ----
+  (function renderExtraSeries() {
+    const qo = (q) => { const [tq, y] = q.split('_'); return parseInt(y) * 10 + parseInt(tq.slice(1)); };
+    const sortQ = (o) => Object.keys(o || {}).sort((a, b) => qo(a) - qo(b));
+    const qLabel = (q) => q.replace('_', ' ');
+    const QEND = { T1: 'mars', T2: 'juin', T3: 'septembre', T4: 'décembre' };
+    const fr = (n, d = 1) => n == null ? '—' : new Intl.NumberFormat('fr-FR', { maximumFractionDigits: d }).format(n);
+    const OPS = [['mtn', 'MTN', '--mtn'], ['celtiis', 'Celtiis', '--celtiis'], ['moov', 'Moov Africa', '--moov']];
+    const ds = (label, data, color, extra = {}) => ({ label, data, borderColor: cssVar(color), backgroundColor: cssVar(color),
+      borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, fill: false, spanGaps: true, ...extra });
+    const options = (yFmt, tip, stacked = false) => ({
+      responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      layout: { padding: { left: 8, right: 36 } },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: tip },
+        titleFont: { family: 'IBM Plex Mono' }, bodyFont: { family: 'IBM Plex Mono' } } },
+      scales: {
+        x: { stacked, grid: { display: false }, ticks: { color: cssVar('--ink-muted'), font: { family: 'IBM Plex Mono', size: 11 } } },
+        y: { stacked, grid: { color: cssVar('--border-soft') }, ticks: { color: cssVar('--ink-muted'), font: { family: 'IBM Plex Mono', size: 11 }, callback: yFmt } },
+      },
+    });
+
+    // Parts de marche en valeur
+    const val = MARKET_DATA.parts_valeur || {};
+    const valQ = sortQ(val);
+    if (valQ.length) {
+      new Chart(document.getElementById('market-value-chart'), {
+        type: 'line',
+        data: { labels: valQ.map(qLabel), datasets: OPS.map(([k, l, c]) => ds(l, valQ.map(q => val[q][k] ?? null), c)) },
+        options: options(v => v + '%', ctx => `${ctx.dataset.label} : ${fr(ctx.parsed.y, 2)} % du chiffre d'affaires`),
+      });
+      const last = valQ[valQ.length - 1];
+      const abo = MARKET_DATA.abonnements[last]?.parts_marche || {};
+      document.getElementById('market-value-stats').innerHTML = OPS.map(([k, l]) => `
+        <div class="stat-tile">
+          <span class="stat-label">${l} (${qLabel(last)})</span>
+          <span class="stat-value">${fr(val[last][k], 1)} %</span>
+          <span class="stat-note">du chiffre d'affaires, pour ${fr(abo[k], 1)} % des abonnés</span>
+        </div>`).join('');
+    }
+
+    // Abonnements par technologie
+    const tech = MARKET_DATA.technologies || {};
+    const techQ = sortQ(tech);
+    if (techQ.length) {
+      const T = [['2g', '2G', '--ink-muted'], ['3g', '3G', '--accent'], ['4g', '4G', '--brand']];
+      new Chart(document.getElementById('market-tech-chart'), {
+        type: 'bar',
+        data: { labels: techQ.map(qLabel), datasets: T.map(([k, l, c]) => ({ label: l, data: techQ.map(q => tech[q][k]), backgroundColor: cssVar(c), borderWidth: 0 })) },
+        options: options(v => new Intl.NumberFormat('fr-FR', { notation: 'compact' }).format(v),
+          ctx => `${ctx.dataset.label} : ${fr(ctx.parsed.y, 0)} abonnements`, true),
+      });
+      // rupture de serie : une technologie qui varie de plus de 40 % en un trimestre
+      const breaks = techQ.slice(1).filter((q, i) => T.some(([k]) => {
+        const a = tech[techQ[i]][k], b = tech[q][k]; return a && Math.abs(b / a - 1) > 0.4; }));
+      document.getElementById('market-tech-note').textContent = breaks.length
+        ? `Attention : forte réallocation entre 2G, 3G et 4G au ${breaks.map(qLabel).join(', ')} dans les données ARCEP (changement de méthode probable, non expliqué dans les rapports). Comparer les trimestres de part et d'autre avec prudence.`
+        : '';
+    }
+
+    // Part des femmes
+    const gm = MARKET_DATA.genre || {}, gi = INTERNET_DATA.genre_mobile || {};
+    const gmQ = sortQ(gm), giQ = sortQ(gi);
+    const tiles = [];
+    if (gmQ.length) { const q = gmQ[gmQ.length - 1]; tiles.push(['Femmes — abonnements mobiles', gm[q].femmes, q]); }
+    if (giQ.length) { const q = giQ[giQ.length - 1]; tiles.push(['Femmes — abonnements Internet mobile', gi[q].femmes, q]); }
+    document.getElementById('market-genre-stats').innerHTML = tiles.map(([l, v, q]) => `
+      <div class="stat-tile">
+        <span class="stat-label">${l}</span>
+        <span class="stat-value">${fr(v, 2)} %</span>
+        <span class="stat-note">${qLabel(q)} · répartition publiée par l'ARCEP</span>
+      </div>`).join('');
+
+    // Historique des forfaits mobiles : volume a prix egal
+    const hist = TARIFS_DATA.historique_mobile || {};
+    const hQ = sortQ(hist);
+    const hLabel = (q) => {
+      const base = TARIFS_DATA.meta?.libelles_periodes?.[q] || `${QEND[q.slice(0, 2)]} ${q.slice(3)}`;
+      const until = TARIFS_DATA.meta?.inchange_jusqu_a?.[q];
+      return until ? [base, `(inchangé jusqu'en ${until})`] : base;
+    };
+    const offerFor = (q, prix, op) => (hist[q] || []).find(o => !o.fup && o.prix === prix && o[op]);
+    const prices = [...new Set(hQ.flatMap(q => hist[q].filter(o => !o.fup).map(o => o.prix)))]
+      .filter(p => hQ.every(q => ['mtn', 'moov', 'sbin'].filter(op => offerFor(q, p, op)).length >= 2))
+      .sort((a, b) => a - b);
+    if (hQ.length >= 2 && prices.length) {
+      const HOPS = [['mtn', 'MTN', '--mtn'], ['sbin', 'SBIN (Celtiis)', '--celtiis'], ['moov', 'Moov Africa', '--moov']];
+      const chart = new Chart(document.getElementById('tarif-hist-chart'), {
+        type: 'line', data: { labels: hQ.map(hLabel), datasets: [] },
+        options: options(v => v >= 1024 ? fr(v / 1024, 1) + ' Go' : v + ' Mo', ctx => {
+          const o = offerFor(hQ[ctx.dataIndex], chart.$prix, HOPS[ctx.datasetIndex][0]);
+          return o ? `${ctx.dataset.label} : ${o[HOPS[ctx.datasetIndex][0]].volume} (${o[HOPS[ctx.datasetIndex][0]].validite})` : '';
+        }),
+      });
+      const show = (prix) => {
+        chart.$prix = prix;
+        chart.data.datasets = HOPS.map(([k, l, c]) => ds(l, hQ.map(q => offerFor(q, prix, k)?.[k].mo ?? null), c, { tension: 0 }));
+        chart.update();
+        document.querySelectorAll('#tarif-hist-prices .range-btn').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.prix === prix)));
+      };
+      const box = document.getElementById('tarif-hist-prices');
+      box.innerHTML = prices.map(p => `<button type="button" class="range-btn" data-prix="${p}">${fr(p, 0)} FCFA</button>`).join('');
+      box.querySelectorAll('.range-btn').forEach(b => b.addEventListener('click', () => show(+b.dataset.prix)));
+      show(prices.includes(1000) ? 1000 : prices[0]);
+      document.getElementById('tarif-hist-sub').textContent =
+        `Volume de data d'un forfait sans FUP, à prix égal — catalogues ARCEP de ${hLabel(hQ[0]).toString().split(',')[0]} à ${hLabel(hQ[hQ.length - 1])}`;
+    }
+
+    // Historique fibre : prix du Mbit/s
+    const fh = TARIFS_DATA.historique_ftth || {};
+    const fQ = sortQ(fh);
+    if (fQ.length >= 2) {
+      const best = (q, op) => {
+        const v = Object.entries(fh[q].partage || {}).filter(([, r]) => r[op] != null).map(([mbps, r]) => r[op] / +mbps);
+        return v.length ? Math.round(Math.min(...v)) : null;
+      };
+      const FOPS = [['sbin', 'SBIN (Celtiis)', '--celtiis'], ['isocel', 'Isocel', '--accent'], ['gva_benin', 'GVA Bénin', '--mtn']];
+      new Chart(document.getElementById('ftth-hist-chart'), {
+        type: 'line',
+        data: { labels: fQ.map(q => `${QEND[q.slice(0, 2)]} ${q.slice(3)}`), datasets: FOPS.map(([k, l, c]) => ds(l, fQ.map(q => best(q, k)), c, { tension: 0 })) },
+        options: options(v => fr(v, 0), ctx => `${ctx.dataset.label} : ${fr(ctx.parsed.y, 0)} FCFA par Mbit/s et par mois`),
+      });
+    }
+
+    // Chiffres cles des rapports annuels
+    const cc = REVENUS_ARCEP_DATA.chiffres_cles || {};
+    const years = Object.keys(cc).sort();
+    if (years.length) {
+      const trio = (o) => o ? `MTN ${fr(o.mtn)} · Moov ${fr(o.moov)} · Celtiis ${fr(o.celtiis)}` : null;
+      const ROWS = [
+        ['Marché', null],
+        ["Chiffre d'affaires du marché (Mds FCFA)", d => fr(d.ca_marche_mds, 3)],
+        ["dont opérateurs mobiles (Mds FCFA)", d => fr(d.ca_mobile_mds, 3)],
+        ['Investissements dans les réseaux (Mds FCFA)', d => fr(d.investissements_mds, 3)],
+        ['Investissements par opérateur (Mds FCFA)', d => trio(d.investissements_par_operateur_mds)],
+        ["Parts du chiffre d'affaires mobile (%)", d => trio(d.parts_valeur_pct)],
+        ['Abonnés et usages', null],
+        ['Cartes SIM actives (millions)', d => fr(d.cartes_sim_millions, 2)],
+        ['Abonnés uniques (hors multi-SIM)', d => fr(d.abonnes_uniques, 0)],
+        ['Pénétration mobile (%)', d => fr(d.penetration_mobile_pct)],
+        ['Pénétration Internet mobile (%)', d => fr(d.penetration_internet_pct)],
+        ['Revenu moyen par abonné (FCFA par mois)', d => fr(d.arpu_fcfa, 0)],
+        ['Trafic voix (milliards de minutes)', d => fr(d.trafic_voix_mds_min, 3)],
+        ['Trafic data (millions de Go)', d => fr(d.trafic_data_millions_go)],
+        ['SMS (millions)', d => fr(d.sms_millions, 1)],
+        ['Mobile Money et usagers', null],
+        ["Chiffre d'affaires Mobile Money (Mds FCFA)", d => fr(d.ca_sfm_mds)],
+        ['Comptes Mobile Money (%)', d => trio(d.sfm_parts_comptes_pct)],
+        ["Chiffre d'affaires Mobile Money (%)", d => trio(d.sfm_parts_ca_pct)],
+        ['Plaintes enregistrées par l\'ARCEP', d => fr(d.plaintes, 0)],
+        ['Sanctions pour défaut de couverture (FCFA)', d => d.sanctions_couverture_fcfa
+          ? Object.entries(d.sanctions_couverture_fcfa).map(([k, v]) => `${{ mtn: 'MTN', moov: 'Moov', celtiis: 'Celtiis' }[k] || k} ${fr(v, 0)}`).join(' · ') : null],
+      ];
+      document.getElementById('chiffres-cles-table').innerHTML = `
+        <thead><tr><th>Indicateur</th>${years.map(y => `<th>${y}</th>`).join('')}</tr></thead>
+        <tbody>${ROWS.map(([label, f]) => f
+          ? `<tr><td>${label}</td>${years.map(y => { const v = f(cc[y]); return v == null || v === '—' ? '<td class="empty">—</td>' : `<td>${v}</td>`; }).join('')}</tr>`
+          : `<tr class="seg-row"><td colspan="${years.length + 1}">${label}</td></tr>`).join('')}</tbody>`;
+    }
+  })();
+
   // ---- Periodes couvertes (sous-titres calcules depuis les donnees) ----
   (function fillRanges() {
     const qo = (q) => { const [tq, y] = q.split('_'); return parseInt(y) * 10 + parseInt(tq.slice(1)); };
@@ -1995,6 +2213,9 @@
       'postes': () => quarters(POSTAL_DATA.recettes),
       'postes-op': () => quarters(POSTAL_DATA.parts_marche?.colis?.valeur),
       'regulateur': () => range(Object.keys(REVENUS_ARCEP_DATA.par_annee || {}).sort()),
+      'chiffres-cles': () => range(Object.keys(REVENUS_ARCEP_DATA.chiffres_cles || {}).sort()),
+      'market-valeur': () => quarters(MARKET_DATA.parts_valeur),
+      'market-tech': () => quarters(MARKET_DATA.technologies),
     };
     document.querySelectorAll('[data-range]').forEach(el => {
       const f = SOURCES[el.dataset.range];
@@ -2040,7 +2261,15 @@
           const t = MARKET_DATA.trafics[q] || {};
           return [q, a.mtn, a.celtiis, a.moov, t.voix_min, t.sms_nb, t.data_go];
         });
-        return [['Trimestre', 'MTN (%)', 'Celtiis (%)', 'Moov Africa (%)', 'Trafic voix (min)', 'Trafic SMS', 'Trafic Data (Go)'], ...rows];
+        const valRows = sortedQ(MARKET_DATA.parts_valeur || {}).map(q => { const v = MARKET_DATA.parts_valeur[q]; return [q, v.mtn, v.celtiis, v.moov]; });
+        const techRows = sortedQ(MARKET_DATA.technologies || {}).map(q => { const v = MARKET_DATA.technologies[q]; return [q, v['2g'], v['3g'], v['4g']]; });
+        const genreRows = sortedQ(MARKET_DATA.genre || {}).map(q => [q, MARKET_DATA.genre[q].hommes, MARKET_DATA.genre[q].femmes]);
+        return [
+          ...block('PARTS DE MARCHE EN VOLUME (ABONNEMENTS) ET TRAFICS', ['Trimestre', 'MTN (%)', 'Celtiis (%)', 'Moov Africa (%)', 'Trafic voix (min)', 'Trafic SMS', 'Trafic Data (Go)'], rows),
+          ...block("PARTS DE MARCHE EN VALEUR (CHIFFRE D'AFFAIRES)", ['Trimestre', 'MTN (%)', 'Celtiis (%)', 'Moov Africa (%)'], valRows),
+          ...block('ABONNEMENTS PAR TECHNOLOGIE', ['Trimestre', '2G', '3G', '4G'], techRows),
+          ...block('REPARTITION DES ABONNEMENTS PAR SEXE', ['Trimestre', 'Hommes (%)', 'Femmes (%)'], genreRows),
+        ];
       },
       'internet': () => {
         const mobRows = sortedQ(INTERNET_DATA.mobile).map(q => {
@@ -2066,6 +2295,12 @@
           ...block('INTERNET FIXE — PARC TOTAL', ['Trimestre', 'Parc abonnés', 'Pénétration (%)'], fixRows),
           ...block('TARIFS INTERNET MOBILE — CATALOGUE ARCEP', ['Prix (FCFA)', 'Type', 'Opérateur', 'Volume', 'Validité'], fupRows),
           ...block('TARIFS FTTH — REDEVANCES MENSUELLES (FCFA)', ['Segment', 'Débit', 'Opérateur', 'Prix (FCFA)'], ftthRows),
+          ...block('HISTORIQUE DES FORFAITS INTERNET MOBILE', ['Période des données', 'Prix (FCFA)', 'Type', 'Opérateur', 'Volume', 'Volume (Mo)', 'Validité'],
+            sortedQ(TARIFS_DATA.historique_mobile || {}).flatMap(q => TARIFS_DATA.historique_mobile[q].flatMap(o =>
+              ['mtn', 'moov', 'sbin'].filter(op => o[op]).map(op => [TARIFS_DATA.meta?.libelles_periodes?.[q] || q, o.prix, o.fup ? 'avec FUP' : 'sans FUP', op.toUpperCase(), o[op].volume, o[op].mo, o[op].validite])))),
+          ...block('HISTORIQUE FIBRE — REDEVANCES MENSUELLES (FCFA)', ['Rapport', 'Segment', 'Débit', 'Opérateur', 'Prix (FCFA)'],
+            sortedQ(TARIFS_DATA.historique_ftth || {}).flatMap(q => ['partage', 'dedie'].flatMap(seg =>
+              Object.entries(TARIFS_DATA.historique_ftth[q][seg] || {}).flatMap(([mbps, ops]) => Object.entries(ops).map(([op, v]) => [q, seg, mbps + ' Mbps', op, v]))))),
         ];
       },
       'mobile-money': () => {
@@ -2120,7 +2355,16 @@
           const d = REVENUS_ARCEP_DATA.par_annee[y];
           return [y, d.ressources_propres, d.recouvre_pour_etat ?? ''];
         });
-        return [['Année', 'Ressources propres ARCEP (FCFA)', "Recouvré pour le compte de l'État (FCFA)"], ...rows];
+        const cc = REVENUS_ARCEP_DATA.chiffres_cles || {};
+        const ccRows = [];
+        Object.keys(cc).sort().forEach(y => Object.entries(cc[y]).forEach(([k, v]) => {
+          if (v && typeof v === 'object') Object.entries(v).forEach(([op, x]) => ccRows.push([y, k + ' — ' + op, x]));
+          else ccRows.push([y, k, v]);
+        }));
+        return [
+          ...block('FINANCES DU REGULATEUR', ['Année', 'Ressources propres ARCEP (FCFA)', "Recouvré pour le compte de l'État (FCFA)"], rows),
+          ...block('CHIFFRES CLES DES RAPPORTS ANNUELS', ['Année', 'Indicateur', 'Valeur'], ccRows),
+        ];
       },
     };
 
