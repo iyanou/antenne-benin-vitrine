@@ -18,7 +18,8 @@ jobs:
   scrape-and-build:
     runs-on: ubuntu-latest
     outputs:
-      site_changed: ${{ steps.commit.outputs.site_changed }}
+      site_changed: ${{ steps.live.outputs.site_changed }}
+      scrape_ok: ${{ steps.scrape.outcome }}
     steps:
       - uses: actions/checkout@v7
 
@@ -30,27 +31,36 @@ jobs:
         run: pip install -r scraper/requirements.txt
 
       - name: Scraper (weekly)
+        id: scrape
+        continue-on-error: true
         run: python scraper/orchestrate.py weekly
 
       - name: Regenerer index.html
         run: python scraper/build_site.py
 
       - name: Commit + push si changement
-        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ site/index.html
           if git diff --staged --quiet; then
             echo "Rien de nouveau."
-            echo "site_changed=false" >> "$GITHUB_OUTPUT"
           else
-            SITE_CHANGED=false
-            git diff --staged --quiet -- site/index.html || SITE_CHANGED=true
             git commit -m "auto(weekly): scrape marche/regulation $(date -u +%Y-%m-%d)"
             git pull --rebase origin "${GITHUB_REF_NAME}"
             git push
-            echo "site_changed=$SITE_CHANGED" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Compare le depot au site reellement en ligne : couvre aussi un deploiement precedent
+      # rate et une modification poussee a la main.
+      - name: Le site en ligne est-il a jour ?
+        id: live
+        run: |
+          curl -fsSL --retry 3 "https://iyanou.github.io/antenne-benin-vitrine/?v=$GITHUB_RUN_ID" -o /tmp/live.html || true
+          if cmp -s /tmp/live.html site/index.html; then
+            echo "site_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "site_changed=true" >> "$GITHUB_OUTPUT"
           fi
 
   deploy:
@@ -59,7 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment2.outputs.page_url || steps.deployment3.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -71,5 +81,35 @@ jobs:
         with:
           path: site
 
+      # L'artefact n'est pas toujours visible de l'API juste apres son envoi ("No artifacts
+      # named github-pages", 23 et 24/11/2026) : on attend, puis on retente deux fois.
+      - run: sleep 20
+
       - id: deployment
+        continue-on-error: true
         uses: actions/deploy-pages@v5
+
+      - if: steps.deployment.outcome == 'failure'
+        run: sleep 60
+
+      - id: deployment2
+        if: steps.deployment.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      - if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+        run: sleep 120
+
+      - id: deployment3
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+        uses: actions/deploy-pages@v5
+
+  alerte:
+    needs: scrape-and-build
+    if: needs.scrape-and-build.outputs.scrape_ok == 'failure'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Signaler l'echec d'un scraper ou d'un controle
+        run: |
+          echo "::error::Au moins un scraper ou un controle a echoue (voir l'etape Scraper). Les donnees concernees n'ont pas ete mises a jour."
+          exit 1

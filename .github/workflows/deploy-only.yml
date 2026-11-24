@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment2.outputs.page_url || steps.deployment3.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
 
@@ -30,5 +30,25 @@ jobs:
         with:
           path: site
 
+      # L'artefact n'est pas toujours visible de l'API juste apres son envoi ("No artifacts
+      # named github-pages", 23 et 24/11/2026) : on attend, puis on retente deux fois.
+      - run: sleep 20
+
       - id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      - if: steps.deployment.outcome == 'failure'
+        run: sleep 60
+
+      - id: deployment2
+        if: steps.deployment.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      - if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+        run: sleep 120
+
+      - id: deployment3
+        if: steps.deployment.outcome == 'failure' && steps.deployment2.outcome == 'failure'
         uses: actions/deploy-pages@v5
